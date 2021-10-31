@@ -30,7 +30,7 @@ public class LeagueApi {
     }
 
     @GetMapping(path="/")
-    public @ResponseBody Optional<League> getSingLeagueById(@RequestParam int id){
+    public @ResponseBody Optional<League> getSingleLeagueById(@RequestParam int id){
         return leagueRepository.findById(id);
     }
 

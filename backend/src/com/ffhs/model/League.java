@@ -17,6 +17,8 @@ public class League {
 
     private String sport;
 
+    private boolean archived;
+
     public int getLeague_id() {
         return league_id;
     }
@@ -47,5 +49,13 @@ public class League {
 
     public void setSport(String sport) {
         this.sport = sport;
+    }
+
+    public void setArchived(boolean archived){
+        this.archived = archived;
+    }
+
+    public boolean getArchived(){
+        return archived;
     }
 }

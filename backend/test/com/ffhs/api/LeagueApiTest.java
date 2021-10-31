@@ -25,7 +25,8 @@ class LeagueApiTest {
         String returnVal = leagueApi.addNewLeague(
                 "Unit League",
                 "Bern",
-                "Super Smash Bros. Ultimate");
+                "Super Smash Bros. Ultimate"
+        );
 
         assertEquals("League saved", returnVal);
     }
@@ -37,9 +38,9 @@ class LeagueApiTest {
     }
 
     @Test
-    void getSingLeagueById() {
+    void getSingleLeagueById() {
         int id = 1;
-        Optional<League> league = leagueApi.getSingLeagueById(id);
+        Optional<League> league = leagueApi.getSingleLeagueById(id);
         assertThat(league).isNotNull();
     }
 }

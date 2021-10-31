@@ -10,6 +10,8 @@ public class Player {
 
     private java.lang.String tag;
 
+    private boolean archived;
+
     public java.lang.String getGuid() {
         return this.guid;
     }
@@ -24,5 +26,13 @@ public class Player {
 
     public void setTag(java.lang.String tag) {
         this.tag = tag;
+    }
+
+    public void setArchived(boolean archived){
+        this.archived = archived;
+    }
+
+    public boolean getArchived(){
+        return archived;
     }
 }

@@ -11,7 +11,7 @@ import java.util.Date;
 public class Tournament {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private int tournament_id;
+    private int tournamentId;
 
     private String location;
 
@@ -29,8 +29,10 @@ public class Tournament {
 
     private int leagueId;
 
+    private boolean archived;
+
     public int getId() {
-        return tournament_id;
+        return tournamentId;
     }
 
     public String getLocation() {
@@ -62,7 +64,7 @@ public class Tournament {
     }
 
     public void setId(int id) {
-        this.tournament_id = id;
+        this.tournamentId = id;
     }
 
     public void setLocation(String location) {
@@ -101,4 +103,11 @@ public class Tournament {
         this.leagueId = leagueId;
     }
 
+    public void setArchived(boolean archived){
+        this.archived = archived;
+    }
+
+    public boolean getArchived(){
+        return archived;
+    }
 }

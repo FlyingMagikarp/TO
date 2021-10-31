@@ -9,20 +9,26 @@ import javax.persistence.Id;
 public class Game {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private int game_id;
+    private int gameId;
 
-    private int tournament_id;
+    private int tournamentId;
 
     private String player1;
 
     private String player2;
 
+    private int scoreP1;
+
+    private int scoreP2;
+
+    private boolean archived;
+
     public int getId() {
-        return game_id;
+        return gameId;
     }
 
-    public int getTournament_id() {
-        return tournament_id;
+    public int getTournamentId() {
+        return tournamentId;
     }
 
     public String getPlayer1() {
@@ -34,11 +40,11 @@ public class Game {
     }
 
     public void setId(int id) {
-        this.game_id = id;
+        this.gameId = id;
     }
 
-    public void setTournament_id(int tournament_id) {
-        this.tournament_id = tournament_id;
+    public void setTournamentId(int tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
     public void setPlayer1(String player1) {
@@ -49,4 +55,27 @@ public class Game {
         this.player2 = player2;
     }
 
+    public void setScoreP1(int scoreP1){
+        this.scoreP1 = scoreP1;
+    }
+
+    public void setScoreP2(int scoreP2){
+        this.scoreP2 = scoreP2;
+    }
+
+    public int getScoreP1(){
+        return this.scoreP1;
+    }
+
+    public int getScoreP2(){
+        return this.scoreP2;
+    }
+
+    private void setArchived(boolean archived){
+        this.archived = archived;
+    }
+
+    private boolean getArchived(){
+        return archived;
+    }
 }
