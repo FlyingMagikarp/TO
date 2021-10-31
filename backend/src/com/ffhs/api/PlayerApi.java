@@ -22,7 +22,6 @@ public class PlayerApi {
         p.setGuid(java.util.UUID.randomUUID().toString());
         playerRepository.save(p);
         return "Player saved";
-        //playerService.writeNewPlayerToDB(tag);
     }
 
     @GetMapping(path="/all")
