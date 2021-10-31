@@ -19,7 +19,7 @@ public class Tournament {
 
     private Date date;
 
-    private String startime;
+    private String starttime;
 
     private String format;
 
@@ -45,8 +45,8 @@ public class Tournament {
         return date;
     }
 
-    public String getStartime() {
-        return startime;
+    public String getStarttime() {
+        return starttime;
     }
 
     public String getFormat() {
@@ -77,8 +77,8 @@ public class Tournament {
         this.date = date;
     }
 
-    public void setStartime(String startime) {
-        this.startime = startime;
+    public void setStarttime(String startime) {
+        this.starttime = startime;
     }
 
     public void setFormat(String format) {
