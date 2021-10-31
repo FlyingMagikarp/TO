@@ -1,6 +1,8 @@
 package com.ffhs.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,7 +10,8 @@ import java.util.Date;
 @Entity
 public class Tournament {
     @Id
-    private int id;
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private int tournament_id;
 
     private String location;
 
@@ -27,7 +30,7 @@ public class Tournament {
     private int leagueId;
 
     public int getId() {
-        return id;
+        return tournament_id;
     }
 
     public String getLocation() {
@@ -59,7 +62,7 @@ public class Tournament {
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.tournament_id = id;
     }
 
     public void setLocation(String location) {

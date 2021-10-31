@@ -6,23 +6,23 @@ import javax.persistence.Id;
 @Entity
 public class Player {
     @Id
-    private String guid;
+    private java.lang.String guid;
 
-    private String tag;
+    private java.lang.String tag;
 
-    public String getGuid() {
+    public java.lang.String getGuid() {
         return this.guid;
     }
 
-    public String getTag() {
+    public java.lang.String getTag() {
         return this.tag;
     }
 
-    public void setGuid(String guid) {
+    public void setGuid(java.lang.String guid) {
         this.guid = guid;
     }
 
-    public void setTag(String tag) {
+    public void setTag(java.lang.String tag) {
         this.tag = tag;
     }
 }

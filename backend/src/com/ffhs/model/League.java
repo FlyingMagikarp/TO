@@ -1,18 +1,21 @@
 package com.ffhs.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class League {
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private int league_id;
 
     private String name;
 
     private String location;
 
-    private String game;
+    private String sport;
 
     public int getLeague_id() {
         return league_id;
@@ -26,8 +29,8 @@ public class League {
         return location;
     }
 
-    public String getGame() {
-        return game;
+    public String getSport() {
+        return sport;
     }
 
     public void setLeague_id(int league_id) {
@@ -42,7 +45,7 @@ public class League {
         this.location = location;
     }
 
-    public void setGame(String game) {
-        this.game = game;
+    public void setSport(String sport) {
+        this.sport = sport;
     }
 }

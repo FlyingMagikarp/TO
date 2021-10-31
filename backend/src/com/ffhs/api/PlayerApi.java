@@ -1,19 +1,37 @@
 package com.ffhs.api;
 
-import com.ffhs.controller.PlayerService;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.ffhs.model.Player;
+import com.ffhs.repository.PlayerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@SpringBootApplication
-@RestController
+import java.util.Optional;
+
+@Controller
+@RequestMapping(path="/player")
 public class PlayerApi {
+    @Autowired
+    private PlayerRepository playerRepository;
 
-    private PlayerService playerService = new PlayerService();
+    @PostMapping(path="/add")
+    public @ResponseBody
+    java.lang.String addNewPlayer(@RequestParam java.lang.String tag) {
+        Player p = new Player();
+        p.setTag(tag);
+        p.setGuid(java.util.UUID.randomUUID().toString());
+        playerRepository.save(p);
+        return "Player saved";
+        //playerService.writeNewPlayerToDB(tag);
+    }
 
-    @PutMapping("/player")
-    public void saveNewPlayer(@RequestParam(value = "tag", defaultValue = "dummy") String tag) {
-        playerService.writeNewPlayerToDB(tag);
+    @GetMapping(path="/all")
+    public @ResponseBody Iterable<Player> getAllPlayers() {
+        return playerRepository.findAll();
+    }
+
+    @GetMapping(path="/")
+    public @ResponseBody Optional<Player> getSinglePlayerById(@RequestParam String guid) {
+        return playerRepository.findById(guid);
     }
 }
