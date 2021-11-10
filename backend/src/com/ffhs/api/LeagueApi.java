@@ -25,6 +25,19 @@ public class LeagueApi {
         return "League saved";
     }
 
+    @PostMapping(path="/update", consumes = "application/json")
+    public @ResponseBody java.lang.String updateLeague(@RequestBody League league){
+        League l = new League();
+        l.setName(league.getName());
+        l.setSport(league.getSport());
+        l.setLocation(league.getLocation());
+        l.setArchived(league.getArchived());
+        l.setLeague_id(league.getLeague_id());
+        leagueRepository.save(l);
+
+        return "League updated";
+    }
+
     @GetMapping(path="/all")
     public @ResponseBody Iterable<League> getAllLeagues(){
         return leagueRepository.findAll();
@@ -33,11 +46,6 @@ public class LeagueApi {
     @GetMapping(path="/getById")
     public @ResponseBody Optional<League> getSingleLeagueById(@RequestParam int league_id){
         return leagueRepository.findById(league_id);
-    }
-
-    @GetMapping(path="test")
-    public @ResponseBody String test(){
-        return "Hello World!";
     }
 
 }
