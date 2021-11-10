@@ -17,6 +17,12 @@ const LeagueService = {
     async getLeagueById(league_id: number): Promise<any> {
         const result = await axios.get(Constants.C_API_BASEURL + 'league/getById', {params: {league_id: league_id}});
         return result.data;
+    },
+
+    async updateLeague(league: League): Promise<any> {
+        league.name = "updated name";
+        const result = await axios.post(Constants.C_API_BASEURL + 'league/update', league);
+        return result.data;
     }
 
 };

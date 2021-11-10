@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {FormControlLabel, Grid, TextField, Theme} from "@material-ui/core";
+import React, {useContext, useEffect, useState} from 'react';
+import {FormControl, FormControlLabel, Grid, Input, InputLabel, TextField, Theme} from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
@@ -33,6 +33,7 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
     const [name, setName] = useState("");
     const [sport, setSport] = useState("");
     const [location, setLocation] = useState("");
+    const [archived, setArchived] = useState(false);
 
     // only used in edit mode
     const [league, setLeague] = useState(new League());
@@ -45,12 +46,16 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
             setName(league.name ? league.name : "");
             setSport(league.sport ? league.sport : "");
             setLocation(league.location ? league.location : "");
-            debugger;
+            setArchived(league.archived ? league.archived : false);
         })
     }
 
     const handleSubmit = () => {
-        leagueStore.saveNewLeague(name, sport, location);
+        if (mode === "add") {
+            leagueStore.saveNewLeague(name, sport, location);
+        } else {
+            leagueStore.updateLeague(name, sport, location, archived, league.league_id)
+        }
     };
 
     return (
@@ -82,9 +87,10 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                         <Typography variant="h6" color="inherit" component="div">
                             Archived
                         </Typography>
-                        <RadioGroup aria-label="Archived?" defaultValue="arFalse" name="archivedRadioGroup">
-                            <FormControlLabel value="arFalse" control={<Radio />} label="False" />
-                            <FormControlLabel value="arTrue" control={<Radio />} label="True" />
+                        <RadioGroup aria-label="Archived?" defaultValue={archived} name="archivedRadioGroup"
+                                    onChange={(event) => {setArchived(!archived)}}>
+                            <FormControlLabel value={false} control={<Radio />} label="False" />
+                            <FormControlLabel value={true} control={<Radio />} label="True" />
                         </RadioGroup>
                     </div>
                 }

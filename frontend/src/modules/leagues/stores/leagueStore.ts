@@ -11,7 +11,7 @@ export default class LeagueStore {
     @observable public height: number = window.innerHeight;
     @observable public pendingRequestsCount = 0;
     @observable public leagues: League[] = [];
-    @observable public currentLeagues: League = new League();
+    @observable public currentLeague: League = new League();
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
@@ -31,10 +31,23 @@ export default class LeagueStore {
     public async getLeagueById(leagueId:number){
         this.pendingRequestsCount++;
         await LeagueService.getLeagueById(leagueId).then((result) => {
-           this.currentLeagues = result;
+           this.currentLeague = result;
            this.pendingRequestsCount--;
         });
-        return this.currentLeagues;
+        return this.currentLeague;
+    }
+
+    @action
+    public async updateLeague(name:string, sport:string, location:string, archived:boolean, league_id?:number){
+        let league = new League();
+        league.league_id = league_id;
+        league.name = name;
+        league.sport = sport;
+        league.location = location;
+        league.archived = archived;
+
+        this.pendingRequestsCount++;
+        await LeagueService.updateLeague(league).then(() => {this.pendingRequestsCount--})
     }
 
     @action
@@ -45,7 +58,6 @@ export default class LeagueStore {
         league.location = location;
         league.archived = false;
         league.league_id = 0;
-
 
         this.pendingRequestsCount++;
         await LeagueService.saveNewLeague(league).then(() => {this.pendingRequestsCount--})
