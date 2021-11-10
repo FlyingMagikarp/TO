@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import createStyles from "@material-ui/core/styles/createStyles";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {observer} from "mobx-react-lite";
-import LeagueOverviewScreen from "./leagues/LeagueOverviewScreen";
+import LeagueOverviewScreen from "./leagues/components/LeagueOverviewScreen";
 import TournamentOverviewScreen from "./tournaments/TournamentOverviewScreen";
 import Header from "./common/components/header/Header";
 

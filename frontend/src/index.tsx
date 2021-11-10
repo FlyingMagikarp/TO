@@ -11,8 +11,8 @@ import {
     Route
 } from "react-router-dom";
 import TournamentOverviewScreen from "./modules/tournaments/TournamentOverviewScreen";
-import LeagueOverviewScreen from "./modules/leagues/LeagueOverviewScreen";
-import EditLeagueScreen from "./modules/leagues/EditLeagueScreen";
+import LeagueOverviewScreen from "./modules/leagues/components/LeagueOverviewScreen";
+import EditLeagueScreen from "./modules/leagues/components/EditLeagueScreen";
 
 const rootStore = RootStore.getInstance();
 const stores = {

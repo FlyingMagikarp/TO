@@ -21,13 +21,12 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
 }));
 
 type DisplayCardProps = {
-    name: string,
-    game: string,
-    players: number,
-    tournaments: number
+    name?: string,
+    sport?: string,
+    location?: string
 }
 
-const DisplayCard = observer(({ name, game, players, tournaments}: DisplayCardProps) => {
+const DisplayCard = observer(({ name, sport, location}: DisplayCardProps) => {
     const {masterDataStore, uiStore} = useContext(StoreContext);
     const classes = useStyles();
     const isMobile = uiStore.isMediumScreenDown;
@@ -40,13 +39,10 @@ const DisplayCard = observer(({ name, game, players, tournaments}: DisplayCardPr
                         {name}
                     </Typography>
                     <Typography>
-                        {game}
+                        {sport}
                     </Typography>
                     <Typography>
-                        {players}
-                    </Typography>
-                    <Typography>
-                        {tournaments > 0 ? tournaments : ""}
+                        {location}
                     </Typography>
                 </CardContent>
             </Card>
