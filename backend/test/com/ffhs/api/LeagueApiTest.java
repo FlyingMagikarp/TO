@@ -22,11 +22,11 @@ class LeagueApiTest {
 
     @Test
     void addNewLeague() {
-        String returnVal = leagueApi.addNewLeague(
-                "Unit League",
-                "Bern",
-                "Super Smash Bros. Ultimate"
-        );
+        League l = new League();
+        l.setName("Unit League");
+        l.setSport("Super Smash Bros. Ultimate");
+        l.setLocation("Bern");
+        String returnVal = leagueApi.addNewLeague(l);
 
         assertEquals("League saved", returnVal);
     }
