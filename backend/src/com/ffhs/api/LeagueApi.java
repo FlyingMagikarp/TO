@@ -5,7 +5,6 @@ import com.ffhs.repository.LeagueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
 
 @Controller
@@ -22,6 +21,7 @@ public class LeagueApi {
         l.setSport(league.getSport());
         l.setLocation(league.getLocation());
         leagueRepository.save(l);
+
         return "League saved";
     }
 

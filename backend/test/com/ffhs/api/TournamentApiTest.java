@@ -27,15 +27,19 @@ class TournamentApiTest {
         ArrayList<String> players = new ArrayList<String>();
         players.add("39f8c82b-79cf-4afb-a435-b9bd79ee5ad7");
         players.add("4bda233d-6b63-49c4-be3e-dd4732b01337");
-        String returnVal = tournamentApi.addNewTournament(
-                "Bern",
-                "Unit League",
-                new Date(),
-                "12:00",
-                "Double Elimination",
-                players,
-                1
-        );
+        Tournament t = new Tournament();
+        t.setName("unit tourney");
+        t.setLocation("Bern");
+        t.setDate(new Date());
+        t.setStarttime("12:00");
+        t.setFormat("Round Robin");
+        t.setLeagueId(1);
+        ArrayList<String> tmp =  new ArrayList<String>();
+        tmp.add("player1");
+        tmp.add("player2");
+        t.setPlayers(tmp);
+
+        String returnVal = tournamentApi.addNewTournament(t);
         assertEquals("Tournament saved", returnVal);
     }
 

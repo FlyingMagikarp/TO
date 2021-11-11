@@ -5,35 +5,43 @@ import com.ffhs.repository.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="/tournament")
 public class TournamentApi {
     @Autowired
     private TournamentRepository tournamentRepository;
 
-    @PostMapping(path="/add")
-    public @ResponseBody java.lang.String addNewTournament(@RequestParam
-                                                           String loc,
-                                                           String name,
-                                                           Date date,
-                                                           String starttime,
-                                                           String format,
-                                                           ArrayList<String> players,
-                                                           int leagueId){
+    @PostMapping(path="/add", consumes = "application/json")
+    public @ResponseBody java.lang.String addNewTournament(@RequestBody Tournament tournament){
         Tournament t = new Tournament();
-        t.setLocation(loc);
-        t.setName(name);
-        t.setDate(date);
-        t.setStarttime(starttime);
-        t.setFormat(format);
-        t.setPlayers(players);
-        t.setLeagueId(leagueId);
+        t.setLocation(tournament.getLocation());
+        t.setName(tournament.getName());
+        t.setDate(tournament.getDate());
+        t.setStarttime(tournament.getStarttime());
+        t.setFormat(tournament.getFormat());
+        t.setPlayers(tournament.getPlayers());
+        t.setLeagueId(tournament.getLeagueId());
         tournamentRepository.save(t);
+
+        return "Tournament saved";
+    }
+
+    @PostMapping(path="/update", consumes = "application/json")
+    public @ResponseBody java.lang.String updateTournament(@RequestBody Tournament tournament){
+        Tournament t = new Tournament();
+        t.setLocation(tournament.getLocation());
+        t.setName(tournament.getName());
+        t.setDate(tournament.getDate());
+        t.setStarttime(tournament.getStarttime());
+        t.setFormat(tournament.getFormat());
+        t.setPlayers(tournament.getPlayers());
+        t.setRankedPlayer(tournament.getRankedPlayer());
+        t.setLeagueId(tournament.getLeagueId());
+        tournamentRepository.save(t);
+
         return "Tournament saved";
     }
 
@@ -42,8 +50,8 @@ public class TournamentApi {
         return tournamentRepository.findAll();
     }
 
-    @GetMapping(path="/")
-    public @ResponseBody Optional<Tournament> getSingleTournamentById(@RequestParam int id){
-        return tournamentRepository.findById(id);
+    @GetMapping(path="/getById")
+    public @ResponseBody Optional<Tournament> getSingleTournamentById(@RequestParam int tournamentId){
+        return tournamentRepository.findById(tournamentId);
     }
 }
