@@ -5,7 +5,7 @@ import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {useParams} from "react-router-dom";
-import {Typography} from "@mui/material";
+import {Alert, Snackbar, Typography} from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import League from "../stores/models/league";
@@ -35,6 +35,8 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
     const [location, setLocation] = useState("");
     const [archived, setArchived] = useState(false);
 
+    const [openSnack, setOpenSnack] = React.useState(false);
+
     // only used in edit mode
     const [league, setLeague] = useState(new League());
 
@@ -42,7 +44,6 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
 
     useEffect(() => {
         if (mode === "edit"){
-
             let league_id :number = id ? +id : 0;
             leagueStore.getLeagueById(league_id).then(data => {
                 setLeague(data);
@@ -54,13 +55,20 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
         }
     }, [leagueStore, mode, id]);
 
+    const handleClickSnack = () => {
+        setOpenSnack(true);
+    };
 
+    const handleCloseSnack = () => {
+        setOpenSnack(false);
+    };
 
     const handleSubmit = () => {
         if (mode === "add") {
             leagueStore.saveNewLeague(name, sport, location);
         } else {
-            leagueStore.updateLeague(name, sport, location, archived, league.league_id)
+            leagueStore.updateLeague(name, sport, location, archived, league.league_id);
+            handleClickSnack();
         }
     };
 
@@ -70,26 +78,24 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
             <Typography variant="h2" color="inherit" component="div">
                 {mode === "add" ? "Add new " : "Edit "} League
             </Typography>
-            <div>
-                <Grid container spacing={2}>
-                </Grid>
-                <div>
+            <Grid container direction={"column"} spacing={2}>
+                <Grid item>
                     <TextField id="leagueName" label="League Name" variant="outlined" value={name}
                                onChange={(event) => {setName(event.target.value)}}/>
-                </div>
+                </Grid>
 
-                <div>
+                <Grid item>
                     <TextField id="leagueSport" label="Sport" variant="outlined" value={sport}
                                onChange={(event) => {setSport(event.target.value)}}/>
-                </div>
+                </Grid>
 
-                <div>
+                <Grid item>
                     <TextField id="leagueLocation" label="Location / Region" variant="outlined" value={location}
                                onChange={(event) => {setLocation(event.target.value)}}/>
-                </div>
+                </Grid>
 
                 {mode === "edit" &&
-                    <div>
+                    <Grid item>
                         <Typography variant="h6" color="inherit" component="div">
                             Archived
                         </Typography>
@@ -98,12 +104,17 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                             <FormControlLabel value={false} control={<Radio />} label="False" />
                             <FormControlLabel value={true} control={<Radio />} label="True" />
                         </RadioGroup>
-                    </div>
+                    </Grid>
                 }
                 <div>
                     <button onClick={handleSubmit}>Save</button>
                 </div>
-            </div>
+            </Grid>
+            <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
+                <Alert onClose={handleCloseSnack} severity="success" sx={{ width: '100%' }}>
+                    League Saved!
+                </Alert>
+            </Snackbar>
         </>
     );
 });
