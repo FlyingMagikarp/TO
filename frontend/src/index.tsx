@@ -10,7 +10,7 @@ import {
     Routes,
     Route
 } from "react-router-dom";
-import TournamentOverviewScreen from "./modules/tournaments/TournamentOverviewScreen";
+import TournamentOverviewScreen from "./modules/tournaments/components/TournamentOverviewScreen";
 import LeagueOverviewScreen from "./modules/leagues/components/LeagueOverviewScreen";
 import EditLeagueScreen from "./modules/leagues/components/EditLeagueScreen";
 

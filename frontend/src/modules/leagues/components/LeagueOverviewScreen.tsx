@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Grid, Theme} from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {StoreContext} from "../../../index";
@@ -30,9 +30,12 @@ const LeagueOverviewScreen = observer(() => {
 
     const [leagues, setLeagues] = useState([] as League[]);
 
-    leagueStore.getAllLeagues().then(data => {
-        setLeagues(data);
-    });
+    useEffect(() => {
+        leagueStore.getAllLeagues().then(data => {
+            setLeagues(data);
+        });
+    }, [leagueStore]);
+
 
     return (
         <>

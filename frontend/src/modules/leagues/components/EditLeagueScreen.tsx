@@ -38,17 +38,23 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
     // only used in edit mode
     const [league, setLeague] = useState(new League());
 
-    if (mode === "edit"){
-        let { id } = useParams();
-        let league_id :number = id ? +id : 0;
-        leagueStore.getLeagueById(league_id).then(data => {
-            setLeague(data);
-            setName(league.name ? league.name : "");
-            setSport(league.sport ? league.sport : "");
-            setLocation(league.location ? league.location : "");
-            setArchived(league.archived ? league.archived : false);
-        })
-    }
+    let { id } = useParams();
+
+    useEffect(() => {
+        if (mode === "edit"){
+
+            let league_id :number = id ? +id : 0;
+            leagueStore.getLeagueById(league_id).then(data => {
+                setLeague(data);
+                setName(data.name ? data.name : "");
+                setSport(data.sport ? data.sport : "");
+                setLocation(data.location ? data.location : "");
+                setArchived(data.archived ? data.archived : false);
+            })
+        }
+    }, [leagueStore, mode, id]);
+
+
 
     const handleSubmit = () => {
         if (mode === "add") {
