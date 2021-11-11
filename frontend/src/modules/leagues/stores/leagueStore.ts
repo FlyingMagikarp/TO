@@ -8,7 +8,6 @@ export default class LeagueStore {
 
     public rootStore: RootStore;
 
-    @observable public height: number = window.innerHeight;
     @observable public pendingRequestsCount = 0;
     @observable public leagues: League[] = [];
     @observable public currentLeague: League = new League();
@@ -18,7 +17,7 @@ export default class LeagueStore {
     }
 
     @action
-    public async  getAllLeagues(){
+    public async getAllLeagues(){
         this.pendingRequestsCount++;
         await LeagueService.getAllLeagues().then((result) => {
             this.leagues = result;

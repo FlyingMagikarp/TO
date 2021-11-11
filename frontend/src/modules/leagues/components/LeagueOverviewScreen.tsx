@@ -39,7 +39,6 @@ const LeagueOverviewScreen = observer(() => {
 
     return (
         <>
-
             <Typography variant="h2" color="inherit" component="div">
                 League Overview
             </Typography>

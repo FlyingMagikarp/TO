@@ -20,7 +20,6 @@ const LeagueService = {
     },
 
     async updateLeague(league: League): Promise<any> {
-        league.name = "updated name";
         const result = await axios.post(Constants.C_API_BASEURL + 'league/update', league);
         return result.data;
     }

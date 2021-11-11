@@ -5,7 +5,7 @@ import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {useParams} from "react-router-dom";
-import {Alert, Snackbar, Typography} from "@mui/material";
+import {Alert, Button, Snackbar, Typography} from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import League from "../stores/models/league";
@@ -107,7 +107,7 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                     </Grid>
                 }
                 <div>
-                    <button onClick={handleSubmit}>Save</button>
+                    <Button variant={"contained"} onClick={handleSubmit}>Save</Button>
                 </div>
             </Grid>
             <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
