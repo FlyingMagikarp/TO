@@ -9,19 +9,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="/player")
 public class PlayerApi {
     @Autowired
     private PlayerRepository playerRepository;
 
-    @PostMapping(path="/add")
-    public @ResponseBody
-    java.lang.String addNewPlayer(@RequestParam java.lang.String tag) {
+    @PostMapping(path="/add", consumes = "application/json")
+    public @ResponseBody java.lang.String addNewPlayer(@RequestBody Player player) {
         Player p = new Player();
-        p.setTag(tag);
+        p.setTag(player.getTag());
+        p.setArchived(player.getArchived());
         p.setGuid(java.util.UUID.randomUUID().toString());
         playerRepository.save(p);
         return "Player saved";
+    }
+
+    @PostMapping(path="/update", consumes = "application/json")
+    public @ResponseBody java.lang.String updatePlayer(@RequestBody Player player) {
+        Player p = new Player();
+        p.setTag(player.getTag());
+        p.setArchived(player.getArchived());
+        p.setGuid(player.getGuid());
+        playerRepository.save(p);
+        return "Player updated";
     }
 
     @GetMapping(path="/all")
@@ -29,7 +40,7 @@ public class PlayerApi {
         return playerRepository.findAll();
     }
 
-    @GetMapping(path="/")
+    @GetMapping(path="/getById")
     public @ResponseBody Optional<Player> getSinglePlayerById(@RequestParam String guid) {
         return playerRepository.findById(guid);
     }
