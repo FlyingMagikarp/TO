@@ -31,7 +31,7 @@ public class Tournament {
 
     private boolean archived;
 
-    public int getId() {
+    public int getTournamentId() {
         return tournamentId;
     }
 
@@ -63,7 +63,7 @@ public class Tournament {
         return rankedPlayer;
     }
 
-    public void setId(int id) {
+    public void setTournamentId(int id) {
         this.tournamentId = id;
     }
 
