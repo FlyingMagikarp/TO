@@ -23,7 +23,34 @@ export default class TournamentStore {
             this.tournaments = result;
             this.pendingRequestsCount--;
         });
+        console.log("BLYET");
+        console.log(this.tournaments);
         return this.tournaments
+    }
+
+    @action
+    public async getTournamentById(tournamentId:number){
+        this.pendingRequestsCount++;
+        await TournamentService.getTournamentById(tournamentId).then((result) => {
+            this.currentTournament = result;
+            this.pendingRequestsCount--;
+        });
+        return this.currentTournament;
+    }
+
+    @action
+    public async updateNewTournament(name:string, location:string, date:Date, starttime:string, players:string[], leagueId:number, archived:boolean){
+        let t = new Tournament();
+        t.name = name;
+        t.location = location;
+        t.date = date;
+        t.starttime = starttime;
+        t.players = players;
+        t.leagueId = leagueId;
+        t.archived = archived;
+
+        this.pendingRequestsCount++;
+        await TournamentService.updateTournament(t).then(() => {this.pendingRequestsCount--})
     }
 
     @action
@@ -39,7 +66,6 @@ export default class TournamentStore {
 
         this.pendingRequestsCount++;
         await TournamentService.saveNewTournament(t).then(() => {this.pendingRequestsCount--})
-
     }
 
 }

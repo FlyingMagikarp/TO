@@ -13,6 +13,7 @@ import {
 import TournamentOverviewScreen from "./modules/tournaments/components/TournamentOverviewScreen";
 import LeagueOverviewScreen from "./modules/leagues/components/LeagueOverviewScreen";
 import EditLeagueScreen from "./modules/leagues/components/EditLeagueScreen";
+import EditTournamentScreen from "./modules/tournaments/components/EditTournamentScreen";
 
 const rootStore = RootStore.getInstance();
 const stores = {
@@ -31,7 +32,9 @@ function startApplication() {
                 <Main/>
                 <Routes>
                     <Route path="/" element={<LeagueOverviewScreen/>} />
-                    <Route path="/tournaments" element={<TournamentOverviewScreen/>} />
+                    <Route path="/tournament" element={<TournamentOverviewScreen/>} />
+                    <Route path="/tournament/add" element={<EditTournamentScreen mode={"add"}/>} />
+                    <Route path="/tournament/edit/:id" element={<EditTournamentScreen mode={"edit"}/>} />
                     <Route path="/league/add" element={<EditLeagueScreen mode={"add"}/>} />
                     <Route path="/league/edit/:id" element={<EditLeagueScreen mode={"edit"}/>} />
                 </Routes>

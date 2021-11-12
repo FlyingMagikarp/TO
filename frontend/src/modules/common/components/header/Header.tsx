@@ -31,7 +31,7 @@ const Header = observer(() => {
                         </Grid>
                         <Grid item>
                             <Typography variant="h6" color="inherit" component="div">
-                                <Link to="/tournaments" className={classes.navItemLink}>Tournaments</Link>
+                                <Link to="/tournament" className={classes.navItemLink}>Tournaments</Link>
                             </Typography>
                     </Grid>
                     </Grid>

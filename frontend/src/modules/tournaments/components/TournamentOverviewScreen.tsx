@@ -9,7 +9,6 @@ import {Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import AddDataCard from "../../common/components/shared/AddDataCard";
 import DisplayCard from "../../common/components/shared/DisplayCard";
-import tournamentStore from "../stores/tournamentStore";
 
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
