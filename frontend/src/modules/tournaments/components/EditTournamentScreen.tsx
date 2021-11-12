@@ -134,9 +134,9 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                     setFormat(event.target.value)
                                 }}
                             >
-                                {Constants.C_TOURNAMENT_FORMATS.map((format) => {
+                                {Constants.C_TOURNAMENT_FORMATS.map((f) => {
                                     return (
-                                        <MenuItem value={format}>{format}</MenuItem>
+                                        <MenuItem value={f}>{f}</MenuItem>
                                     );
                                 })}
                             </Select>
@@ -162,8 +162,8 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                     </Grid>
                 </Grid>
 
-                <Grid item direction={"column"} spacing={2}>
-                    <Grid container>
+                <Grid item>
+                    <Grid container direction={"column"} spacing={2}>
                         <Grid item>
                             <Paper style={{maxHeight: 200, overflow: 'auto'}}>
                             <InputLabel id="leagueLabel">League</InputLabel>
@@ -173,7 +173,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                         }}>
                                 {leagues.map((league) => {
                                     return (
-                                        <FormControlLabel value={league.league_id} control={<Radio/>} label={league.name}/>
+                                        <FormControlLabel value={league.league_id ?? 0} control={<Radio/>} label={league.name}/>
                                     );
                                 })}
                             </RadioGroup>
@@ -182,16 +182,24 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                     </Grid>
                 </Grid>
 
-                <Grid item direction={"column"} spacing={2}>
-                    <Grid container>
+                <Grid item>
+                    <Grid container direction={"column"} spacing={2}>
                         <Grid item>
                             <Paper style={{maxHeight: 200, overflow: 'auto', minWidth: 200}}>
                             <InputLabel id="playersLabel">Players</InputLabel>
                             <FormGroup>
                                 {allPlayers.map((player) => {
-                                    return (
-                                        <FormControlLabel value={player.guid} control={<Checkbox />} label={player.tag} />
-                                    );
+                                    if (players.find(p => p === player.guid)) {
+                                        return (
+                                            <FormControlLabel value={player.guid ?? ""} control={<Checkbox checked/>}
+                                                              label={player.tag}/>
+                                        )
+                                    } else {
+                                        return (
+                                            <FormControlLabel value={player.guid ?? ""} control={<Checkbox/>}
+                                                              label={player.tag}/>
+                                        )
+                                    }
                                 })}
                             </FormGroup>
                             </Paper>
