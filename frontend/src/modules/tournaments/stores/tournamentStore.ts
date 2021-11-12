@@ -23,9 +23,7 @@ export default class TournamentStore {
             this.tournaments = result;
             this.pendingRequestsCount--;
         });
-        console.log("BLYET");
-        console.log(this.tournaments);
-        return this.tournaments
+        return this.tournaments;
     }
 
     @action
@@ -39,7 +37,7 @@ export default class TournamentStore {
     }
 
     @action
-    public async updateNewTournament(name:string, location:string, date:Date, starttime:string, players:string[], leagueId:number, archived:boolean){
+    public async updateTournament(name:string, location:string, date:Date, starttime:string, players:string[], leagueId:number, archived:boolean){
         let t = new Tournament();
         t.name = name;
         t.location = location;

@@ -19,3 +19,9 @@ export interface ITournamentData {
     leagueId: number,
     archived: boolean
 }
+
+export interface IPlayerData {
+    guid: string,
+    tag: string,
+    archived: boolean
+}

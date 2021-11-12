@@ -14,6 +14,8 @@ import TournamentOverviewScreen from "./modules/tournaments/components/Tournamen
 import LeagueOverviewScreen from "./modules/leagues/components/LeagueOverviewScreen";
 import EditLeagueScreen from "./modules/leagues/components/EditLeagueScreen";
 import EditTournamentScreen from "./modules/tournaments/components/EditTournamentScreen";
+import PlayerOverviewScreen from "./modules/player/components/PlayerOverviewScreen";
+import EditPlayerScreen from "./modules/player/components/EditPlayerScreen";
 
 const rootStore = RootStore.getInstance();
 const stores = {
@@ -37,6 +39,9 @@ function startApplication() {
                     <Route path="/tournament/edit/:id" element={<EditTournamentScreen mode={"edit"}/>} />
                     <Route path="/league/add" element={<EditLeagueScreen mode={"add"}/>} />
                     <Route path="/league/edit/:id" element={<EditLeagueScreen mode={"edit"}/>} />
+                    <Route path="/player" element={<PlayerOverviewScreen/>} />
+                    <Route path="/player/add" element={<EditPlayerScreen mode={"add"}/>} />
+                    <Route path="/player/edit/:id" element={<EditPlayerScreen mode={"edit"}/>} />
                 </Routes>
             </BrowserRouter>
         </>,

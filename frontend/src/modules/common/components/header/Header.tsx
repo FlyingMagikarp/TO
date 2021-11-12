@@ -33,7 +33,12 @@ const Header = observer(() => {
                             <Typography variant="h6" color="inherit" component="div">
                                 <Link to="/tournament" className={classes.navItemLink}>Tournaments</Link>
                             </Typography>
-                    </Grid>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="h6" color="inherit" component="div">
+                                <Link to="/player" className={classes.navItemLink}>Players</Link>
+                            </Typography>
+                        </Grid>
                     </Grid>
                 </Toolbar>
             </AppBar>
