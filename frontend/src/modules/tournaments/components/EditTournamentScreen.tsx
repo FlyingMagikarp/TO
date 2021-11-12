@@ -11,6 +11,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Tournament from "../stores/models/tournament";
 import Constants from "../../../util/Constants";
 import league from "../../leagues/stores/models/league";
+import playerStore from "../../player/stores/playerStore";
+import player from "../../player/stores/models/player";
 
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -26,7 +28,7 @@ type EditTournamentScreenProps = {
 }
 
 const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
-    const {masterDataStore, uiStore, tournamentStore, leagueStore} = useContext(StoreContext);
+    const {masterDataStore, uiStore, tournamentStore, leagueStore, playerStore} = useContext(StoreContext);
     const classes = useStyles();
     const isMobile = uiStore.isMediumScreenDown;
 
@@ -40,6 +42,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
     const [leagueId, setLeagueId] = useState(0);
     const [archived, setArchived] = useState(false);
     const [leagues, setLeagues] = useState([] as league[]);
+    const [allPlayers, setAllPlayers] = useState([] as player[]);
 
     const [openSnack, setOpenSnack] = React.useState(false);
 
@@ -50,6 +53,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
 
     useEffect(() => {
         leagueStore.getAllLeagues().then(data => {setLeagues(data)});
+        playerStore.getAllPlayers().then(data => {setAllPlayers(data)});
         if (mode === "edit") {
             let tournamentId: number = id ? +id : 0;
             tournamentStore.getTournamentById(tournamentId).then(data => {
@@ -161,6 +165,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                 <Grid item direction={"column"} spacing={2}>
                     <Grid container>
                         <Grid item>
+                            <Paper style={{maxHeight: 200, overflow: 'auto'}}>
                             <InputLabel id="leagueLabel">League</InputLabel>
                             <RadioGroup aria-label="League" defaultValue={archived} name="leagueRadioGroup"
                                         onChange={(event) => {
@@ -172,6 +177,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                     );
                                 })}
                             </RadioGroup>
+                            </Paper>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -179,26 +185,14 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                 <Grid item direction={"column"} spacing={2}>
                     <Grid container>
                         <Grid item>
-                            <Paper style={{maxHeight: 200, overflow: 'auto'}}>
+                            <Paper style={{maxHeight: 200, overflow: 'auto', minWidth: 200}}>
                             <InputLabel id="playersLabel">Players</InputLabel>
                             <FormGroup>
-                                <FormControlLabel control={<Checkbox />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
+                                {allPlayers.map((player) => {
+                                    return (
+                                        <FormControlLabel value={player.guid} control={<Checkbox />} label={player.tag} />
+                                    );
+                                })}
                             </FormGroup>
                             </Paper>
                         </Grid>
