@@ -32,6 +32,7 @@ public class TournamentApi {
     @PostMapping(path="/update", consumes = "application/json")
     public @ResponseBody java.lang.String updateTournament(@RequestBody Tournament tournament){
         Tournament t = new Tournament();
+        t.setTournamentId(tournament.getTournamentId());
         t.setLocation(tournament.getLocation());
         t.setName(tournament.getName());
         t.setDate(tournament.getDate());
@@ -40,6 +41,7 @@ public class TournamentApi {
         t.setPlayers(tournament.getPlayers());
         t.setRankedPlayer(tournament.getRankedPlayer());
         t.setLeagueId(tournament.getLeagueId());
+        t.setArchived(tournament.getArchived());
         tournamentRepository.save(t);
 
         return "Tournament saved";
