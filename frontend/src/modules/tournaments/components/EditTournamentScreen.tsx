@@ -1,9 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {FormControl, FormControlLabel, Grid, Input, InputLabel, TextField, Theme} from "@material-ui/core";
-import createStyles from "@material-ui/core/styles/createStyles";
+import {FormControlLabel, Grid, InputLabel, TextField} from "@material-ui/core";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import {useParams} from "react-router-dom";
 import {Alert, Button, Checkbox, FormGroup, MenuItem, Paper, Select, Snackbar, Typography} from "@mui/material";
 import Radio from '@mui/material/Radio';
@@ -12,25 +10,14 @@ import Tournament from "../stores/models/tournament";
 import Constants from "../../../util/Constants";
 import league from "../../leagues/stores/models/league";
 import player from "../../player/stores/models/player";
-import {arch} from "os";
 
-
-export const useStyles = makeStyles((theme: Theme) => createStyles({
-    title: {
-        alignContent: 'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-    }
-}));
 
 type EditTournamentScreenProps = {
     mode: "add" | "edit",
 }
 
 const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
-    const {masterDataStore, uiStore, tournamentStore, leagueStore, playerStore} = useContext(StoreContext);
-    const classes = useStyles();
-    const isMobile = uiStore.isMediumScreenDown;
+    const {tournamentStore, leagueStore, playerStore} = useContext(StoreContext);
 
     //data states
     const [name, setName] = useState("");

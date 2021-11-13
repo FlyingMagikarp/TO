@@ -1,7 +1,6 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Grid, Theme} from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
-import {StoreContext} from "../../../../index";
 import {observer} from "mobx-react-lite";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {AppBar, Toolbar, Typography} from "@mui/material";
@@ -16,7 +15,6 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
 }));
 
 const Header = observer(() => {
-    const {uiStore} = useContext(StoreContext);
     const classes = useStyles();
 
     return (

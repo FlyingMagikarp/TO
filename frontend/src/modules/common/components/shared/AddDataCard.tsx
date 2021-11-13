@@ -25,9 +25,7 @@ type AddDataCardProps = {
 }
 
 const AddDataCard = observer(({ component}: AddDataCardProps) => {
-    const {masterDataStore, uiStore} = useContext(StoreContext);
     const classes = useStyles();
-    const isMobile = uiStore.isMediumScreenDown;
 
     return(
         <>

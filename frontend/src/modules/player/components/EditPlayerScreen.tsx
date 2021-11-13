@@ -1,9 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {FormControl, FormControlLabel, Grid, Input, InputLabel, TextField, Theme} from "@material-ui/core";
-import createStyles from "@material-ui/core/styles/createStyles";
+import {FormControlLabel, Grid, TextField, Theme} from "@material-ui/core";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import {useParams} from "react-router-dom";
 import {Alert, Button, Snackbar, Typography} from "@mui/material";
 import Radio from '@mui/material/Radio';
@@ -11,22 +9,12 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Player from "../stores/models/player";
 
 
-export const useStyles = makeStyles((theme: Theme) => createStyles({
-    title: {
-        alignContent: 'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-    }
-}));
-
 type EditPlayerScreenProps = {
     mode: "add" | "edit",
 }
 
 const EditPlayerScreen = observer(({mode}: EditPlayerScreenProps) => {
-    const {masterDataStore, uiStore, playerStore} = useContext(StoreContext);
-    const classes = useStyles();
-    const isMobile = uiStore.isMediumScreenDown;
+    const {playerStore} = useContext(StoreContext);
 
     //data states
     const [tag, setTag] = useState("");

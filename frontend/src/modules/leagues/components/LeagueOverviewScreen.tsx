@@ -12,11 +12,6 @@ import League from "../stores/models/league";
 
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
-    title: {
-        alignContent: 'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-    },
     navItemLink: {
         textDecoration: 'none',
     }
@@ -24,9 +19,8 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
 
 
 const LeagueOverviewScreen = observer(() => {
-    const {masterDataStore, uiStore, leagueStore} = useContext(StoreContext);
+    const {leagueStore} = useContext(StoreContext);
     const classes = useStyles();
-    const isMobile = uiStore.isMediumScreenDown;
 
     const [leagues, setLeagues] = useState([] as League[]);
 
