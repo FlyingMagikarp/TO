@@ -11,8 +11,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Tournament from "../stores/models/tournament";
 import Constants from "../../../util/Constants";
 import league from "../../leagues/stores/models/league";
-import playerStore from "../../player/stores/playerStore";
 import player from "../../player/stores/models/player";
+import {arch} from "os";
 
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -82,7 +82,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
         if (mode === "add") {
             tournamentStore.saveNewTournament(name, location, date, starttime, players, leagueId, archived);
         } else {
-            tournamentStore.updateTournament(name, location, date, starttime, players, leagueId, archived)
+            tournamentStore.updateTournament(name, location, date, starttime, players, leagueId, archived, tournament.tournamentId);
             handleClickSnack();
         }
     };
@@ -147,9 +147,9 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                             <Typography variant="h6" color="inherit" component="div">
                                 Archived
                             </Typography>
-                            <RadioGroup aria-label="Archived?" defaultValue={archived} name="archivedRadioGroup"
+                            <RadioGroup aria-label="Archived?" defaultValue={archived} value={archived} name="archivedRadioGroup"
                                         onChange={(event) => {
-                                            setArchived(!archived)
+                                            setArchived(event.target.value == "true")
                                         }}>
                                 <FormControlLabel value={false} control={<Radio/>} label="False"/>
                                 <FormControlLabel value={true} control={<Radio/>} label="True"/>

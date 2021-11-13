@@ -99,8 +99,8 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                         <Typography variant="h6" color="inherit" component="div">
                             Archived
                         </Typography>
-                        <RadioGroup aria-label="Archived?" defaultValue={archived} name="archivedRadioGroup"
-                                    onChange={(event) => {setArchived(!archived)}}>
+                        <RadioGroup aria-label="Archived?" defaultValue={archived} value={archived} name="archivedRadioGroup"
+                                    onChange={(event) => {setArchived(event.target.value == "true")}}>
                             <FormControlLabel value={false} control={<Radio />} label="False" />
                             <FormControlLabel value={true} control={<Radio />} label="True" />
                         </RadioGroup>

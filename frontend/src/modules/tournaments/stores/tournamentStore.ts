@@ -37,8 +37,9 @@ export default class TournamentStore {
     }
 
     @action
-    public async updateTournament(name:string, location:string, date:Date, starttime:string, players:string[], leagueId:number, archived:boolean){
+    public async updateTournament(name:string, location:string, date:Date, starttime:string, players:string[], leagueId:number, archived:boolean, tournamentId?:number){
         let t = new Tournament();
+        t.tournamentId = tournamentId;
         t.name = name;
         t.location = location;
         t.date = date;
