@@ -72,6 +72,8 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
         }
     };
 
+    console.log("archived: ")
+    console.log(archived)
     return (
         <>
 
@@ -101,8 +103,8 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                         </Typography>
                         <RadioGroup aria-label="Archived?" defaultValue={archived} name="archivedRadioGroup"
                                     onChange={(event) => {setArchived(!archived)}}>
-                            <FormControlLabel value={false} control={<Radio />} label="False" />
-                            <FormControlLabel value={true} control={<Radio />} label="True" />
+                            <FormControlLabel value={false} control={<Radio />} label="false" checked={!archived}/>
+                            <FormControlLabel value={true} control={<Radio />} label="true" checked={archived}/>
                         </RadioGroup>
                     </Grid>
                 }

@@ -151,8 +151,8 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                         onChange={(event) => {
                                             setArchived(!archived)
                                         }}>
-                                <FormControlLabel value={false} control={<Radio/>} label="False"/>
-                                <FormControlLabel value={true} control={<Radio/>} label="True"/>
+                                <FormControlLabel value={false} control={<Radio/>} label="False" checked={!archived}/>
+                                <FormControlLabel value={true} control={<Radio/>} label="True" checked={archived}/>
                             </RadioGroup>
                         </Grid>
                         }

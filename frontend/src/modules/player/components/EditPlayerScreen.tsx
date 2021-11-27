@@ -92,8 +92,8 @@ const EditPlayerScreen = observer(({mode}: EditPlayerScreenProps) => {
                         </Typography>
                         <RadioGroup aria-label="Archived?" defaultValue={archived} name="archivedRadioGroup"
                                     onChange={(event) => {setArchived(!archived)}}>
-                            <FormControlLabel value={false} control={<Radio />} label="False" />
-                            <FormControlLabel value={true} control={<Radio />} label="True" />
+                            <FormControlLabel value={false} control={<Radio />} label="False" checked={!archived}/>
+                            <FormControlLabel value={true} control={<Radio />} label="True" checked={archived}/>
                         </RadioGroup>
                     </Grid>
                     }
