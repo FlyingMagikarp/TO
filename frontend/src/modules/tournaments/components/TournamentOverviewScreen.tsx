@@ -12,11 +12,6 @@ import DisplayCard from "../../common/components/shared/DisplayCard";
 
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
-    title: {
-        alignContent: 'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-    },
     navItemLink: {
         textDecoration: 'none',
     }
@@ -24,9 +19,8 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
 
 
 const TournamentOverviewScreen = observer(() => {
-    const {masterDataStore, uiStore, tournamentStore} = useContext(StoreContext);
+    const {tournamentStore} = useContext(StoreContext);
     const classes = useStyles();
-    const isMobile = uiStore.isMediumScreenDown;
 
     const [tournaments, setTournaments] = useState([] as Tournament[]);
 

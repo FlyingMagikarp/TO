@@ -11,9 +11,6 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
         fontSize: 14,
         color: 'black'
     },
-    cardPos: {
-        marginBottom: 12,
-    },
     card: {
         height: '150px',
         width: '250px'
@@ -27,9 +24,7 @@ type DisplayCardProps = {
 }
 
 const DisplayCard = observer(({ name, sport, location}: DisplayCardProps) => {
-    const {masterDataStore, uiStore} = useContext(StoreContext);
     const classes = useStyles();
-    const isMobile = uiStore.isMediumScreenDown;
 
     return(
         <>

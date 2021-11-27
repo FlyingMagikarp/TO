@@ -12,11 +12,6 @@ import Player from "../stores/models/player";
 
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
-    title: {
-        alignContent: 'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-    },
     navItemLink: {
         textDecoration: 'none',
     }
@@ -24,9 +19,8 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
 
 
 const PlayerOverviewScreen = observer(() => {
-    const {masterDataStore, uiStore, playerStore} = useContext(StoreContext);
+    const {playerStore} = useContext(StoreContext);
     const classes = useStyles();
-    const isMobile = uiStore.isMediumScreenDown;
 
     const [players, setPlayers] = useState([] as Player[]);
 

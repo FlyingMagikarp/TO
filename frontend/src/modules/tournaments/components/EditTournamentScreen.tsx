@@ -1,9 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {FormControl, FormControlLabel, Grid, Input, InputLabel, TextField, Theme} from "@material-ui/core";
-import createStyles from "@material-ui/core/styles/createStyles";
+import {FormControlLabel, Grid, InputLabel, TextField} from "@material-ui/core";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import {useParams} from "react-router-dom";
 import {Alert, Button, Checkbox, FormGroup, MenuItem, Paper, Select, Snackbar, Typography} from "@mui/material";
 import Radio from '@mui/material/Radio';
@@ -11,26 +9,15 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Tournament from "../stores/models/tournament";
 import Constants from "../../../util/Constants";
 import league from "../../leagues/stores/models/league";
-import playerStore from "../../player/stores/playerStore";
 import player from "../../player/stores/models/player";
 
-
-export const useStyles = makeStyles((theme: Theme) => createStyles({
-    title: {
-        alignContent: 'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-    }
-}));
 
 type EditTournamentScreenProps = {
     mode: "add" | "edit",
 }
 
 const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
-    const {masterDataStore, uiStore, tournamentStore, leagueStore, playerStore} = useContext(StoreContext);
-    const classes = useStyles();
-    const isMobile = uiStore.isMediumScreenDown;
+    const {tournamentStore, leagueStore, playerStore} = useContext(StoreContext);
 
     //data states
     const [name, setName] = useState("");
@@ -82,7 +69,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
         if (mode === "add") {
             tournamentStore.saveNewTournament(name, location, date, starttime, players, leagueId, archived);
         } else {
-            tournamentStore.updateTournament(name, location, date, starttime, players, leagueId, archived)
+            tournamentStore.updateTournament(name, location, date, starttime, players, leagueId, archived, tournament.tournamentId);
             handleClickSnack();
         }
     };
@@ -147,9 +134,9 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                             <Typography variant="h6" color="inherit" component="div">
                                 Archived
                             </Typography>
-                            <RadioGroup aria-label="Archived?" defaultValue={archived} name="archivedRadioGroup"
+                            <RadioGroup aria-label="Archived?" defaultValue={archived} value={archived} name="archivedRadioGroup"
                                         onChange={(event) => {
-                                            setArchived(!archived)
+                                            setArchived(event.target.value == "true")
                                         }}>
                                 <FormControlLabel value={false} control={<Radio/>} label="False" checked={!archived}/>
                                 <FormControlLabel value={true} control={<Radio/>} label="True" checked={archived}/>

@@ -1,9 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {FormControl, FormControlLabel, Grid, Input, InputLabel, TextField, Theme} from "@material-ui/core";
-import createStyles from "@material-ui/core/styles/createStyles";
+import {FormControlLabel, Grid, TextField} from "@material-ui/core";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import {useParams} from "react-router-dom";
 import {Alert, Button, Snackbar, Typography} from "@mui/material";
 import Radio from '@mui/material/Radio';
@@ -11,23 +9,13 @@ import RadioGroup from '@mui/material/RadioGroup';
 import League from "../stores/models/league";
 
 
-export const useStyles = makeStyles((theme: Theme) => createStyles({
-    title: {
-        alignContent: 'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-    }
-}));
-
 type EditLeagueScreenProps = {
     mode: "add" | "edit",
 }
 
 
 const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
-    const {masterDataStore, uiStore, leagueStore} = useContext(StoreContext);
-    const classes = useStyles();
-    const isMobile = uiStore.isMediumScreenDown;
+    const {leagueStore} = useContext(StoreContext);
 
     // data states
     const [name, setName] = useState("");
@@ -101,10 +89,12 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                         <Typography variant="h6" color="inherit" component="div">
                             Archived
                         </Typography>
-                        <RadioGroup aria-label="Archived?" defaultValue={archived} name="archivedRadioGroup"
-                                    onChange={(event) => {setArchived(!archived)}}>
-                            <FormControlLabel value={false} control={<Radio />} label="false" checked={!archived}/>
-                            <FormControlLabel value={true} control={<Radio />} label="true" checked={archived}/>
+
+                        <RadioGroup aria-label="Archived?" defaultValue={archived} value={archived} name="archivedRadioGroup"
+                                    onChange={(event) => {setArchived(event.target.value === "true")}}>
+                            <FormControlLabel value={false} control={<Radio />} label="False" />
+                            <FormControlLabel value={true} control={<Radio />} label="True" />
+
                         </RadioGroup>
                     </Grid>
                 }

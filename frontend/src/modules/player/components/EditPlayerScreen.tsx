@@ -1,35 +1,20 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {FormControl, FormControlLabel, Grid, Input, InputLabel, TextField, Theme} from "@material-ui/core";
-import createStyles from "@material-ui/core/styles/createStyles";
+import {FormControlLabel, Grid, TextField, Theme} from "@material-ui/core";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import {useParams} from "react-router-dom";
-import {Alert, Button, Checkbox, FormGroup, MenuItem, Paper, Select, Snackbar, Typography} from "@mui/material";
+import {Alert, Button, Snackbar, Typography} from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import Constants from "../../../util/Constants";
-import league from "../../leagues/stores/models/league";
 import Player from "../stores/models/player";
-import tournament from "../../tournaments/stores/models/tournament";
 
-
-export const useStyles = makeStyles((theme: Theme) => createStyles({
-    title: {
-        alignContent: 'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-    }
-}));
 
 type EditPlayerScreenProps = {
     mode: "add" | "edit",
 }
 
 const EditPlayerScreen = observer(({mode}: EditPlayerScreenProps) => {
-    const {masterDataStore, uiStore, playerStore} = useContext(StoreContext);
-    const classes = useStyles();
-    const isMobile = uiStore.isMediumScreenDown;
+    const {playerStore} = useContext(StoreContext);
 
     //data states
     const [tag, setTag] = useState("");
@@ -90,10 +75,12 @@ const EditPlayerScreen = observer(({mode}: EditPlayerScreenProps) => {
                         <Typography variant="h6" color="inherit" component="div">
                             Archived
                         </Typography>
-                        <RadioGroup aria-label="Archived?" defaultValue={archived} name="archivedRadioGroup"
-                                    onChange={(event) => {setArchived(!archived)}}>
-                            <FormControlLabel value={false} control={<Radio />} label="False" checked={!archived}/>
-                            <FormControlLabel value={true} control={<Radio />} label="True" checked={archived}/>
+
+                        <RadioGroup aria-label="Archived?" defaultValue={archived} value={archived} name="archivedRadioGroup"
+                                    onChange={(event) => {setArchived(event.target.value == "true")}}>
+                            <FormControlLabel value={false} control={<Radio />} label="False" />
+                            <FormControlLabel value={true} control={<Radio />} label="True" />
+
                         </RadioGroup>
                     </Grid>
                     }
