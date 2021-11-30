@@ -21,7 +21,7 @@ export default class Tournament {
     @observable public tournamentId: number | undefined;
     @observable public name: string | undefined;
     @observable public location: string | undefined;
-    @observable public date: Date | undefined;
+    @observable public date: Date | undefined | null;
     @observable public starttime: string | undefined;
     @observable public format: string | undefined;
     @observable public players: string[] | undefined;

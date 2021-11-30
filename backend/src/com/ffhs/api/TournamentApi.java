@@ -1,5 +1,6 @@
 package com.ffhs.api;
 
+import com.ffhs.model.PlayerTournament;
 import com.ffhs.model.Tournament;
 import com.ffhs.repository.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,14 @@ public class TournamentApi {
         t.setFormat(tournament.getFormat());
         t.setPlayers(tournament.getPlayers());
         t.setLeagueId(tournament.getLeagueId());
-        tournamentRepository.save(t);
+        Tournament tournamentSaved = tournamentRepository.save(t);
+
+        for (String p : tournament.getPlayers()){
+            PlayerTournament pt = new PlayerTournament();
+            pt.setTournamentId(tournamentSaved.getTournamentId());
+            pt.setPlayerId(p);
+
+        }
 
         return "Tournament saved";
     }
@@ -37,12 +45,13 @@ public class TournamentApi {
         t.setName(tournament.getName());
         t.setDate(tournament.getDate());
         t.setStarttime(tournament.getStarttime());
-        t.setFormat(tournament.getFormat());
         t.setPlayers(tournament.getPlayers());
         t.setRankedPlayer(tournament.getRankedPlayer());
         t.setLeagueId(tournament.getLeagueId());
         t.setArchived(tournament.getArchived());
         tournamentRepository.save(t);
+
+
 
         return "Tournament saved";
     }
@@ -55,5 +64,10 @@ public class TournamentApi {
     @GetMapping(path="/getById")
     public @ResponseBody Optional<Tournament> getSingleTournamentById(@RequestParam int tournamentId){
         return tournamentRepository.findById(tournamentId);
+    }
+
+    @GetMapping(path="/getAllPlayersInTournament")
+    public @ResponseBody Iterable<PlayerTournament> getAllPlayersInTournament(){
+        return null;
     }
 }

@@ -22,7 +22,6 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
     //data states
     const [name, setName] = useState("");
     const [location, setLocation] = useState("");
-    const [date, setDate] = useState(new Date());
     const [starttime, setStarttime] = useState("");
     const [format, setFormat] = useState("");
     const [players, setPlayers] = useState([""]);
@@ -47,7 +46,6 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                 setTournament(data);
                 setName(data.name ? data.name : "");
                 setLocation(data.location ? data.location : "");
-                setDate(data.date ? data.date : new Date());
                 setStarttime(data.starttime ? data.starttime : "");
                 setFormat(data.format ? data.format : "");
                 setPlayers(data.players ? data.players : [""]);
@@ -67,9 +65,9 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
 
     const handleSubmit = () => {
         if (mode === "add") {
-            tournamentStore.saveNewTournament(name, location, date, starttime, players, leagueId, archived);
+            tournamentStore.saveNewTournament(name, location, starttime, players, leagueId, archived, format);
         } else {
-            tournamentStore.updateTournament(name, location, date, starttime, players, leagueId, archived, tournament.tournamentId);
+            tournamentStore.updateTournament(name, location, starttime, players, leagueId, archived, tournament.tournamentId);
             handleClickSnack();
         }
     };
@@ -97,13 +95,6 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                         </Grid>
 
                         <Grid item>
-                            <TextField id="tournamentDate" label="Date" variant="outlined" value={date}
-                                       onChange={(event) => {
-                                           setDate(new Date())
-                                       }}/>
-                        </Grid>
-
-                        <Grid item>
                             <TextField id="tournamentStarttime" label="Start time" variant="outlined" value={starttime}
                                        onChange={(event) => {
                                            setStarttime(event.target.value)
@@ -118,8 +109,11 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                 value={format}
                                 label="Format"
                                 onChange={(event) => {
+                                    console.log("FORMAT: ");
+                                    console.log(event.target.value);
                                     setFormat(event.target.value)
                                 }}
+                                disabled={mode === "edit"}
                             >
                                 {Constants.C_TOURNAMENT_FORMATS.map((f) => {
                                     return (
@@ -154,13 +148,13 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                         <Grid item>
                             <Paper style={{maxHeight: 200, overflow: 'auto'}}>
                             <InputLabel id="leagueLabel">League</InputLabel>
-                            <RadioGroup aria-label="League" defaultValue={archived} name="leagueRadioGroup"
+                            <RadioGroup aria-label="League" defaultValue={leagueId} name="leagueRadioGroup"
                                         onChange={(event) => {
                                             setLeagueId(parseInt(event.target.value))
                                         }}>
                                 {leagues.map((league) => {
                                     return (
-                                        <FormControlLabel value={league.league_id ?? 0} control={<Radio/>} label={league.name}/>
+                                        <FormControlLabel value={league.league_id ?? 0} control={<Radio/>} label={league.name} checked={leagueId == league.league_id}/>
                                     );
                                 })}
                             </RadioGroup>
