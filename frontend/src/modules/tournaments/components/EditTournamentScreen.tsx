@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, Fragment} from 'react';
 import {FormControlLabel, Grid, InputLabel, TextField} from "@material-ui/core";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
@@ -9,7 +9,9 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Tournament from "../stores/models/tournament";
 import Constants from "../../../util/Constants";
 import league from "../../leagues/stores/models/league";
-import player from "../../player/stores/models/player";
+import {IPlayerSelected} from "../../common/apiTypings";
+import {DatePicker, KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 
 type EditTournamentScreenProps = {
@@ -23,12 +25,13 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
     const [name, setName] = useState("");
     const [location, setLocation] = useState("");
     const [starttime, setStarttime] = useState("");
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const [format, setFormat] = useState("");
-    const [players, setPlayers] = useState([""]);
+    const [allPlayers, setAllPlayers] =  useState<IPlayerSelected[]>([]);
     const [leagueId, setLeagueId] = useState(0);
     const [archived, setArchived] = useState(false);
     const [leagues, setLeagues] = useState([] as league[]);
-    const [allPlayers, setAllPlayers] = useState([] as player[]);
+    const [playersWithSelected, setPlayersWithSelected] = useState<IPlayerSelected[]>([]);
 
     const [openSnack, setOpenSnack] = React.useState(false);
 
@@ -39,7 +42,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
 
     useEffect(() => {
         leagueStore.getAllLeagues().then(data => {setLeagues(data)});
-        playerStore.getAllPlayers().then(data => {setAllPlayers(data)});
+        playerStore.getAllPlayers().then(data => {setAllPlayers(data); if(mode==="add"){setPlayersWithSelected(data)}});
         if (mode === "edit") {
             let tournamentId: number = id ? +id : 0;
             tournamentStore.getTournamentById(tournamentId).then(data => {
@@ -48,10 +51,19 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                 setLocation(data.location ? data.location : "");
                 setStarttime(data.starttime ? data.starttime : "");
                 setFormat(data.format ? data.format : "");
-                setPlayers(data.players ? data.players : [""]);
                 setLeagueId(data.leagueId ? data.leagueId : 0);
                 setArchived(data.archived ? data.archived : false);
-            })
+                setSelectedDate(data.date ? new Date(data.date) : new Date())
+
+                // set selected flag on players that are in the tournament
+                if(data.players) {
+                    for (let p of data.players) {
+                        let index = playerStore.playersWithSelected.findIndex(pws => pws.player.guid === p.guid);
+                        playerStore.playersWithSelected[index].selected = true;
+                    }
+                    setPlayersWithSelected(playerStore.playersWithSelected)
+                }
+            });
         }
     }, [tournamentStore, mode, id]);
 
@@ -63,13 +75,32 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
         setOpenSnack(false);
     };
 
+    const handleDateChange = (event) => {
+        debugger;
+        setSelectedDate(new Date(Date.parse(event.target.value)));
+    };
+
     const handleSubmit = () => {
+        let playerIds = [""];
+
+        for(let p of playersWithSelected){
+            if(p.selected && p.player.guid){ playerIds.push(p.player.guid)}
+        }
+
         if (mode === "add") {
-            tournamentStore.saveNewTournament(name, location, starttime, players, leagueId, archived, format);
+            tournamentStore.saveNewTournament(name, location, starttime, playerIds, leagueId, archived, format, selectedDate);
         } else {
-            tournamentStore.updateTournament(name, location, starttime, players, leagueId, archived, tournament.tournamentId);
+            tournamentStore.updateTournament(name, location, starttime, playerIds, leagueId, archived, selectedDate, tournament.tournamentId);
             handleClickSnack();
         }
+    };
+
+    const handlePlayersChange = (event) => {
+        let tmpArray = [...playersWithSelected];
+        let index = tmpArray.findIndex(p => p.player.guid === event.target.value);
+        tmpArray[index].selected = !tmpArray[index].selected;
+
+        setPlayersWithSelected(tmpArray);
     };
 
     return (
@@ -102,6 +133,20 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                         </Grid>
 
                         <Grid item>
+                            <TextField
+                                id="date"
+                                label="Date"
+                                type="date"
+                                defaultValue={selectedDate.toISOString().split('T')[0]}
+                                value={selectedDate.toISOString().split('T')[0]}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                onChange={date => handleDateChange(date)}
+                            />
+                        </Grid>
+
+                        <Grid item>
                             <InputLabel id="formatLabel">Format</InputLabel>
                             <Select
                                 labelId="tournamentFormatLabel"
@@ -109,8 +154,6 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                 value={format}
                                 label="Format"
                                 onChange={(event) => {
-                                    console.log("FORMAT: ");
-                                    console.log(event.target.value);
                                     setFormat(event.target.value)
                                 }}
                                 disabled={mode === "edit"}
@@ -130,7 +173,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                             </Typography>
                             <RadioGroup aria-label="Archived?" defaultValue={archived} value={archived} name="archivedRadioGroup"
                                         onChange={(event) => {
-                                            setArchived(event.target.value == "true")
+                                            setArchived(event.target.value === "true")
                                         }}>
                                 <FormControlLabel value={false} control={<Radio/>} label="False" checked={!archived}/>
                                 <FormControlLabel value={true} control={<Radio/>} label="True" checked={archived}/>
@@ -169,18 +212,11 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                             <Paper style={{maxHeight: 200, overflow: 'auto', minWidth: 200}}>
                             <InputLabel id="playersLabel">Players</InputLabel>
                             <FormGroup>
-                                {allPlayers.map((player) => {
-                                    if (players.find(p => p === player.guid)) {
-                                        return (
-                                            <FormControlLabel value={player.guid ?? ""} control={<Checkbox checked/>}
-                                                              label={player.tag}/>
-                                        )
-                                    } else {
-                                        return (
-                                            <FormControlLabel value={player.guid ?? ""} control={<Checkbox/>}
-                                                              label={player.tag}/>
-                                        )
-                                    }
+                                { playersWithSelected.map((player) => {
+                                    return (
+                                        <FormControlLabel value={player.player.guid ?? ""} control={<Checkbox checked={player.selected}/>}
+                                                          label={player.player.tag} onChange={handlePlayersChange}/>
+                                    )
                                 })}
                             </FormGroup>
                             </Paper>

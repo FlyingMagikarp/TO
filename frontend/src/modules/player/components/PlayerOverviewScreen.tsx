@@ -9,6 +9,7 @@ import {Link} from "react-router-dom";
 import AddDataCard from "../../common/components/shared/AddDataCard";
 import DisplayCard from "../../common/components/shared/DisplayCard";
 import Player from "../stores/models/player";
+import {IPlayerSelected} from "../../common/apiTypings";
 
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -22,7 +23,7 @@ const PlayerOverviewScreen = observer(() => {
     const {playerStore} = useContext(StoreContext);
     const classes = useStyles();
 
-    const [players, setPlayers] = useState([] as Player[]);
+    const [players, setPlayers] = useState([] as IPlayerSelected[]);
 
     useEffect(() => {
         playerStore.getAllPlayers().then(data => {
@@ -44,11 +45,11 @@ const PlayerOverviewScreen = observer(() => {
                     </Grid>
 
                     {players.map(function(player){
-                        let linkUrl = "/player/edit/"+player.guid;
+                        let linkUrl = "/player/edit/"+player.player.guid;
                         return(
                             <Grid item>
                                 <Link to={linkUrl} className={classes.navItemLink}>
-                                    <DisplayCard name={player.tag} sport="" location=""/>
+                                    <DisplayCard name={player.player.tag} sport="" location=""/>
                                 </Link>
                             </Grid>
                         )

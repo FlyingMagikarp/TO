@@ -1,18 +1,10 @@
 package com.ffhs.model;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-@Entity
-public class Tournament {
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+public class TournamentDto {
     private int tournamentId;
 
     private String location;
@@ -32,15 +24,6 @@ public class Tournament {
     private int leagueId;
 
     private boolean archived;
-
-    @ManyToMany(cascade = {CascadeType.MERGE})
-    @JoinTable(
-            name = "PlayerTournament",
-            joinColumns = {@JoinColumn(name = "tounamentId")},
-            inverseJoinColumns = {@JoinColumn(name = "guid")}
-    )
-    @JsonManagedReference
-    private Set<Player> players = new HashSet<>();
 
     public int getTournamentId() {
         return tournamentId;
@@ -120,13 +103,5 @@ public class Tournament {
 
     public boolean getArchived(){
         return archived;
-    }
-
-    public Set<Player> getPlayers(){
-        return players;
-    }
-
-    public void setPlayers(Set<Player> players){
-        this.players = players;
     }
 }

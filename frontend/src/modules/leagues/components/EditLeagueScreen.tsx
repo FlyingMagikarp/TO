@@ -60,8 +60,6 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
         }
     };
 
-    console.log("archived: ")
-    console.log(archived)
     return (
         <>
 

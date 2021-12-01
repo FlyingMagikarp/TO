@@ -1,5 +1,6 @@
-import {ITournamentData} from "../../../common/apiTypings";
+import {IPlayerData, ITournamentData} from "../../../common/apiTypings";
 import {action, observable} from "mobx";
+import player from "../../../player/stores/models/player";
 
 export default class Tournament {
     public static createFromTournamentDto(dto: ITournamentData): Tournament{
@@ -14,6 +15,7 @@ export default class Tournament {
         t.rankedPlayer = dto.rankedPlayer;
         t.leagueId = dto.leagueId;
         t.archived = dto.archived;
+        t.playerIds = dto.playerIds;
 
         return t;
     }
@@ -24,10 +26,11 @@ export default class Tournament {
     @observable public date: Date | undefined | null;
     @observable public starttime: string | undefined;
     @observable public format: string | undefined;
-    @observable public players: string[] | undefined;
+    @observable public players: player[] | undefined;
     @observable public rankedPlayer: string[] | undefined;
     @observable public leagueId: number | undefined;
     @observable public archived: boolean | undefined;
+    @observable public playerIds: string[] | undefined;
 
     @action
     public update(dto: ITournamentData){
@@ -41,5 +44,6 @@ export default class Tournament {
         this.rankedPlayer = dto.rankedPlayer;
         this.leagueId = dto.leagueId;
         this.archived = dto.archived;
+        this.playerIds = dto.playerIds;
     }
 }

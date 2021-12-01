@@ -2,6 +2,7 @@ import RootStore from "../../../rootStore";
 import {action, observable} from "mobx";
 import Player from "./models/player";
 import PlayerService from "../services/playerService";
+import {IPlayerSelected} from "../../common/apiTypings";
 
 
 export default class PlayerStore {
@@ -11,6 +12,7 @@ export default class PlayerStore {
 
     @observable public pendingRequestsCount = 0;
     @observable public players: Player[] = [];
+    @observable public playersWithSelected: IPlayerSelected[] = [];
     @observable public currentPlayer: Player = new Player();
 
     constructor(rootStore: RootStore) {
@@ -21,10 +23,15 @@ export default class PlayerStore {
     public async getAllPlayers(){
         this.pendingRequestsCount++;
         await PlayerService.getAllPlayers().then((result) => {
-            this.players = result;
+            let tmp: IPlayerSelected[] = [];
+            for (let p of result) {
+                let player: IPlayerSelected = {player: p, selected: false};
+                tmp.push(player)
+            }
+            this.playersWithSelected = tmp;
             this.pendingRequestsCount--;
         });
-        return this.players;
+        return this.playersWithSelected;
     }
 
     @action

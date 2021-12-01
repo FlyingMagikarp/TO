@@ -1,3 +1,5 @@
+import player from "../player/stores/models/player";
+import tournament from "../tournaments/stores/models/tournament";
 
 export interface ILeagueData {
     league_id: number,
@@ -14,14 +16,21 @@ export interface ITournamentData {
     date: Date,
     starttime: string,
     format: string,
-    players: string[],
+    players: player[],
     rankedPlayer: string[],
     leagueId: number,
-    archived: boolean
+    archived: boolean,
+    playerIds: string[]
 }
 
 export interface IPlayerData {
     guid: string,
     tag: string,
     archived: boolean
+    tournaments: tournament[]
+}
+
+export interface IPlayerSelected {
+    player: player,
+    selected: boolean
 }

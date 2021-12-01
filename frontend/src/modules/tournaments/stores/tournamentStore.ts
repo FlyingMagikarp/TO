@@ -37,30 +37,32 @@ export default class TournamentStore {
     }
 
     @action
-    public async updateTournament(name:string, location:string, starttime:string, players:string[], leagueId:number, archived:boolean, tournamentId?:number){
+    public async updateTournament(name:string, location:string, starttime:string, playerIds:string[], leagueId:number, archived:boolean, selectedDate:Date, tournamentId?:number ){
         let t = new Tournament();
         t.tournamentId = tournamentId;
         t.name = name;
         t.location = location;
         t.starttime = starttime;
-        t.players = players;
+        t.playerIds = playerIds;
         t.leagueId = leagueId;
         t.archived = archived;
+        t.date = selectedDate;
 
         this.pendingRequestsCount++;
         await TournamentService.updateTournament(t).then(() => {this.pendingRequestsCount--})
     }
 
     @action
-    public async saveNewTournament(name:string, location:string, starttime:string, players:string[], leagueId:number, archived:boolean, format:string){
+    public async saveNewTournament(name:string, location:string, starttime:string, playerIds:string[], leagueId:number, archived:boolean, format:string, selectedDate:Date){
         let t = new Tournament();
         t.name = name;
         t.location = location;
         t.starttime = starttime;
-        t.players = players;
+        t.playerIds = playerIds;
         t.leagueId = leagueId;
         t.archived = archived;
         t.format = format;
+        t.date = selectedDate;
 
         this.pendingRequestsCount++;
         await TournamentService.saveNewTournament(t).then(() => {this.pendingRequestsCount--})

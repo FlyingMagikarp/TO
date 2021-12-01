@@ -1,7 +1,10 @@
 package com.ffhs.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Player {
@@ -11,6 +14,10 @@ public class Player {
     private java.lang.String tag;
 
     private boolean archived;
+
+    @ManyToMany(mappedBy = "players")
+    @JsonBackReference
+    public Set<Tournament> tournaments = new HashSet<>();
 
     public java.lang.String getGuid() {
         return this.guid;
