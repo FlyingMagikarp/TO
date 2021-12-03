@@ -16,6 +16,7 @@ export default class Tournament {
         t.leagueId = dto.leagueId;
         t.archived = dto.archived;
         t.playerIds = dto.playerIds;
+        t.finished = dto.finished;
 
         return t;
     }
@@ -31,6 +32,7 @@ export default class Tournament {
     @observable public leagueId: number | undefined;
     @observable public archived: boolean | undefined;
     @observable public playerIds: string[] | undefined;
+    @observable public finished: boolean | undefined;
 
     @action
     public update(dto: ITournamentData){
@@ -45,5 +47,6 @@ export default class Tournament {
         this.leagueId = dto.leagueId;
         this.archived = dto.archived;
         this.playerIds = dto.playerIds;
+        this.finished = dto.finished;
     }
 }

@@ -1,9 +1,11 @@
 package com.ffhs.api;
 
 import com.ffhs.model.Player;
+import com.ffhs.model.PlayerRanking;
 import com.ffhs.model.Tournament;
 import com.ffhs.model.TournamentDto;
 import com.ffhs.repository.TournamentRepository;
+import com.ffhs.services.TournamentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +21,8 @@ class TournamentApiTest {
     private TournamentApi tournamentApi;
     @Autowired
     private TournamentRepository tournamentRepository;
+    @Autowired
+    private TournamentService tournamentService;
 
     @Test
     void contextLoads(){
@@ -80,6 +84,11 @@ class TournamentApiTest {
         t.setPlayers(players);
 
         //tournamentApi.addNewTournament(t);
+    }
+
+    @Test
+    void testRanking(){
+        ArrayList<PlayerRanking> pr = tournamentService.getRoundRobinRanking(38);
     }
 
 }

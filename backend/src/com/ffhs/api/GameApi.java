@@ -16,11 +16,7 @@ public class GameApi {
 
     @PostMapping(path="add")
     public @ResponseBody java.lang.String addNewGame(@RequestParam int tournamentId, String p1, String p2){
-        Game g = new Game();
-        g.setTournamentId(tournamentId);
-        g.setPlayer1(p1);
-        g.setPlayer2(p2);
-        gameRepository.save(g);
+
         return "Game saved";
     }
 

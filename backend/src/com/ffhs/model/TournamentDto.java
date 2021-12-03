@@ -104,4 +104,5 @@ public class TournamentDto {
     public boolean getArchived(){
         return archived;
     }
+
 }

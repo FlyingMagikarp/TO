@@ -1,6 +1,7 @@
 package com.ffhs.api;
 
 import com.ffhs.model.Player;
+import com.ffhs.model.PlayerDto;
 import com.ffhs.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ public class PlayerApi {
     private PlayerRepository playerRepository;
 
     @PostMapping(path="/add", consumes = "application/json")
-    public @ResponseBody java.lang.String addNewPlayer(@RequestBody Player player) {
+    public @ResponseBody java.lang.String addNewPlayer(@RequestBody PlayerDto player) {
         Player p = new Player();
         p.setTag(player.getTag());
         p.setArchived(player.getArchived());
@@ -26,7 +27,7 @@ public class PlayerApi {
     }
 
     @PostMapping(path="/update", consumes = "application/json")
-    public @ResponseBody java.lang.String updatePlayer(@RequestBody Player player) {
+    public @ResponseBody java.lang.String updatePlayer(@RequestBody PlayerDto player) {
         Player p = new Player();
         p.setTag(player.getTag());
         p.setArchived(player.getArchived());

@@ -25,8 +25,6 @@ public class Tournament {
 
     private String format;
 
-    private ArrayList<String> playerIds;
-
     private ArrayList<String> rankedPlayers;
 
     private int leagueId;
@@ -36,7 +34,7 @@ public class Tournament {
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "PlayerTournament",
-            joinColumns = {@JoinColumn(name = "tounamentId")},
+            joinColumns = {@JoinColumn(name = "tournamentId")},
             inverseJoinColumns = {@JoinColumn(name = "guid")}
     )
     @JsonManagedReference
@@ -64,10 +62,6 @@ public class Tournament {
 
     public String getFormat() {
         return format;
-    }
-
-    public ArrayList<String> getPlayerIds() {
-        return playerIds;
     }
 
     public ArrayList<String> getRankedPlayers() {
@@ -98,10 +92,6 @@ public class Tournament {
         this.format = format;
     }
 
-    public void setPlayerIds(ArrayList<String> playerIds) {
-        this.playerIds = playerIds;
-    }
-
     public void setRankedPlayers(ArrayList<String> rankedPlayers) {
         this.rankedPlayers = rankedPlayers;
     }
@@ -129,4 +119,5 @@ public class Tournament {
     public void setPlayers(Set<Player> players){
         this.players = players;
     }
+
 }

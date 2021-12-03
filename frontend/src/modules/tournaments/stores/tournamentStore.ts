@@ -2,6 +2,8 @@ import {action, observable} from "mobx";
 import RootStore from "../../../rootStore";
 import Tournament from "./models/tournament";
 import TournamentService from "../services/tournamentService";
+import Game from "./models/game";
+import {IPlayerRankingTournament} from "../../common/apiTypings";
 
 export default class TournamentStore {
     public static storeName: string = 'tournamentStore';
@@ -11,6 +13,8 @@ export default class TournamentStore {
     @observable public pendingRequestsCount = 0;
     @observable public tournaments: Tournament[] = [];
     @observable public currentTournament: Tournament = new Tournament();
+    @observable public roundRobinMatches: Game[] = [];
+    @observable public roundRobinRanking: IPlayerRankingTournament[] = [];
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
@@ -68,4 +72,29 @@ export default class TournamentStore {
         await TournamentService.saveNewTournament(t).then(() => {this.pendingRequestsCount--})
     }
 
+    @action
+    public async getRoundRobinGames(tournamentId:number){
+        this.pendingRequestsCount++;
+        await TournamentService.getRoundRobinGames(tournamentId).then((result) => {
+            this.roundRobinMatches = result;
+            this.pendingRequestsCount--;
+        });
+        return this.roundRobinMatches;
+    }
+
+    @action
+    public async saveRoundRobinScore(games:Game[]){
+        this.pendingRequestsCount++;
+        await TournamentService.saveRoundRobinScore(games).then(() => {this.pendingRequestsCount--;});
+    }
+
+    @action
+    public async getRoundRobinPlayerRanking(tournamentId:number){
+        this.pendingRequestsCount++;
+        await TournamentService.getRoundRobinPlayerRanking(tournamentId).then((result) => {
+            this.roundRobinRanking = result;
+            this.pendingRequestsCount--;
+        });
+        return this.roundRobinRanking;
+    }
 }

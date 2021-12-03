@@ -51,6 +51,7 @@ const EditPlayerScreen = observer(({mode}: EditPlayerScreenProps) => {
     const handleSubmit = () => {
         if (mode === "add"){
             playerStore.saveNewPlayer(tag);
+            handleClickSnack();
         } else {
             playerStore.updatePlayer(guid, tag, archived);
             handleClickSnack();

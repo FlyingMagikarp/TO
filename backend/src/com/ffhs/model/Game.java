@@ -11,71 +11,71 @@ public class Game {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int gameId;
 
+    private int gameIdInTournament;
+
     private int tournamentId;
 
-    private String player1;
+    private String p1Id;
 
-    private String player2;
+    private String p2Id;
 
-    private int scoreP1;
+    private int p1Score;
 
-    private int scoreP2;
+    private int p2Score;
 
-    private boolean archived;
-
-    public int getId() {
+    public int getGameId() {
         return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
+
+    public int getGameIdInTournament() {
+        return gameIdInTournament;
+    }
+
+    public void setGameIdInTournament(int gameIdInTournament) {
+        this.gameIdInTournament = gameIdInTournament;
     }
 
     public int getTournamentId() {
         return tournamentId;
     }
 
-    public String getPlayer1() {
-        return player1;
-    }
-
-    public String getPlayer2() {
-        return player2;
-    }
-
-    public void setId(int id) {
-        this.gameId = id;
-    }
-
     public void setTournamentId(int tournamentId) {
         this.tournamentId = tournamentId;
     }
 
-    public void setPlayer1(String player1) {
-        this.player1 = player1;
+    public String getP1Id() {
+        return p1Id;
     }
 
-    public void setPlayer2(String player2) {
-        this.player2 = player2;
+    public void setP1Id(String p1Id) {
+        this.p1Id = p1Id;
     }
 
-    public void setScoreP1(int scoreP1){
-        this.scoreP1 = scoreP1;
+    public String getP2Id() {
+        return p2Id;
     }
 
-    public void setScoreP2(int scoreP2){
-        this.scoreP2 = scoreP2;
+    public void setP2Id(String p2Id) {
+        this.p2Id = p2Id;
     }
 
-    public int getScoreP1(){
-        return this.scoreP1;
+    public int getP1Score() {
+        return p1Score;
     }
 
-    public int getScoreP2(){
-        return this.scoreP2;
+    public void setP1Score(int p1Score) {
+        this.p1Score = p1Score;
     }
 
-    private void setArchived(boolean archived){
-        this.archived = archived;
+    public int getP2Score() {
+        return p2Score;
     }
 
-    private boolean getArchived(){
-        return archived;
+    public void setP2Score(int p2Score) {
+        this.p2Score = p2Score;
     }
 }

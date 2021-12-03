@@ -14,6 +14,7 @@ import EditLeagueScreen from "./modules/leagues/components/EditLeagueScreen";
 import EditTournamentScreen from "./modules/tournaments/components/EditTournamentScreen";
 import PlayerOverviewScreen from "./modules/player/components/PlayerOverviewScreen";
 import EditPlayerScreen from "./modules/player/components/EditPlayerScreen";
+import RoundRobinScreen from "./modules/tournaments/components/RoundRobinScreen";
 import leagueStore from "./modules/leagues/stores/leagueStore";
 import tournamentStore from "./modules/tournaments/stores/tournamentStore";
 import playerStore from "./modules/player/stores/playerStore";
@@ -44,6 +45,8 @@ function startApplication() {
                     <Route path="/player" element={<PlayerOverviewScreen/>} />
                     <Route path="/player/add" element={<EditPlayerScreen mode={"add"}/>} />
                     <Route path="/player/edit/:id" element={<EditPlayerScreen mode={"edit"}/>} />
+
+                    <Route path="/tournament/roundRobin/:id" element={<RoundRobinScreen/>} />
                 </Routes>
             </BrowserRouter>
         </>,

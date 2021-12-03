@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState, Fragment} from 'react';
-import {FormControlLabel, Grid, InputLabel, TextField} from "@material-ui/core";
+import {FormControlLabel, Grid, InputLabel, TextField, Theme} from "@material-ui/core";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {Alert, Button, Checkbox, FormGroup, MenuItem, Paper, Select, Snackbar, Typography} from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -12,6 +12,15 @@ import league from "../../leagues/stores/models/league";
 import {IPlayerSelected} from "../../common/apiTypings";
 import {DatePicker, KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import createStyles from "@material-ui/core/styles/createStyles";
+
+export const useStyles = makeStyles((theme: Theme) => createStyles({
+    navItemLink: {
+        color: 'white',
+        textDecoration: 'none',
+    }
+}));
 
 
 type EditTournamentScreenProps = {
@@ -20,6 +29,7 @@ type EditTournamentScreenProps = {
 
 const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
     const {tournamentStore, leagueStore, playerStore} = useContext(StoreContext);
+    const classes = useStyles();
 
     //data states
     const [name, setName] = useState("");
@@ -76,7 +86,6 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
     };
 
     const handleDateChange = (event) => {
-        debugger;
         setSelectedDate(new Date(Date.parse(event.target.value)));
     };
 
@@ -89,6 +98,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
 
         if (mode === "add") {
             tournamentStore.saveNewTournament(name, location, starttime, playerIds, leagueId, archived, format, selectedDate);
+            handleClickSnack();
         } else {
             tournamentStore.updateTournament(name, location, starttime, playerIds, leagueId, archived, selectedDate, tournament.tournamentId);
             handleClickSnack();
@@ -112,21 +122,21 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                 <Grid item>
                     <Grid container direction={"column"} spacing={2}>
                         <Grid item>
-                            <TextField id="tournamentName" label="Tournament Name" variant="outlined" value={name}
+                            <TextField id="tournamentName" label="Tournament Name" variant="outlined" value={name} disabled={tournament.finished}
                                        onChange={(event) => {
                                            setName(event.target.value)
                                        }}/>
                         </Grid>
 
                         <Grid item>
-                            <TextField id="tournamentLocation" label="Location" variant="outlined" value={location}
+                            <TextField id="tournamentLocation" label="Location" variant="outlined" value={location} disabled={tournament.finished}
                                        onChange={(event) => {
                                            setLocation(event.target.value)
                                        }}/>
                         </Grid>
 
                         <Grid item>
-                            <TextField id="tournamentStarttime" label="Start time" variant="outlined" value={starttime}
+                            <TextField id="tournamentStarttime" label="Start time" variant="outlined" value={starttime} disabled={tournament.finished}
                                        onChange={(event) => {
                                            setStarttime(event.target.value)
                                        }}/>
@@ -143,6 +153,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                     shrink: true,
                                 }}
                                 onChange={date => handleDateChange(date)}
+                                disabled={tournament.finished}
                             />
                         </Grid>
 
@@ -175,14 +186,24 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                         onChange={(event) => {
                                             setArchived(event.target.value === "true")
                                         }}>
-                                <FormControlLabel value={false} control={<Radio/>} label="False" checked={!archived}/>
-                                <FormControlLabel value={true} control={<Radio/>} label="True" checked={archived}/>
+                                <FormControlLabel value={false} control={<Radio/>} label="False" checked={!archived} disabled={tournament.finished}/>
+                                <FormControlLabel value={true} control={<Radio/>} label="True" checked={archived} disabled={tournament.finished}/>
                             </RadioGroup>
                         </Grid>
                         }
-                        <div>
-                            <Button variant={"contained"} onClick={handleSubmit}>Save</Button>
-                        </div>
+                        <Grid item>
+                            <Grid container spacing={2}>
+                            <Grid item>
+                                <Button variant={"contained"} onClick={handleSubmit}>Save</Button>
+                            </Grid>
+                            <Grid item>
+                                <Link to={"/tournament/roundRobin/"+id} className={classes.navItemLink}>
+                                    <Button variant={"contained"}>View Tree</Button>
+                                </Link>
+                            </Grid>
+                            </Grid>
+                        </Grid>
+
                     </Grid>
                 </Grid>
 
@@ -197,7 +218,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                         }}>
                                 {leagues.map((league) => {
                                     return (
-                                        <FormControlLabel value={league.league_id ?? 0} control={<Radio/>} label={league.name} checked={leagueId == league.league_id}/>
+                                        <FormControlLabel value={league.league_id ?? 0} control={<Radio/>} label={league.name} checked={leagueId == league.league_id} disabled={tournament.finished}/>
                                     );
                                 })}
                             </RadioGroup>
@@ -215,7 +236,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                 { playersWithSelected.map((player) => {
                                     return (
                                         <FormControlLabel value={player.player.guid ?? ""} control={<Checkbox checked={player.selected}/>}
-                                                          label={player.player.tag} onChange={handlePlayersChange}/>
+                                                          label={player.player.tag} onChange={handlePlayersChange} disabled={tournament.finished}/>
                                     )
                                 })}
                             </FormGroup>

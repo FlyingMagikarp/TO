@@ -54,6 +54,7 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
     const handleSubmit = () => {
         if (mode === "add") {
             leagueStore.saveNewLeague(name, sport, location);
+            handleClickSnack();
         } else {
             leagueStore.updateLeague(name, sport, location, archived, league.league_id);
             handleClickSnack();

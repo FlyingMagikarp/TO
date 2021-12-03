@@ -1,4 +1,5 @@
 import Tournament from "../stores/models/tournament";
+import Game from "../stores/models/game";
 import Constants from "../../../util/Constants";
 import axios from "axios";
 
@@ -21,6 +22,21 @@ const TournamentService = {
 
     async updateTournament(tournament: Tournament): Promise<any> {
         const result = await axios.post(Constants.C_API_BASEURL + 'tournament/update', tournament);
+        return result.data;
+    },
+
+    async getRoundRobinGames(tournamentId:number): Promise<any> {
+        const result = await axios.get(Constants.C_API_BASEURL + 'tournament/getMatchesRoundRobin', {params: {tournamentId: tournamentId}});
+        return result.data;
+    },
+
+    async saveRoundRobinScore(games:Game[]): Promise<any> {
+        const result = await axios.post(Constants.C_API_BASEURL + 'tournament/updateRoundRobin', games);
+        return result.data;
+    },
+
+    async getRoundRobinPlayerRanking(tournamentId:number): Promise<any>{
+        const result = await axios.get(Constants.C_API_BASEURL + 'tournament/getRoundRobinPlayerRanking', {params: {tournamentId: tournamentId}})
         return result.data;
     }
 };
