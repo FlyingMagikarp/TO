@@ -154,4 +154,11 @@ public class TournamentService {
         return -1;
     }
 
+    public ArrayList<Tournament> getTournamentsByLeagueId(int leagueId){
+        Iterable<Tournament> allTournaments = tournamentRepository.findAll();
+        return (ArrayList<Tournament>) StreamSupport.stream(allTournaments.spliterator(), false)
+                .filter(game -> leagueId == game.getLeagueId())
+                .collect(Collectors.toList());
+    }
+
 }
