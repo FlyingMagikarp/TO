@@ -154,11 +154,19 @@ public class TournamentService {
         return -1;
     }
 
-    public ArrayList<Tournament> getTournamentsByLeagueId(int leagueId){
+    public ArrayList<Tournament> getTournamentsByLeagueId(int leagueId, Date date){
         Iterable<Tournament> allTournaments = tournamentRepository.findAll();
         return (ArrayList<Tournament>) StreamSupport.stream(allTournaments.spliterator(), false)
                 .filter(game -> leagueId == game.getLeagueId())
                 .collect(Collectors.toList());
+    }
+
+    public ArrayList<PlayerRanking> getTournamentRanking(int tournamentId){
+        Tournament tournament = tournamentRepository.findById(tournamentId).get();
+        if("Round Robin".equals(tournament.getFormat())){
+            return getRoundRobinRanking(tournamentId);
+        }
+        return null;
     }
 
 }

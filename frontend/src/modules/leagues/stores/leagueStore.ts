@@ -2,6 +2,7 @@ import {action, observable} from "mobx";
 import RootStore from "../../../rootStore";
 import LeagueService from "../services/leagueService";
 import League from "./models/league";
+import {IPlayerRankingTournament} from "../../common/apiTypings";
 
 export default class LeagueStore {
     public static storeName: string = 'leagueStore';
@@ -11,6 +12,7 @@ export default class LeagueStore {
     @observable public pendingRequestsCount = 0;
     @observable public leagues: League[] = [];
     @observable public currentLeague: League = new League();
+    @observable public currentLeagueRanking: IPlayerRankingTournament[] = [];
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
@@ -61,6 +63,16 @@ export default class LeagueStore {
         this.pendingRequestsCount++;
         await LeagueService.saveNewLeague(league).then(() => {this.pendingRequestsCount--})
 
+    }
+
+    @action
+    public async getLeagueRanking(leagueId:number){
+        this.pendingRequestsCount++;
+        await LeagueService.getLeagueRanking(leagueId).then((result) => {
+            this.currentLeagueRanking = result;
+            this.pendingRequestsCount--;
+        });
+        return this.currentLeagueRanking;
     }
 
 }

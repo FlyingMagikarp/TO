@@ -22,6 +22,10 @@ const LeagueService = {
     async updateLeague(league: League): Promise<any> {
         const result = await axios.post(Constants.C_API_BASEURL + 'league/update', league);
         return result.data;
+    },
+
+    async getLeagueRanking(leagueId: number): Promise<any> {
+        const result = await.axios.get(Constants.C_API_BASEURL + 'league/')
     }
 
 };

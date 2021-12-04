@@ -7,6 +7,7 @@ import {Alert, Button, Snackbar, Typography} from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import League from "../stores/models/league";
+import {IPlayerRankingTournament} from "../../common/apiTypings";
 
 
 type EditLeagueScreenProps = {
@@ -22,6 +23,8 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
     const [sport, setSport] = useState("");
     const [location, setLocation] = useState("");
     const [archived, setArchived] = useState(false);
+    const [ranking, setRanking] = useState("");
+    const [playerRanking, setPlayerRanking] = useState<IPlayerRankingTournament[]>([]);
 
     const [openSnack, setOpenSnack] = React.useState(false);
 
@@ -40,6 +43,7 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                 setLocation(data.location ? data.location : "");
                 setArchived(data.archived ? data.archived : false);
             })
+            leagueStore.
         }
     }, [leagueStore, mode, id]);
 
@@ -61,46 +65,75 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
         }
     };
 
+    const handleLoadRanking = () => {
+
+    };
+
     return (
         <>
 
             <Typography variant="h2" color="inherit" component="div">
                 {mode === "add" ? "Add new " : "Edit "} League
             </Typography>
-            <Grid container direction={"column"} spacing={2}>
+            <Grid container spacing={4}>
                 <Grid item>
-                    <TextField id="leagueName" label="League Name" variant="outlined" value={name}
-                               onChange={(event) => {setName(event.target.value)}}/>
-                </Grid>
+                    <Grid container direction={"column"} spacing={2}>
+                        <Grid item>
+                            <TextField id="leagueName" label="League Name" variant="outlined" value={name}
+                                       onChange={(event) => {setName(event.target.value)}}/>
+                        </Grid>
 
-                <Grid item>
-                    <TextField id="leagueSport" label="Sport" variant="outlined" value={sport}
-                               onChange={(event) => {setSport(event.target.value)}}/>
-                </Grid>
+                        <Grid item>
+                            <TextField id="leagueSport" label="Sport" variant="outlined" value={sport}
+                                       onChange={(event) => {setSport(event.target.value)}}/>
+                        </Grid>
 
-                <Grid item>
-                    <TextField id="leagueLocation" label="Location / Region" variant="outlined" value={location}
-                               onChange={(event) => {setLocation(event.target.value)}}/>
-                </Grid>
+                        <Grid item>
+                            <TextField id="leagueLocation" label="Location / Region" variant="outlined" value={location}
+                                       onChange={(event) => {setLocation(event.target.value)}}/>
+                        </Grid>
 
-                {mode === "edit" &&
-                    <Grid item>
-                        <Typography variant="h6" color="inherit" component="div">
-                            Archived
-                        </Typography>
+                        {mode === "edit" &&
+                            <Grid item>
+                                <Typography variant="h6" color="inherit" component="div">
+                                    Archived
+                                </Typography>
 
-                        <RadioGroup aria-label="Archived?" defaultValue={archived} value={archived} name="archivedRadioGroup"
-                                    onChange={(event) => {setArchived(event.target.value === "true")}}>
-                            <FormControlLabel value={false} control={<Radio />} label="False" />
-                            <FormControlLabel value={true} control={<Radio />} label="True" />
+                                <RadioGroup aria-label="Archived?" defaultValue={archived} value={archived} name="archivedRadioGroup"
+                                            onChange={(event) => {setArchived(event.target.value === "true")}}>
+                                    <FormControlLabel value={false} control={<Radio />} label="False" />
+                                    <FormControlLabel value={true} control={<Radio />} label="True" />
 
-                        </RadioGroup>
+                                </RadioGroup>
+                            </Grid>
+                        }
+                        <div>
+                            <Button variant={"contained"} onClick={handleSubmit}>Save</Button>
+                        </div>
                     </Grid>
-                }
-                <div>
-                    <Button variant={"contained"} onClick={handleSubmit}>Save</Button>
-                </div>
+                </Grid>
+
+                <Grid item>
+                    <Grid container direction={'column'} spacing={1}>
+                        <Grid item>
+                            <div>
+                                <Button variant={"contained"} onClick={handleLoadRanking}>Load Ranking</Button>
+                            </div>
+                        </Grid>
+                        <Grid item>
+                            <Grid container>
+                            {playerRanking.map(pr => {
+                                return (
+                                    <>
+                                    </>
+                                )
+                            })}
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </Grid>
+
             <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
                 <Alert onClose={handleCloseSnack} severity="success" sx={{ width: '100%' }}>
                     League Saved!
