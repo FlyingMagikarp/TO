@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {FormControlLabel, Grid, InputLabel, TextField, Theme} from "@material-ui/core";
+import {FormControlLabel, Grid, InputLabel, TextField} from "@material-ui/core";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
 import {Link, useParams} from "react-router-dom";
@@ -144,7 +144,6 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                 id="date"
                                 label="Date"
                                 type="date"
-                                defaultValue={selectedDate.toISOString().split('T')[0]}
                                 value={selectedDate.toISOString().split('T')[0]}
                                 InputLabelProps={{
                                     shrink: true,
@@ -166,9 +165,9 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                 }}
                                 disabled={mode === "edit"}
                             >
-                                {Constants.C_TOURNAMENT_FORMATS.map((f) => {
+                                {Constants.C_TOURNAMENT_FORMATS.map((f, i) => {
                                     return (
-                                        <MenuItem value={f}>{f}</MenuItem>
+                                        <MenuItem value={f} key={i}>{f}</MenuItem>
                                     );
                                 })}
                             </Select>
@@ -209,13 +208,13 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                         <Grid item>
                             <Paper style={{maxHeight: 200, overflow: 'auto'}}>
                             <InputLabel id="leagueLabel">League</InputLabel>
-                            <RadioGroup aria-label="League" defaultValue={leagueId} name="leagueRadioGroup"
+                            <RadioGroup aria-label="League" name="leagueRadioGroup"
                                         onChange={(event) => {
                                             setLeagueId(parseInt(event.target.value))
                                         }}>
-                                {leagues.map((league) => {
+                                {leagues.map((league, i) => {
                                     return (
-                                        <FormControlLabel value={league.league_id ?? 0} control={<Radio/>} label={league.name} checked={leagueId === league.league_id} disabled={tournament.finished}/>
+                                        <FormControlLabel value={league.league_id ?? 0} control={<Radio/>} label={league.name} checked={leagueId === league.league_id} disabled={tournament.finished} key={i}/>
                                     );
                                 })}
                             </RadioGroup>
@@ -230,10 +229,10 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                             <Paper style={{maxHeight: 200, overflow: 'auto', minWidth: 200}}>
                             <InputLabel id="playersLabel">Players</InputLabel>
                             <FormGroup>
-                                { playersWithSelected.map((player) => {
+                                { playersWithSelected.map((player, i) => {
                                     return (
                                         <FormControlLabel value={player.player.guid ?? ""} control={<Checkbox checked={player.selected}/>}
-                                                          label={player.player.tag} onChange={handlePlayersChange} disabled={tournament.finished}/>
+                                                          label={player.player.tag} onChange={handlePlayersChange} disabled={tournament.finished} key={i}/>
                                     )
                                 })}
                             </FormGroup>

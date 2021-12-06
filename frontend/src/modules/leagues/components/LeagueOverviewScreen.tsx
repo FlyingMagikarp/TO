@@ -44,10 +44,10 @@ const LeagueOverviewScreen = observer(() => {
                         </Link>
                     </Grid>
 
-                    {leagues.map(function(league){
+                    {leagues.map(function(league, i){
                         let linkUrl = "/league/edit/"+league.league_id;
                         return(
-                            <Grid item>
+                            <Grid item key={i}>
                                 <Link to={linkUrl} className={classes.navItemLink}>
                                     <DisplayCard name={league.name} sport={league.sport} location={league.location}/>
                                 </Link>

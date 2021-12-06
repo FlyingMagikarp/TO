@@ -43,10 +43,10 @@ const TournamentOverviewScreen = observer(() => {
                         </Link>
                     </Grid>
 
-                    {tournaments.map(function(tournament){
+                    {tournaments.map(function(tournament, i){
                         let linkUrl = "/tournament/edit/"+tournament.tournamentId;
                         return(
-                            <Grid item>
+                            <Grid item key={i}>
                                 <Link to={linkUrl} className={classes.navItemLink}>
                                     <DisplayCard name={tournament.name} sport={tournament.format} location={tournament.location}/>
                                 </Link>

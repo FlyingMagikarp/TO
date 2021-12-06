@@ -84,17 +84,16 @@ const RoundRobinScreen = observer(() => {
                             <Grid container direction={'column'} spacing={2}>
                             {games.map((g,i) => {
                                 return (
-                                    <>
-                                        <Grid item>
+                                    <Grid item key={i}>
                                         <div key={i}>
                                             <Typography>Game: {g.gameIdInTournament}</Typography>
                                             <TextField  label={getPlayerTagById(g.p1Id)} value={g.p1Score}
                                                         InputLabelProps={{ shrink: true, }} onChange={(event) => handleScoreChange(event, i, 'p1')}/>
+                                            <p></p>
                                             <TextField  label={getPlayerTagById(g.p2Id)} value={g.p2Score}
                                                         InputLabelProps={{ shrink: true, }} onChange={(event) => handleScoreChange(event, i, 'p2')}/>
                                         </div>
-                                        </Grid>
-                                    </>
+                                    </Grid>
                                 )
                             })}
                             </Grid>
@@ -113,26 +112,24 @@ const RoundRobinScreen = observer(() => {
                             <Grid container direction={'column'} spacing={2}>
                             {playerRanking.map((pr, i) => {
                                 return (
-                                    <>
-                                        <Grid item>
-                                            <Card>
-                                                <CardContent>
-                                                    <Typography variant="h5" color="inherit" component="div">
-                                                        Rank {+i+1}
-                                                    </Typography>
-                                                    <Typography variant="h6" color="inherit" component="div">
-                                                        {pr.player.tag}
-                                                    </Typography>
-                                                    <Typography variant="h6" color="inherit" component="div">
-                                                        Score: {pr.score}
-                                                    </Typography>
-                                                </CardContent>
-                                            </Card>
-                                            <Typography variant="h6" color="inherit" component="div">
+                                    <Grid item key={i}>
+                                        <Card>
+                                            <CardContent>
+                                                <Typography variant="h5" color="inherit" component="div">
+                                                    Rank {+i+1}
+                                                </Typography>
+                                                <Typography variant="h6" color="inherit" component="div">
+                                                    {pr.player.tag}
+                                                </Typography>
+                                                <Typography variant="h6" color="inherit" component="div">
+                                                    Score: {pr.score}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                        <Typography variant="h6" color="inherit" component="div">
 
-                                            </Typography>
-                                        </Grid>
-                                    </>
+                                        </Typography>
+                                    </Grid>
                                 )
                             })}
                             </Grid>

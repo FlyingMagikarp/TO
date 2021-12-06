@@ -131,14 +131,13 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
 
                 <Grid item>
                     <Grid container direction={'column'} spacing={1}>
-                        <Grid item>
+                        {mode === 'edit' && <Grid item>
                             <Grid container direction={"row"} spacing={1}>
                                 <Grid item>
                                     <TextField
                                         id="date"
                                         label="Date From"
                                         type="date"
-                                        defaultValue={rankingFromDate.toISOString().split('T')[0]}
                                         value={rankingFromDate.toISOString().split('T')[0]}
                                         InputLabelProps={{
                                             shrink: true,
@@ -151,7 +150,6 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                                         id="date"
                                         label="Date To"
                                         type="date"
-                                        defaultValue={rankingToDate.toISOString().split('T')[0]}
                                         value={rankingToDate.toISOString().split('T')[0]}
                                         InputLabelProps={{
                                             shrink: true,
@@ -163,7 +161,7 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                                     <Button variant={"contained"} onClick={handleLoadRanking}>Load Ranking</Button>
                                 </Grid>
                             </Grid>
-                        </Grid>
+                        </Grid>}
                         <Grid item>
                             <Grid container direction={"column"} spacing={2}>
                             {rankingLoading &&
@@ -171,26 +169,24 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                             }
                             {!rankingLoading && playerRanking.map((pr, i) => {
                                 return (
-                                    <>
-                                        <Grid item>
-                                            <Card>
-                                                <CardContent>
-                                                    <Typography variant="h5" color="inherit" component="div">
-                                                        Rank {+i+1}
-                                                    </Typography>
-                                                    <Typography variant="h6" color="inherit" component="div">
-                                                        {pr.player.tag}
-                                                    </Typography>
-                                                    <Typography variant="h6" color="inherit" component="div">
-                                                        Points: {pr.score}
-                                                    </Typography>
-                                                </CardContent>
-                                            </Card>
-                                            <Typography variant="h6" color="inherit" component="div">
+                                    <Grid item key={i}>
+                                        <Card>
+                                            <CardContent>
+                                                <Typography variant="h5" color="inherit" component="div">
+                                                    Rank {+i+1}
+                                                </Typography>
+                                                <Typography variant="h6" color="inherit" component="div">
+                                                    {pr.player.tag}
+                                                </Typography>
+                                                <Typography variant="h6" color="inherit" component="div">
+                                                    Points: {pr.score}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                        <Typography variant="h6" color="inherit" component="div">
 
-                                            </Typography>
-                                        </Grid>
-                                    </>
+                                        </Typography>
+                                    </Grid>
                                 )
                             })}
                             </Grid>

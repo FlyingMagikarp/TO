@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from 'react-dom';
 import Main from './modules/Main'
 import RootStore from "./rootStore";
-import uiStore from "./modules/common/stores/uiStore";
 import {
     BrowserRouter,
     Routes,
@@ -15,17 +14,9 @@ import EditTournamentScreen from "./modules/tournaments/components/EditTournamen
 import PlayerOverviewScreen from "./modules/player/components/PlayerOverviewScreen";
 import EditPlayerScreen from "./modules/player/components/EditPlayerScreen";
 import RoundRobinScreen from "./modules/tournaments/components/RoundRobinScreen";
-import leagueStore from "./modules/leagues/stores/leagueStore";
-import tournamentStore from "./modules/tournaments/stores/tournamentStore";
-import playerStore from "./modules/player/stores/playerStore";
+
 
 const rootStore = RootStore.getInstance();
-const stores = {
-    [uiStore.storeName]: rootStore.uiStore,
-    [leagueStore.storeName]: rootStore.leagueStore,
-    [tournamentStore.storeName]: rootStore.tournamentStore,
-    [playerStore.storeName]: rootStore.playerStore
-};
 
 export const StoreContext = React.createContext<RootStore>(rootStore);
 

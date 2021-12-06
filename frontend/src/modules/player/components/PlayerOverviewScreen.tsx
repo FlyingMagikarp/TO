@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Grid, Theme} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
@@ -43,10 +43,10 @@ const PlayerOverviewScreen = observer(() => {
                         </Link>
                     </Grid>
 
-                    {players.map(function(player){
+                    {players.map(function(player, i){
                         let linkUrl = "/player/edit/"+player.player.guid;
                         return(
-                            <Grid item>
+                            <Grid item key={i}>
                                 <Link to={linkUrl} className={classes.navItemLink}>
                                     <DisplayCard name={player.player.tag} sport="" location=""/>
                                 </Link>

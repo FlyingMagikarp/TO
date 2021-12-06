@@ -6,7 +6,6 @@ import {useParams} from "react-router-dom";
 import {Alert, Button, Snackbar, Typography} from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import Player from "../stores/models/player";
 
 
 type EditPlayerScreenProps = {
@@ -74,7 +73,7 @@ const EditPlayerScreen = observer(({mode}: EditPlayerScreenProps) => {
                         </Typography>
 
                         <RadioGroup aria-label="Archived?" defaultValue={archived} value={archived} name="archivedRadioGroup"
-                                    onChange={(event) => {setArchived(event.target.value == "true")}}>
+                                    onChange={(event) => {setArchived(event.target.value === "true")}}>
                             <FormControlLabel value={false} control={<Radio />} label="False" />
                             <FormControlLabel value={true} control={<Radio />} label="True" />
 
