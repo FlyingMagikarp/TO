@@ -56,7 +56,7 @@ const EditPlayerScreen = observer(({mode}: EditPlayerScreenProps) => {
     return (
         <>
             <Typography variant="h2" color="inherit" component="div">
-                {mode === "add" ? "Add new " : "Edit "} Tournament
+                {mode === "add" ? "Add new " : "Edit "} Player
             </Typography>
 
             <Grid container direction={"row"} spacing={1}>

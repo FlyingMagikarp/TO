@@ -39,6 +39,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
     const [archived, setArchived] = useState(false);
     const [leagues, setLeagues] = useState([] as league[]);
     const [playersWithSelected, setPlayersWithSelected] = useState<IPlayerSelected[]>([]);
+    const [treeLink, setTreeLink] = useState("");
 
     const [openSnack, setOpenSnack] = React.useState(false);
 
@@ -70,6 +71,8 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                     }
                     setPlayersWithSelected(playerStore.playersWithSelected)
                 }
+
+                setTreeLink(data.format === 'Round Robin' ? "/tournament/roundRobin/"+id : "/tournament/singleElim/"+id);
             });
         }
     }, [tournamentStore, mode, id, leagueStore, playerStore]);
@@ -192,14 +195,14 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                             <Grid item>
                                 <Button variant={"contained"} onClick={handleSubmit}>Save</Button>
                             </Grid>
+                            {mode === 'edit' &&
                             <Grid item>
-                                <Link to={"/tournament/roundRobin/"+id} className={classes.navItemLink}>
+                                <Link to={treeLink} className={classes.navItemLink}>
                                     <Button variant={"contained"}>View Tree</Button>
                                 </Link>
-                            </Grid>
+                            </Grid>}
                             </Grid>
                         </Grid>
-
                     </Grid>
                 </Grid>
 
