@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Grid, Theme} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
@@ -11,7 +11,7 @@ import AddDataCard from "../../common/components/shared/AddDataCard";
 import League from "../stores/models/league";
 
 
-export const useStyles = makeStyles((theme: Theme) => createStyles({
+export const useStyles = makeStyles(() => createStyles({
     navItemLink: {
         textDecoration: 'none',
     }

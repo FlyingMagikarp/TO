@@ -23,7 +23,6 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
     const [sport, setSport] = useState("");
     const [location, setLocation] = useState("");
     const [archived, setArchived] = useState(false);
-    const [ranking, setRanking] = useState("");
     const [playerRanking, setPlayerRanking] = useState<IPlayerRankingTournament[]>([]);
     const [rankingFromDate, setRankingFromDate] = useState(new Date());
     const [rankingToDate, setRankingToDate] = useState(new Date());
@@ -46,7 +45,7 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                 setLocation(data.location ? data.location : "");
                 setArchived(data.archived ? data.archived : false);
             });
-            let tmp = rankingFromDate;
+            let tmp = new Date();
             tmp.setFullYear(tmp.getFullYear()-1);
             setRankingFromDate(tmp);
         }

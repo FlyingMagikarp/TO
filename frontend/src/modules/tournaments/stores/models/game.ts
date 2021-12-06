@@ -1,6 +1,5 @@
 import {IGame} from "../../../common/apiTypings";
 import {action, observable} from "mobx";
-import player from "../../../player/stores/models/player";
 
 export default class Game {
     public static createFromTournamentDto(dto: IGame): Game{

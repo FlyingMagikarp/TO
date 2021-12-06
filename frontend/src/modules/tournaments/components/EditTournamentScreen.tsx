@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, Fragment} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {FormControlLabel, Grid, InputLabel, TextField, Theme} from "@material-ui/core";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
@@ -10,12 +10,10 @@ import Tournament from "../stores/models/tournament";
 import Constants from "../../../util/Constants";
 import league from "../../leagues/stores/models/league";
 import {IPlayerSelected} from "../../common/apiTypings";
-import {DatePicker, KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 
-export const useStyles = makeStyles((theme: Theme) => createStyles({
+export const useStyles = makeStyles(() => createStyles({
     navItemLink: {
         color: 'white',
         textDecoration: 'none',
@@ -37,7 +35,6 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
     const [starttime, setStarttime] = useState("");
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [format, setFormat] = useState("");
-    const [allPlayers, setAllPlayers] =  useState<IPlayerSelected[]>([]);
     const [leagueId, setLeagueId] = useState(0);
     const [archived, setArchived] = useState(false);
     const [leagues, setLeagues] = useState([] as league[]);
@@ -52,7 +49,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
 
     useEffect(() => {
         leagueStore.getAllLeagues().then(data => {setLeagues(data)});
-        playerStore.getAllPlayers().then(data => {setAllPlayers(data); if(mode==="add"){setPlayersWithSelected(data)}});
+        playerStore.getAllPlayers().then(data => {if(mode==="add"){setPlayersWithSelected(data)}});
         if (mode === "edit") {
             let tournamentId: number = id ? +id : 0;
             tournamentStore.getTournamentById(tournamentId).then(data => {
@@ -63,7 +60,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                 setFormat(data.format ? data.format : "");
                 setLeagueId(data.leagueId ? data.leagueId : 0);
                 setArchived(data.archived ? data.archived : false);
-                setSelectedDate(data.date ? new Date(data.date) : new Date())
+                setSelectedDate(data.date ? new Date(data.date) : new Date());
 
                 // set selected flag on players that are in the tournament
                 if(data.players) {
@@ -75,7 +72,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                 }
             });
         }
-    }, [tournamentStore, mode, id]);
+    }, [tournamentStore, mode, id, leagueStore, playerStore]);
 
     const handleClickSnack = () => {
         setOpenSnack(true);
@@ -218,7 +215,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                         }}>
                                 {leagues.map((league) => {
                                     return (
-                                        <FormControlLabel value={league.league_id ?? 0} control={<Radio/>} label={league.name} checked={leagueId == league.league_id} disabled={tournament.finished}/>
+                                        <FormControlLabel value={league.league_id ?? 0} control={<Radio/>} label={league.name} checked={leagueId === league.league_id} disabled={tournament.finished}/>
                                     );
                                 })}
                             </RadioGroup>

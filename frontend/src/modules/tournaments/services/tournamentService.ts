@@ -36,7 +36,7 @@ const TournamentService = {
     },
 
     async getRoundRobinPlayerRanking(tournamentId:number): Promise<any>{
-        const result = await axios.get(Constants.C_API_BASEURL + 'tournament/getRoundRobinPlayerRanking', {params: {tournamentId: tournamentId}})
+        const result = await axios.get(Constants.C_API_BASEURL + 'tournament/getRoundRobinPlayerRanking', {params: {tournamentId: tournamentId}});
         return result.data;
     }
 };

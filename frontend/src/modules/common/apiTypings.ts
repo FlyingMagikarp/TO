@@ -37,11 +37,6 @@ export interface IPlayerSelected {
     selected: boolean
 }
 
-export interface ITeamsTournament {
-    id: number,
-    name: string
-}
-
 export interface IGame {
     gameId: number,
     gameIdInTournament: number,

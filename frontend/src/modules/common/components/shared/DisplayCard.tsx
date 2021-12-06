@@ -1,7 +1,6 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {CardContent, Theme, Card} from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
-import {StoreContext} from "../../../../index";
 import {observer} from "mobx-react-lite";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Typography} from "@mui/material";

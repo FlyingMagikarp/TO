@@ -3,26 +3,19 @@ import React, {useContext, useEffect, useState} from "react";
 import {StoreContext} from "../../../index";
 import {useParams} from "react-router-dom";
 import Tournament from "../stores/models/tournament";
-import {Card, CardContent, Theme, Typography} from "@material-ui/core";
-import {Accordion, AccordionDetails, AccordionSummary, Alert, Grid, Snackbar, TextField} from "@mui/material";
+import {Card, CardContent, Typography} from "@material-ui/core";
+import {Alert, Grid, Snackbar, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import Game from "../stores/models/game";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {IPlayerRankingTournament, IRoundRobinRound} from "../../common/apiTypings";
-import game from "../stores/models/game";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
+import {IPlayerRankingTournament, } from "../../common/apiTypings";
 
 
 const RoundRobinScreen = observer(() => {
-    const {tournamentStore, playerStore} = useContext(StoreContext);
+    const {tournamentStore} = useContext(StoreContext);
 
     const [tournament, setTournament] = useState(new Tournament());
     const [games, setGames] = useState<Game[]>([]);
     const [playerRanking, setPlayerRanking] = useState<IPlayerRankingTournament[]>([]);
-    const [started, setStarted] = useState(false);
-    const [rounds, setRounds] = useState<number[]>([]);
-    const [gamesPerRound, setGamesPerRound] = useState(0);
     const [openSnack, setOpenSnack] = React.useState(false);
 
     let {id} = useParams();
@@ -31,19 +24,10 @@ const RoundRobinScreen = observer(() => {
         if (id && id !== "") {
             tournamentStore.getTournamentById(+id).then((data) => {
                 setTournament(data);
-                let rounds = data.players ? data.players.length-1 : 0;
-                let tmp:any = [];
-                for (let i=0;i<rounds;i++){
-                    tmp.push([i])
-                }
-                setRounds(tmp);
             });
 
             tournamentStore.getRoundRobinGames(id ? +id : 0).then(data => {
-                let gamesPerRound = data.length / rounds.length;
-                setGamesPerRound(gamesPerRound);
                 setGames(data);
-
             });
 
             tournamentStore.getRoundRobinPlayerRanking(id ? +id : 0).then(data => {
@@ -80,8 +64,7 @@ const RoundRobinScreen = observer(() => {
     };
 
     const handleSubmit = () => {
-        tournamentStore.saveRoundRobinScore(games);
-        handleClickSnack();
+        tournamentStore.saveRoundRobinScore(games).then(() => handleClickSnack());
     };
 
     return (

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {FormControlLabel, Grid, TextField, Theme} from "@material-ui/core";
+import {FormControlLabel, Grid, TextField} from "@material-ui/core";
 import {StoreContext} from "../../../index";
 import {observer} from "mobx-react-lite";
 import {useParams} from "react-router-dom";
@@ -23,16 +23,12 @@ const EditPlayerScreen = observer(({mode}: EditPlayerScreenProps) => {
 
     const [openSnack, setOpenSnack] = React.useState(false);
 
-    // only set in edit mode
-    const [player, setPlayer] = useState(new Player());
-
     let {id} = useParams();
 
     useEffect(() => {
         if (mode === "edit"){
             let playerId: string = id ? id : "";
             playerStore.getPlayerById(playerId).then(data => {
-                setPlayer(data);
                 setGuid(data.guid ? data.guid : "");
                 setTag(data.tag ? data.tag : "");
                 setArchived(data.archived ? data.archived : false);

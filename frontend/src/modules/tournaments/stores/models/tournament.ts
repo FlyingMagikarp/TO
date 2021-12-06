@@ -1,4 +1,4 @@
-import {IPlayerData, ITournamentData} from "../../../common/apiTypings";
+import {ITournamentData} from "../../../common/apiTypings";
 import {action, observable} from "mobx";
 import player from "../../../player/stores/models/player";
 

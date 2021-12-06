@@ -8,11 +8,10 @@ import {Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import AddDataCard from "../../common/components/shared/AddDataCard";
 import DisplayCard from "../../common/components/shared/DisplayCard";
-import Player from "../stores/models/player";
 import {IPlayerSelected} from "../../common/apiTypings";
 
 
-export const useStyles = makeStyles((theme: Theme) => createStyles({
+export const useStyles = makeStyles(() => createStyles({
     navItemLink: {
         textDecoration: 'none',
     }
