@@ -140,6 +140,9 @@ const RoundRobinScreen = observer(() => {
                                                     <Typography variant="h6" color="inherit" component="div">
                                                         {pr.player.tag}
                                                     </Typography>
+                                                    <Typography variant="h6" color="inherit" component="div">
+                                                        Score: {pr.score}
+                                                    </Typography>
                                                 </CardContent>
                                             </Card>
                                             <Typography variant="h6" color="inherit" component="div">

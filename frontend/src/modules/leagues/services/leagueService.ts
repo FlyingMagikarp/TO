@@ -24,8 +24,9 @@ const LeagueService = {
         return result.data;
     },
 
-    async getLeagueRanking(leagueId: number): Promise<any> {
-        const result = await.axios.get(Constants.C_API_BASEURL + 'league/')
+    async getLeagueRanking(league_id: number, fromDate: string, toDate: string): Promise<any> {
+        const result = await axios.get(Constants.C_API_BASEURL + 'league/getLeagueRanking', {params: {league_id: league_id, fromDate: fromDate, toDate: toDate}});
+        return result.data;
     }
 
 };

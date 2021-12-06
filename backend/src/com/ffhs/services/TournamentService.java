@@ -145,7 +145,7 @@ public class TournamentService {
         return playerRanking;
     }
 
-    private int getRankingIndex(String guid, ArrayList<PlayerRanking> playerRankingList){
+    public int getRankingIndex(String guid, ArrayList<PlayerRanking> playerRankingList){
         for(int i = 0; i<playerRankingList.size();i++){
             if (guid.equals(playerRankingList.get(i).getPlayer().getGuid())){
                 return i;
@@ -154,10 +154,13 @@ public class TournamentService {
         return -1;
     }
 
-    public ArrayList<Tournament> getTournamentsByLeagueId(int leagueId, Date date){
+    public ArrayList<Tournament> getTournamentsByLeagueId(int leagueId, Date fromDate, Date toDate){
         Iterable<Tournament> allTournaments = tournamentRepository.findAll();
         return (ArrayList<Tournament>) StreamSupport.stream(allTournaments.spliterator(), false)
                 .filter(game -> leagueId == game.getLeagueId())
+                .filter(game -> !game.getArchived())
+                .filter(game -> fromDate.before(game.getDate()))
+                .filter(game -> toDate.after(game.getDate()))
                 .collect(Collectors.toList());
     }
 

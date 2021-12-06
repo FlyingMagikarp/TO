@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -39,5 +40,18 @@ public class PlayerDto {
 
     public boolean getArchived(){
         return archived;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlayerDto playerDto = (PlayerDto) o;
+        return guid.equals(playerDto.guid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(guid);
     }
 }

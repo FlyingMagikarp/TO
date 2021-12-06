@@ -66,9 +66,9 @@ export default class LeagueStore {
     }
 
     @action
-    public async getLeagueRanking(leagueId:number){
+    public async getLeagueRanking(leagueId:number, fromDate:Date, toDate:Date){
         this.pendingRequestsCount++;
-        await LeagueService.getLeagueRanking(leagueId).then((result) => {
+        await LeagueService.getLeagueRanking(leagueId, fromDate.toISOString().substring(0,10), toDate.toISOString().substring(0,10)).then((result) => {
             this.currentLeagueRanking = result;
             this.pendingRequestsCount--;
         });

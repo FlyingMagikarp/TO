@@ -1,10 +1,16 @@
 package com.ffhs.api;
 
 import com.ffhs.model.League;
+import com.ffhs.model.PlayerRanking;
 import com.ffhs.repository.LeagueRepository;
+import com.ffhs.services.LeagueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 @Controller
@@ -13,6 +19,8 @@ import java.util.Optional;
 public class LeagueApi {
     @Autowired
     private LeagueRepository leagueRepository;
+    @Autowired
+    private LeagueService leagueService;
 
     @PostMapping(path="/add", consumes = "application/json")
     public @ResponseBody java.lang.String addNewLeague(@RequestBody League league){
@@ -46,6 +54,13 @@ public class LeagueApi {
     @GetMapping(path="/getById")
     public @ResponseBody Optional<League> getSingleLeagueById(@RequestParam int league_id){
         return leagueRepository.findById(league_id);
+    }
+
+    @GetMapping(path="/getLeagueRanking")
+    public @ResponseBody ArrayList<PlayerRanking> getLeagueRanking(@RequestParam int league_id,
+                                                                   @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date fromDate,
+                                                                   @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date toDate){
+        return leagueService.getLeagueRanking(league_id, fromDate, toDate);
     }
 
 }
