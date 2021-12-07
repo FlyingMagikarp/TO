@@ -7,11 +7,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Service for Player
+ */
 @Service
 public class PlayerService {
     @Autowired
     private PlayerRepository playerRepository;
 
+    /**
+     * Takes a player guid as parameter and returns the found player model object
+     * @param guid String guid of a player
+     * @return Optional<Player> Player model object
+     */
     public Optional<Player> getPlayerObjectById(String guid){
         return playerRepository.findById(guid);
     }

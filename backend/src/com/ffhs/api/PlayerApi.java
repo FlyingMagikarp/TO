@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+/**
+ * REST endpoint for players
+ */
 @Controller
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="/player")
@@ -16,6 +19,11 @@ public class PlayerApi {
     @Autowired
     private PlayerRepository playerRepository;
 
+    /**
+     * Take a player object as parameter and persists it
+     * @param player player model object
+     * @return String success message
+     */
     @PostMapping(path="/add", consumes = "application/json")
     public @ResponseBody java.lang.String addNewPlayer(@RequestBody PlayerDto player) {
         Player p = new Player();
@@ -26,6 +34,11 @@ public class PlayerApi {
         return "Player saved";
     }
 
+    /**
+     * Take a player object as parameter and updates it
+     * @param player player model object
+     * @return String success message
+     */
     @PostMapping(path="/update", consumes = "application/json")
     public @ResponseBody java.lang.String updatePlayer(@RequestBody PlayerDto player) {
         Player p = new Player();
@@ -36,11 +49,20 @@ public class PlayerApi {
         return "Player updated";
     }
 
+    /**
+     * Returns all players
+     * @return Iterable<Player> list of all players
+     */
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Player> getAllPlayers() {
         return playerRepository.findAll();
     }
 
+    /**
+     * takes a playerId(guid) as parameter and returns the found player model object
+     * @param guid String guid of the player
+     * @return Optional<Player> player model object
+     */
     @GetMapping(path="/getById")
     public @ResponseBody Optional<Player> getSinglePlayerById(@RequestParam String guid) {
         return playerRepository.findById(guid);

@@ -16,19 +16,25 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 
+/**
+ * Service for Tournament
+ */
 @Service
 @Transactional
 public class TournamentService {
     @Autowired
     private TournamentRepository tournamentRepository;
     @Autowired
-    private PlayerRepository playerRepository;
-    @Autowired
     private PlayerService playerService;
     @Autowired
     private GameRepository gameRepository;
 
 
+    /**
+     * Takes a list of playerIds and returns a set of player model objects
+     * @param playerIds ArrayList<String> List of playerIds
+     * @return Set<Player> list of player model object
+     */
     public Set<Player> getPlayerObjectsFromIds(ArrayList<String> playerIds){
         Set<Player> players = new HashSet<>();
         for(String pid : playerIds){
@@ -38,6 +44,11 @@ public class TournamentService {
         return players;
     }
 
+    /**
+     * takes a tournamentId as parameter and all corresponding games
+     * @param tournamentId int id of tournament
+     * @return ArrayList<Game> list of games
+     */
     private ArrayList<Game> getGamesByTournamentId(int tournamentId){
         Iterable<Game> allGames = gameRepository.findAll();
         return (ArrayList<Game>) StreamSupport.stream(allGames.spliterator(), false)
@@ -45,6 +56,12 @@ public class TournamentService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * takes a tournamentId as parameter and either looks for games and returns them
+     * or creates all round robin games
+     * @param tournamentId int id of tournament
+     * @return ArrayList<Game> list of games
+     */
     public ArrayList<Game> getRoundRobinGames(int tournamentId){
         ArrayList<Game> gamesFound = getGamesByTournamentId(tournamentId);
         if (gamesFound.size() > 0){
@@ -53,6 +70,17 @@ public class TournamentService {
         return createRoundRobinGames(tournamentId);
     }
 
+    /**
+     * For the round robin pairing algorithm to work a even number of players is needed.
+     * If the number is odd a "bye" player is added.
+     * <p>
+     *     The player array is split in half and the first round of pairings are generated.
+     *     then leaving the first player fixated the rest of players rotate 1 position clockwise.
+     *     This continues until for the number of rounds. This number is equal to number of entrants - 1
+     * </p>
+     * @param tournamentId int id of tournamentid
+     * @return ArrayList<Game> list of round robin games
+     */
     private ArrayList<Game> createRoundRobinGames(int tournamentId){
         ArrayList<Game> games = new ArrayList<Game>();
         Tournament t = new Tournament();
@@ -91,6 +119,14 @@ public class TournamentService {
         return games;
     }
 
+    /**
+     * Takes two playerids, a tournamentId and a gameNr, creates a game object and returns it
+     * @param p1 String guid of player1
+     * @param p2 String guid of player2
+     * @param tournamentId int id of tournament
+     * @param gameNr int gameNr
+     * @return Game created game
+     */
     private Game createGame(String p1, String p2, int tournamentId, int gameNr){
         Game m = new Game();
         m.setTournamentId(tournamentId);
@@ -101,6 +137,19 @@ public class TournamentService {
         return m;
     }
 
+    /**
+     * Takes a tournamentId and calculates a ranking based on results.
+     * This function was written for the round robin format but since it also works
+     * for single elimination it is also used there
+     * <p>
+     *     The ranking is pretty simple. The winner gets 3 points,
+     *     the looser 0 and in case there's a draw, both players get 1 point each.
+     *
+     *     The list then is sorted based on the score
+     * </p>
+     * @param tournamentId int id of tournament
+     * @return ArrayList<PlayerRanking> ranked list of players
+     */
     public ArrayList<PlayerRanking> getRoundRobinRanking(int tournamentId){
         Optional<Tournament> tournament = tournamentRepository.findById(tournamentId);
         Set<Player> allPlayers = tournament.get().getPlayers();
@@ -145,6 +194,13 @@ public class TournamentService {
         return playerRanking;
     }
 
+    /**
+     * Take a player guid and a ranking list as a parameter and
+     * returns the index of the player within the ranking list
+     * @param guid String guid of a player
+     * @param playerRankingList ArrayList<PlayerRanking> ranking list
+     * @return int index of player in ranking list
+     */
     public int getRankingIndex(String guid, ArrayList<PlayerRanking> playerRankingList){
         for(int i = 0; i<playerRankingList.size();i++){
             if (guid.equals(playerRankingList.get(i).getPlayer().getGuid())){
@@ -154,6 +210,14 @@ public class TournamentService {
         return -1;
     }
 
+    /**
+     * takes a leagueId and two dates as parameter and
+     * returns all tournaments of a league in the given timeframe
+     * @param leagueId int id of the league
+     * @param fromDate Date
+     * @param toDate Date
+     * @return ArrayList<Tournament> list of all tournaments
+     */
     public ArrayList<Tournament> getTournamentsByLeagueId(int leagueId, Date fromDate, Date toDate){
         Iterable<Tournament> allTournaments = tournamentRepository.findAll();
         return (ArrayList<Tournament>) StreamSupport.stream(allTournaments.spliterator(), false)
@@ -164,14 +228,34 @@ public class TournamentService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Takes a tournamentId as parameter and returns the ranking of that tournament
+     * @param tournamentId id of tournament
+     * @return ArrayList<PlayerRanking> player ranking of tournament
+     */
     public ArrayList<PlayerRanking> getTournamentRanking(int tournamentId){
         Tournament tournament = tournamentRepository.findById(tournamentId).get();
         if("Round Robin".equals(tournament.getFormat())){
             return getRoundRobinRanking(tournamentId);
-        }
+        }//TODO check if necessary
         return null;
     }
 
+    /**
+     * Takes a tournamentId as parameter and returns(creates if necessary)
+     * all games for the single elimination format
+     *
+     * <p>
+     *     The total amount of games needed for this format is number of entrants - 1
+     *     If the amount of games found is 0, it will create the first round of games.
+     *     If the amount of games found equals the amount needed for the tounament
+     *     to be completed, it returns them all.
+     *     If the amount of games found is greater than 0 but not the full amount,
+     *     it creates all games for the next round
+     * </p>
+     * @param tournamentId id of tournament
+     * @return ArrayList<Game> list of games for single elimination format
+     */
     public ArrayList<Game> getSingleEliminationGames(int tournamentId){
         ArrayList<Game> gamesFound = getGamesByTournamentId(tournamentId);
         Set<Player> allPlayer = tournamentRepository.findById(tournamentId).get().getPlayers();
@@ -188,6 +272,20 @@ public class TournamentService {
         return getFirstRoundSingleEliminationGames(tournamentId);
     }
 
+    /**
+     * Takes a tournamentId and a list of games and generates and
+     * returns the next round of games for the single elimination format
+     * <p>
+     *     The logic is similar to the first round of games
+     *     except instead of all players only the winners remain.
+     *
+     *     Since in the first round the list was extended to be a power of 2,
+     *     that check is not needed here.
+     * </p>
+     * @param tournamentId int id of tournament
+     * @param prevRoundGames ArrayList<Game> list of all the games from the previous round
+     * @return ArrayList<Game> list of all games for the next round
+     */
     private ArrayList<Game> getNextSingleEliminationGames(int tournamentId, ArrayList<Game> prevRoundGames){
         ArrayList<Game> games = new ArrayList<>();
         ArrayList<Player> winners = getWinnersFromSingleEliminationRound(prevRoundGames);
@@ -210,6 +308,21 @@ public class TournamentService {
         return games;
     }
 
+    /**
+     * Takes a tournamentId as parameter and create the games needed for the first round of
+     * the single elimination format.
+     * <p>
+     *     For the format to work the number of entrants has to be a power of 2.
+     *     If there aren't enough entrants it will generate 'bye' player until it is a power of 2.
+     *     For the pairings the upper half of the array will play the lower half to ensure that
+     *     all 'byes' are eliminated in the first round.
+     *
+     *     After generating the first round, placeholder games for all the other round will be generated.
+     *     This is purely for aesthetics during rendering.
+     * </p>
+     * @param tournamentId int id of tournament
+     * @return ArrayList<Game> list of all games
+     */
     public ArrayList<Game> getFirstRoundSingleEliminationGames(int tournamentId){
         ArrayList<Game> games = new ArrayList<>();
 
@@ -238,6 +351,11 @@ public class TournamentService {
         return games;
     }
 
+    /**
+     * Takes an integer as parameter and generates that many placeholder games
+     * @param amount int number of game sto generate
+     * @return ArrayList<Game> list of generated palceholder games
+     */
     private ArrayList<Game> getPlaceholderGamesForSingleElim(int amount){
         ArrayList<Game> games = new ArrayList<>();
         for(int i = 0; i<amount;i++){
@@ -250,6 +368,11 @@ public class TournamentService {
         return games;
     }
 
+    /**
+     * Takes a integer as parameter and checks whether that number is a power of 2
+     * @param x int number to check
+     * @return boolean true number is a power of 2
+     */
     private boolean isPowerOfTwo(int x){
         return (x & (x - 1)) == 0;
     }
@@ -265,6 +388,11 @@ public class TournamentService {
         return players;
     }
 
+    /**
+     * Takes a list of games as parameter and return the players that won games in that round.
+     * @param round ArrayList<Game> list of games
+     * @return ArrayList<Player> list of player that won games
+     */
     private ArrayList<Player> getWinnersFromSingleEliminationRound(ArrayList<Game>round){
         ArrayList<Player> players = new ArrayList<>();
         for(Game g : round){
@@ -278,6 +406,11 @@ public class TournamentService {
         return players;
     }
 
+    /**
+     * Takes a list of games as parameter and returns the lowest gameIdInTournament used.
+     * @param games ArrayList<Game> list of games
+     * @return int id lowest gameIdInTournament field in list
+     */
     private int getLowestInternalGameId(ArrayList<Game> games){
         int id = 100;
         for (Game g : games){
@@ -286,6 +419,13 @@ public class TournamentService {
         return id;
     }
 
+    /**
+     * Takes a roundId/gameIdInTournament and a list of games
+     * and returns only the games with that roundId/gameIdInTournament
+     * @param roundId int roundId
+     * @param unfilteredGames ArrayList<Game> list of games
+     * @return ArrayList<Game> list of filtered games
+     */
     private ArrayList<Game> filterGameListByInternalId(int roundId, ArrayList<Game> unfilteredGames){
         ArrayList<Game> games = new ArrayList<>();
 

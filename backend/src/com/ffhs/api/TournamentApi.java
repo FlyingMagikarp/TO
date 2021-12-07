@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * REST endpoint for tournaments
+ */
 @Controller
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="/tournament")
@@ -25,6 +28,11 @@ public class TournamentApi {
     @Autowired
     private GameRepository gameRepository;
 
+    /**
+     * Takes a tournamentDto object as parameter, creates a tournament model object and persists it
+     * @param tournament TournamentDto data object
+     * @return String success message
+     */
     @PostMapping(path="/add", consumes = "application/json")
     public @ResponseBody java.lang.String addNewTournament(@RequestBody TournamentDto tournament){
         Tournament t = new Tournament();
@@ -44,6 +52,11 @@ public class TournamentApi {
         return "Tournament saved";
     }
 
+    /**
+     * Takes a tournamentDto object as parameter, creates a tournament model object and updates it
+     * @param tournament TournamentDto data object
+     * @return String success message
+     */
     @PostMapping(path="/update", consumes = "application/json")
     public @ResponseBody java.lang.String updateTournament(@RequestBody TournamentDto tournament){
         Tournament t = new Tournament();
@@ -68,21 +81,41 @@ public class TournamentApi {
         return "Tournament saved";
     }
 
+    /**
+     * Returns all Tournaments
+     * @return Iterable<Tournament> list of all tournaments
+     */
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Tournament> getAllTournaments(){
         return tournamentRepository.findAll();
     }
 
+
+    /**
+     * takes a tournamentId as parameter and returns the found tournament model object
+     * @param tournamentId int id of the tournament
+     * @return Optional<Tournament> tournament model object
+     */
     @GetMapping(path="/getById")
     public @ResponseBody Optional<Tournament> getSingleTournamentById(@RequestParam int tournamentId){
         return tournamentRepository.findById(tournamentId);
     }
 
+    /**
+     * takes a tournamentId as parameter and returns(and if necessary creates)
+     * all games for the round robin format
+     * @param tournamentId int id of the tournament
+     * @return ArrayList<Game> list of all the games
+     */
     @GetMapping(path="/getMatchesRoundRobin")
     public @ResponseBody ArrayList<Game> getMatchesForRoundRobin(@RequestParam int tournamentId){
         return tournamentService.getRoundRobinGames(tournamentId);
     }
 
+    /**
+     * takes a ArrayList of round robin games and updates it
+     * @param games ArrayList of game model objects
+     */
     @PostMapping(path="/updateRoundRobin", consumes = "application/json")
     public @ResponseBody void saveRoundRobinScore(@RequestBody ArrayList<Game> games){
         for(Game g : games){
@@ -90,16 +123,32 @@ public class TournamentApi {
         }
     }
 
+    /**
+     * takes a tournamentId as parameter and creates and returns the ranking of a tournament
+     * @param tournamentId int id of the tournament
+     * @return ArrayList<PlayerRanking> Sorted list of players with their corresponding score
+     */
     @GetMapping(path="/getRoundRobinPlayerRanking")
     public @ResponseBody ArrayList<PlayerRanking> getRoundRobinPlayerRanking(@RequestParam int tournamentId){
         return tournamentService.getRoundRobinRanking(tournamentId);
     }
 
+    /**
+     * takes a tournamentId as parameter and returns(and if necessary creates)
+     * all games for the single elimination format
+     * @param tournamentId int id of the tournament
+     * @return ArrayList<Game> list of all the games
+     */
     @GetMapping(path="/getMatchesSingleElim")
     public @ResponseBody ArrayList<Game> getMatchesForSingleElimination(@RequestParam int tournamentId){
         return tournamentService.getSingleEliminationGames(tournamentId);
     }
 
+    /**
+     * takes a ArrayList of single elimination games and updates it
+     * games where either of the player tags is 'TBD' are skipped because they are placeholder games
+     * @param games ArrayList of game model objects
+     */
     @PostMapping(path="/updateSingleElim", consumes = "application/json")
     public @ResponseBody ArrayList<Game> saveSingleElimScore(@RequestBody ArrayList<Game> games){
         for(Game g : games){

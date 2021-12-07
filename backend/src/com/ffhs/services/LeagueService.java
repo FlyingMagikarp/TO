@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Service for League
+ */
 @Service
 public class LeagueService {
     @Autowired
@@ -18,6 +21,14 @@ public class LeagueService {
     @Autowired
     TournamentService tournamentService;
 
+    /**
+     * takes a leagueId and two dates as parameter and returns the ranking of a league
+     * for all tournaments in that timeframe
+     * @param leagueId int id of the league
+     * @param fromDate Date
+     * @param toDate Date
+     * @return ArrayList<PlayerRanking> Sorted list of players with their corresponding score
+     */
     public ArrayList<PlayerRanking> getLeagueRanking(int leagueId, Date fromDate, Date toDate){
         ArrayList<Tournament> tournaments = tournamentService.getTournamentsByLeagueId(leagueId, fromDate, toDate);
 
@@ -29,6 +40,21 @@ public class LeagueService {
         return calculateLeagueRanking(listOfAllRankings);
     }
 
+    /**
+     * takes a list of tournament rankings and calculates the league ranking based on that.
+     * <p>
+     *     The players get points based on their placement in all the tournaments.
+     *     The formula used is: n*n / (2^ceil(log(placement, 2))
+     *     where <b>n</b> is the total amount of players in the tournament and the <b>placement</b>
+     *     is the rank that they placed as.
+     *     Math.ceil(x) returns the next int that is equal or larger than x
+     *
+     *     This formula scales with total entrants so winners of large tournaments
+     *     get more points than winners of small ones
+     * </p>
+     * @param allRankings ArrayList<ArrayList<PlayerRanking>> List of tournament rankings
+     * @return ArrayList<PlayerRanking> list of players with their score within the league
+     */
     private ArrayList<PlayerRanking> calculateLeagueRanking(ArrayList<ArrayList<PlayerRanking>> allRankings){
         ArrayList<PlayerRanking> allPlayersRanking = getAllPlayersFromRankingList(allRankings);
 
@@ -53,6 +79,11 @@ public class LeagueService {
         return allPlayersRanking;
     }
 
+    /**
+     * Takes a list of tournament results and returns a list of playerRankings without duplicates
+     * @param allRankings ArrayList<ArrayList<PlayerRanking>> List of tournament rankings
+     * @return ArrayList<PlayerRanking> playerRanking list without duplicates
+     */
     private ArrayList<PlayerRanking> getAllPlayersFromRankingList(ArrayList<ArrayList<PlayerRanking>> allRankings){
         ArrayList<PlayerDto> allPlayers = new ArrayList<>();
         ArrayList<PlayerRanking> allPlayersRanking = new ArrayList<>();
@@ -82,6 +113,11 @@ public class LeagueService {
         return allPlayersRanking;
     }
 
+    /**
+     * Returns the logarithm of N with base 2
+     * @param N int argument for the logarithm
+     * @return int result
+     */
     private int log2(int N) {
         return (int)(Math.log(N) / Math.log(2));
     }
