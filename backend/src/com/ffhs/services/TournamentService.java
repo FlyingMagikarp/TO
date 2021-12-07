@@ -22,18 +22,27 @@ import java.util.stream.StreamSupport;
 @Service
 @Transactional
 public class TournamentService {
+    /**
+     * Data repository for tournaments
+     */
     @Autowired
     private TournamentRepository tournamentRepository;
+    /**
+     * Service for players
+     */
     @Autowired
     private PlayerService playerService;
+    /**
+     * Data repository for games
+     */
     @Autowired
     private GameRepository gameRepository;
 
 
     /**
      * Takes a list of playerIds and returns a set of player model objects
-     * @param playerIds ArrayList<String> List of playerIds
-     * @return Set<Player> list of player model object
+     * @param playerIds ArrayList&lt;String&gt; List of playerIds
+     * @return Set&lt;Player&gt; list of player model object
      */
     public Set<Player> getPlayerObjectsFromIds(ArrayList<String> playerIds){
         Set<Player> players = new HashSet<>();
@@ -47,7 +56,7 @@ public class TournamentService {
     /**
      * takes a tournamentId as parameter and all corresponding games
      * @param tournamentId int id of tournament
-     * @return ArrayList<Game> list of games
+     * @return ArrayList&lt;Game&gt; list of games
      */
     private ArrayList<Game> getGamesByTournamentId(int tournamentId){
         Iterable<Game> allGames = gameRepository.findAll();
@@ -60,7 +69,7 @@ public class TournamentService {
      * takes a tournamentId as parameter and either looks for games and returns them
      * or creates all round robin games
      * @param tournamentId int id of tournament
-     * @return ArrayList<Game> list of games
+     * @return ArrayList&lt;Game&gt; list of games
      */
     public ArrayList<Game> getRoundRobinGames(int tournamentId){
         ArrayList<Game> gamesFound = getGamesByTournamentId(tournamentId);
@@ -79,7 +88,7 @@ public class TournamentService {
      *     This continues until for the number of rounds. This number is equal to number of entrants - 1
      * </p>
      * @param tournamentId int id of tournamentid
-     * @return ArrayList<Game> list of round robin games
+     * @return ArrayList&lt;Game&gt; list of round robin games
      */
     private ArrayList<Game> createRoundRobinGames(int tournamentId){
         ArrayList<Game> games = new ArrayList<Game>();
@@ -148,7 +157,7 @@ public class TournamentService {
      *     The list then is sorted based on the score
      * </p>
      * @param tournamentId int id of tournament
-     * @return ArrayList<PlayerRanking> ranked list of players
+     * @return ArrayList&lt;PlayerRanking&gt; ranked list of players
      */
     public ArrayList<PlayerRanking> getRoundRobinRanking(int tournamentId){
         Optional<Tournament> tournament = tournamentRepository.findById(tournamentId);
@@ -198,7 +207,7 @@ public class TournamentService {
      * Take a player guid and a ranking list as a parameter and
      * returns the index of the player within the ranking list
      * @param guid String guid of a player
-     * @param playerRankingList ArrayList<PlayerRanking> ranking list
+     * @param playerRankingList ArrayList&lt;PlayerRanking&gt; ranking list
      * @return int index of player in ranking list
      */
     public int getRankingIndex(String guid, ArrayList<PlayerRanking> playerRankingList){
@@ -216,7 +225,7 @@ public class TournamentService {
      * @param leagueId int id of the league
      * @param fromDate Date
      * @param toDate Date
-     * @return ArrayList<Tournament> list of all tournaments
+     * @return ArrayList&lt;Tournament&gt; list of all tournaments
      */
     public ArrayList<Tournament> getTournamentsByLeagueId(int leagueId, Date fromDate, Date toDate){
         Iterable<Tournament> allTournaments = tournamentRepository.findAll();
@@ -241,7 +250,7 @@ public class TournamentService {
      *     it creates all games for the next round
      * </p>
      * @param tournamentId id of tournament
-     * @return ArrayList<Game> list of games for single elimination format
+     * @return ArrayList&lt;Game&gt; list of games for single elimination format
      */
     public ArrayList<Game> getSingleEliminationGames(int tournamentId){
         ArrayList<Game> gamesFound = getGamesByTournamentId(tournamentId);
@@ -270,8 +279,8 @@ public class TournamentService {
      *     that check is not needed here.
      * </p>
      * @param tournamentId int id of tournament
-     * @param prevRoundGames ArrayList<Game> list of all the games from the previous round
-     * @return ArrayList<Game> list of all games for the next round
+     * @param prevRoundGames ArrayList&lt;Game&gt; list of all the games from the previous round
+     * @return ArrayList&lt;Game&gt; list of all games for the next round
      */
     private ArrayList<Game> getNextSingleEliminationGames(int tournamentId, ArrayList<Game> prevRoundGames){
         ArrayList<Game> games = new ArrayList<>();
@@ -308,7 +317,7 @@ public class TournamentService {
      *     This is purely for aesthetics during rendering.
      * </p>
      * @param tournamentId int id of tournament
-     * @return ArrayList<Game> list of all games
+     * @return ArrayList&lt;Game&gt; list of all games
      */
     public ArrayList<Game> getFirstRoundSingleEliminationGames(int tournamentId){
         ArrayList<Game> games = new ArrayList<>();
@@ -341,7 +350,7 @@ public class TournamentService {
     /**
      * Takes an integer as parameter and generates that many placeholder games
      * @param amount int number of game sto generate
-     * @return ArrayList<Game> list of generated palceholder games
+     * @return ArrayList&lt;Game&gt; list of generated palceholder games
      */
     private ArrayList<Game> getPlaceholderGamesForSingleElim(int amount){
         ArrayList<Game> games = new ArrayList<>();
@@ -364,6 +373,11 @@ public class TournamentService {
         return (x & (x - 1)) == 0;
     }
 
+    /**
+     * Creates dummy players until the total amount is a power of two
+     * @param players list of players
+     * @return Set<Player> list of players with dummies
+     */
     private Set<Player> fillPlayerListUntilPowerOfTwo(Set<Player> players){
         while(!isPowerOfTwo(players.size())){
             Player tmp = new Player();
@@ -377,8 +391,8 @@ public class TournamentService {
 
     /**
      * Takes a list of games as parameter and return the players that won games in that round.
-     * @param round ArrayList<Game> list of games
-     * @return ArrayList<Player> list of player that won games
+     * @param round ArrayList&lt;Game&gt; list of games
+     * @return ArrayList&lt;Player&gt; list of player that won games
      */
     private ArrayList<Player> getWinnersFromSingleEliminationRound(ArrayList<Game>round){
         ArrayList<Player> players = new ArrayList<>();
@@ -395,7 +409,7 @@ public class TournamentService {
 
     /**
      * Takes a list of games as parameter and returns the lowest gameIdInTournament used.
-     * @param games ArrayList<Game> list of games
+     * @param games ArrayList&lt;Game&gt; list of games
      * @return int id lowest gameIdInTournament field in list
      */
     private int getLowestInternalGameId(ArrayList<Game> games){
@@ -410,8 +424,8 @@ public class TournamentService {
      * Takes a roundId/gameIdInTournament and a list of games
      * and returns only the games with that roundId/gameIdInTournament
      * @param roundId int roundId
-     * @param unfilteredGames ArrayList<Game> list of games
-     * @return ArrayList<Game> list of filtered games
+     * @param unfilteredGames ArrayList&lt;Game&gt; list of games
+     * @return ArrayList&lt;Game&gt; list of filtered games
      */
     private ArrayList<Game> filterGameListByInternalId(int roundId, ArrayList<Game> unfilteredGames){
         ArrayList<Game> games = new ArrayList<>();

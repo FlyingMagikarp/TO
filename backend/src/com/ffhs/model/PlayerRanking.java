@@ -1,6 +1,9 @@
 package com.ffhs.model;
 
 
+/**
+ * Data class for PlayerRankings
+ */
 public class PlayerRanking implements Comparable<PlayerRanking>{
     private int score;
     private Player player;

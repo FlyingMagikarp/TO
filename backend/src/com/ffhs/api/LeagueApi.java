@@ -20,8 +20,14 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="/league")
 public class LeagueApi {
+    /**
+     * Data Repository for league object
+     */
     @Autowired
     private LeagueRepository leagueRepository;
+    /**
+     * Service for leagues
+     */
     @Autowired
     private LeagueService leagueService;
 
@@ -61,7 +67,7 @@ public class LeagueApi {
 
     /**
      * Returns all leagues
-     * @return Iterable<League> list of all leagues
+     * @return Iterable&lt;League&gt; list of all leagues
      */
     @GetMapping(path="/all")
     public @ResponseBody Iterable<League> getAllLeagues(){
@@ -71,7 +77,7 @@ public class LeagueApi {
     /**
      * takes a leagueId as parameter and returns the found league model object
      * @param league_id int id of the league
-     * @return Optional<League> league model object
+     * @return Optional&lt;League&gt; league model object
      */
     @GetMapping(path="/getById")
     public @ResponseBody Optional<League> getSingleLeagueById(@RequestParam int league_id){
@@ -84,7 +90,7 @@ public class LeagueApi {
      * @param league_id int id of the league
      * @param fromDate Date
      * @param toDate Date
-     * @return ArrayList<PlayerRanking> Sorted list of players with their corresponding score
+     * @return ArrayList&lt;PlayerRanking&gt; Sorted list of players with their corresponding score
      */
     @GetMapping(path="/getLeagueRanking")
     public @ResponseBody ArrayList<PlayerRanking> getLeagueRanking(@RequestParam int league_id,

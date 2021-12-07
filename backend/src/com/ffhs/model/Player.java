@@ -19,7 +19,7 @@ public class Player {
     private boolean archived;
 
     /**
-     * Set<Tournament> Relation link to tournament
+     * Set&lt;Tournament&gt; Relation link to tournament
      */
     @ManyToMany(mappedBy = "players")
     @JsonBackReference

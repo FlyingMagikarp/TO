@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.ffhs"},{"l":"com.ffhs.api"},{"l":"com.ffhs.model"},{"l":"com.ffhs.repository"},{"l":"com.ffhs.services"}];updateSearchResults();

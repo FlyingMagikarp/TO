@@ -21,10 +21,19 @@ import java.util.Set;
 @RequestMapping(path="/tournament")
 @Transactional
 public class TournamentApi {
+    /**
+     * Data Repository for tournament object
+     */
     @Autowired
     private TournamentRepository tournamentRepository;
+    /**
+     * Service for tournaments
+     */
     @Autowired
     private TournamentService tournamentService;
+    /**
+     * Data Repository for game object
+     */
     @Autowired
     private GameRepository gameRepository;
 
@@ -83,7 +92,7 @@ public class TournamentApi {
 
     /**
      * Returns all Tournaments
-     * @return Iterable<Tournament> list of all tournaments
+     * @return Iterable&lt;Tournament&gt; list of all tournaments
      */
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Tournament> getAllTournaments(){
@@ -94,7 +103,7 @@ public class TournamentApi {
     /**
      * takes a tournamentId as parameter and returns the found tournament model object
      * @param tournamentId int id of the tournament
-     * @return Optional<Tournament> tournament model object
+     * @return Optional&lt;Tournament&gt; tournament model object
      */
     @GetMapping(path="/getById")
     public @ResponseBody Optional<Tournament> getSingleTournamentById(@RequestParam int tournamentId){
@@ -105,7 +114,7 @@ public class TournamentApi {
      * takes a tournamentId as parameter and returns(and if necessary creates)
      * all games for the round robin format
      * @param tournamentId int id of the tournament
-     * @return ArrayList<Game> list of all the games
+     * @return ArrayList&lt;Game&gt; list of all the games
      */
     @GetMapping(path="/getMatchesRoundRobin")
     public @ResponseBody ArrayList<Game> getMatchesForRoundRobin(@RequestParam int tournamentId){
@@ -126,7 +135,7 @@ public class TournamentApi {
     /**
      * takes a tournamentId as parameter and creates and returns the ranking of a tournament
      * @param tournamentId int id of the tournament
-     * @return ArrayList<PlayerRanking> Sorted list of players with their corresponding score
+     * @return ArrayList&lt;PlayerRanking&gt; Sorted list of players with their corresponding score
      */
     @GetMapping(path="/getRoundRobinPlayerRanking")
     public @ResponseBody ArrayList<PlayerRanking> getRoundRobinPlayerRanking(@RequestParam int tournamentId){
@@ -137,7 +146,7 @@ public class TournamentApi {
      * takes a tournamentId as parameter and returns(and if necessary creates)
      * all games for the single elimination format
      * @param tournamentId int id of the tournament
-     * @return ArrayList<Game> list of all the games
+     * @return ArrayList&lt;Game&gt; list of all the games
      */
     @GetMapping(path="/getMatchesSingleElim")
     public @ResponseBody ArrayList<Game> getMatchesForSingleElimination(@RequestParam int tournamentId){

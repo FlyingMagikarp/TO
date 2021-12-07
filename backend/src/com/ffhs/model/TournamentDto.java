@@ -68,14 +68,14 @@ public class TournamentDto {
     }
 
     /**
-     * @return ArrayList<Player> returns a list of all playerIds
+     * @return ArrayList&lt;Player&gt; returns a list of all playerIds
      */
     public ArrayList<String> getPlayerIds() {
         return playerIds;
     }
 
     /**
-     * @return ArrayList<String> returns a ranked list of players
+     * @return ArrayList&lt;String&gt; returns a ranked list of players
      */
     public ArrayList<String> getRankedPlayers() {
         return rankedPlayers;
@@ -131,7 +131,7 @@ public class TournamentDto {
 
     /**
      * Sets the playerIds list
-     * @param playerIds ArrayList<String>
+     * @param playerIds ArrayList&lt;String&gt;
      */
     public void setPlayerIds(ArrayList<String> playerIds) {
         this.playerIds = playerIds;
@@ -139,7 +139,7 @@ public class TournamentDto {
 
     /**
      * sets the list of ranked players
-     * @param rankedPlayers ArrayList<String>
+     * @param rankedPlayers ArrayList&lt;String&gt;
      */
     public void setRankedPlayers(ArrayList<String> rankedPlayers) {
         this.rankedPlayers = rankedPlayers;

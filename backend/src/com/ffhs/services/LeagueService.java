@@ -16,8 +16,14 @@ import java.util.stream.Collectors;
  */
 @Service
 public class LeagueService {
+    /**
+     * Data repository for leagues
+     */
     @Autowired
     LeagueRepository leagueRepository;
+    /**
+     * Service for tournaments
+     */
     @Autowired
     TournamentService tournamentService;
 
@@ -27,7 +33,7 @@ public class LeagueService {
      * @param leagueId int id of the league
      * @param fromDate Date
      * @param toDate Date
-     * @return ArrayList<PlayerRanking> Sorted list of players with their corresponding score
+     * @return ArrayList&lt;PlayerRanking&gt; Sorted list of players with their corresponding score
      */
     public ArrayList<PlayerRanking> getLeagueRanking(int leagueId, Date fromDate, Date toDate){
         ArrayList<Tournament> tournaments = tournamentService.getTournamentsByLeagueId(leagueId, fromDate, toDate);
@@ -52,8 +58,8 @@ public class LeagueService {
      *     This formula scales with total entrants so winners of large tournaments
      *     get more points than winners of small ones
      * </p>
-     * @param allRankings ArrayList<ArrayList<PlayerRanking>> List of tournament rankings
-     * @return ArrayList<PlayerRanking> list of players with their score within the league
+     * @param allRankings ArrayList&lt;ArrayList&lt;PlayerRanking&gt;&gt; List of tournament rankings
+     * @return ArrayList&lt;PlayerRanking&gt; list of players with their score within the league
      */
     private ArrayList<PlayerRanking> calculateLeagueRanking(ArrayList<ArrayList<PlayerRanking>> allRankings){
         ArrayList<PlayerRanking> allPlayersRanking = getAllPlayersFromRankingList(allRankings);
@@ -81,8 +87,8 @@ public class LeagueService {
 
     /**
      * Takes a list of tournament results and returns a list of playerRankings without duplicates
-     * @param allRankings ArrayList<ArrayList<PlayerRanking>> List of tournament rankings
-     * @return ArrayList<PlayerRanking> playerRanking list without duplicates
+     * @param allRankings ArrayList&lt;ArrayList&lt;PlayerRanking&gt;&gt; List of tournament rankings
+     * @return ArrayList&lt;PlayerRanking&gt; playerRanking list without duplicates
      */
     private ArrayList<PlayerRanking> getAllPlayersFromRankingList(ArrayList<ArrayList<PlayerRanking>> allRankings){
         ArrayList<PlayerDto> allPlayers = new ArrayList<>();

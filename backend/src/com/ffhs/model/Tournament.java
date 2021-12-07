@@ -35,7 +35,7 @@ public class Tournament {
     private boolean archived;
 
     /**
-     * Set<Player> Relation link to player
+     * Set&lt;Player&gt; Relation link to player
      */
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
@@ -89,7 +89,7 @@ public class Tournament {
     }
 
     /**
-     * @return ArrayList<String> returns a ranked list of players
+     * @return ArrayList&lt;String&gt; returns a ranked list of players
      */
     public ArrayList<String> getRankedPlayers() {
         return rankedPlayers;
@@ -145,7 +145,7 @@ public class Tournament {
 
     /**
      * sets the list of ranked players
-     * @param rankedPlayers ArrayList<String>
+     * @param rankedPlayers ArrayList&lt;String&gt;
      */
     public void setRankedPlayers(ArrayList<String> rankedPlayers) {
         this.rankedPlayers = rankedPlayers;
@@ -182,7 +182,7 @@ public class Tournament {
     }
 
     /**
-     * @return Set<Player> returns a set of all players
+     * @return Set&lt;Player&gt; returns a set of all players
      */
     public Set<Player> getPlayers(){
         return players;
@@ -190,7 +190,7 @@ public class Tournament {
 
     /**
      * Sets the player set
-     * @param players Set<Player>
+     * @param players Set&lt;Player&gt;
      */
     public void setPlayers(Set<Player> players){
         this.players = players;

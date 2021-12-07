@@ -12,13 +12,16 @@ import java.util.Optional;
  */
 @Service
 public class PlayerService {
+    /**
+     * Data repository for player
+     */
     @Autowired
     private PlayerRepository playerRepository;
 
     /**
      * Takes a player guid as parameter and returns the found player model object
      * @param guid String guid of a player
-     * @return Optional<Player> Player model object
+     * @return Optional&lt;Player&gt; Player model object
      */
     public Optional<Player> getPlayerObjectById(String guid){
         return playerRepository.findById(guid);

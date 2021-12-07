@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ToBackendApplication {
 
 	/**
-	 * @param args
+	 * @param args args
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(ToBackendApplication.class, args);

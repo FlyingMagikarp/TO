@@ -16,6 +16,9 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="/player")
 public class PlayerApi {
+    /**
+     * Data Repository for player object
+     */
     @Autowired
     private PlayerRepository playerRepository;
 
@@ -51,7 +54,7 @@ public class PlayerApi {
 
     /**
      * Returns all players
-     * @return Iterable<Player> list of all players
+     * @return Iterable&lt;Player&gt; list of all players
      */
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Player> getAllPlayers() {
@@ -61,7 +64,7 @@ public class PlayerApi {
     /**
      * takes a playerId(guid) as parameter and returns the found player model object
      * @param guid String guid of the player
-     * @return Optional<Player> player model object
+     * @return Optional&lt;Player&gt; player model object
      */
     @GetMapping(path="/getById")
     public @ResponseBody Optional<Player> getSinglePlayerById(@RequestParam String guid) {
