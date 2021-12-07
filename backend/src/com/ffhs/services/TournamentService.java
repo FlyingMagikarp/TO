@@ -172,4 +172,130 @@ public class TournamentService {
         return null;
     }
 
+    public ArrayList<Game> getSingleEliminationGames(int tournamentId){
+        ArrayList<Game> gamesFound = getGamesByTournamentId(tournamentId);
+        Set<Player> allPlayer = tournamentRepository.findById(tournamentId).get().getPlayers();
+
+        int roundId = getLowestInternalGameId(gamesFound);
+        ArrayList<Game> prevRoundGames = filterGameListByInternalId(roundId, gamesFound);
+
+        if (gamesFound.size() == allPlayer.size()-1){
+            return gamesFound;
+        } else if(gamesFound.size() > 0){
+            gamesFound.addAll(getNextSingleEliminationGames(tournamentId, prevRoundGames));
+            return gamesFound;
+        }
+        return getFirstRoundSingleEliminationGames(tournamentId);
+    }
+
+    private ArrayList<Game> getNextSingleEliminationGames(int tournamentId, ArrayList<Game> prevRoundGames){
+        ArrayList<Game> games = new ArrayList<>();
+        ArrayList<Player> winners = getWinnersFromSingleEliminationRound(prevRoundGames);
+
+        for (int i = 0, j = winners.size()/2;i<winners.size()/2;i++,j++){
+            Game g = new Game();
+            g.setTournamentId(tournamentId);
+            g.setGameIdInTournament(winners.size());
+            g.setP1Id(winners.get(i).getGuid());
+            g.setP2Id(winners.get(j).getGuid());
+
+            games.add(g);
+        }
+        int tmp = winners.size()/4;
+        while(tmp >= 1){
+            games.addAll(getPlaceholderGamesForSingleElim(tmp));
+            tmp = tmp/2;
+        }
+
+        return games;
+    }
+
+    public ArrayList<Game> getFirstRoundSingleEliminationGames(int tournamentId){
+        ArrayList<Game> games = new ArrayList<>();
+
+        Tournament tournament = tournamentRepository.findById(tournamentId).get();
+        if (!isPowerOfTwo(tournament.getPlayers().size())){
+            tournament.setPlayers(fillPlayerListUntilPowerOfTwo(tournament.getPlayers()));
+        }
+
+        ArrayList<Player> players = new ArrayList<>(tournament.getPlayers());
+
+        for (int i = 0, j = players.size()/2;i<players.size()/2;i++,j++){
+            Game g = new Game();
+            g.setTournamentId(tournamentId);
+            g.setGameIdInTournament(players.size());
+            g.setP1Id(players.get(i).getGuid());
+            g.setP2Id(players.get(j).getGuid());
+
+            games.add(g);
+        }
+        int tmp = players.size()/4;
+        while(tmp >= 1){
+            games.addAll(getPlaceholderGamesForSingleElim(tmp));
+            tmp = tmp/2;
+        }
+
+        return games;
+    }
+
+    private ArrayList<Game> getPlaceholderGamesForSingleElim(int amount){
+        ArrayList<Game> games = new ArrayList<>();
+        for(int i = 0; i<amount;i++){
+            Game g = new Game();
+            g.setTournamentId(-1);
+            g.setP1Id("TBD");
+            g.setP2Id("TBD");
+            games.add(g);
+        }
+        return games;
+    }
+
+    private boolean isPowerOfTwo(int x){
+        return (x & (x - 1)) == 0;
+    }
+
+    private Set<Player> fillPlayerListUntilPowerOfTwo(Set<Player> players){
+        while(!isPowerOfTwo(players.size())){
+            Player tmp = new Player();
+            tmp.setTag("Bye");
+            tmp.setGuid("Bye");
+            players.add(tmp);
+        }
+
+        return players;
+    }
+
+    private ArrayList<Player> getWinnersFromSingleEliminationRound(ArrayList<Game>round){
+        ArrayList<Player> players = new ArrayList<>();
+        for(Game g : round){
+            if(g.getP1Score()>g.getP2Score()){
+                players.add(playerService.getPlayerObjectById(g.getP1Id()).get());
+            } else {
+                players.add(playerService.getPlayerObjectById(g.getP2Id()).get());
+            }
+        }
+
+        return players;
+    }
+
+    private int getLowestInternalGameId(ArrayList<Game> games){
+        int id = 100;
+        for (Game g : games){
+            id = Math.min(id, g.getGameIdInTournament());
+        }
+        return id;
+    }
+
+    private ArrayList<Game> filterGameListByInternalId(int roundId, ArrayList<Game> unfilteredGames){
+        ArrayList<Game> games = new ArrayList<>();
+
+        for (Game g : unfilteredGames){
+            if (g.getGameIdInTournament() == roundId){
+                games.add(g);
+            }
+        }
+
+        return games;
+    }
+
 }

@@ -14,6 +14,7 @@ import EditTournamentScreen from "./modules/tournaments/components/EditTournamen
 import PlayerOverviewScreen from "./modules/player/components/PlayerOverviewScreen";
 import EditPlayerScreen from "./modules/player/components/EditPlayerScreen";
 import RoundRobinScreen from "./modules/tournaments/components/RoundRobinScreen";
+import SingleElimScreen from "./modules/tournaments/components/SingleElimScreen";
 
 
 const rootStore = RootStore.getInstance();
@@ -38,6 +39,7 @@ function startApplication() {
                     <Route path="/player/edit/:id" element={<EditPlayerScreen mode={"edit"}/>} />
 
                     <Route path="/tournament/roundRobin/:id" element={<RoundRobinScreen/>} />
+                    <Route path="/tournament/singleElim/:id" element={<SingleElimScreen/>} />
                 </Routes>
             </BrowserRouter>
         </>,

@@ -1,9 +1,6 @@
 package com.ffhs.api;
 
-import com.ffhs.model.Player;
-import com.ffhs.model.PlayerRanking;
-import com.ffhs.model.Tournament;
-import com.ffhs.model.TournamentDto;
+import com.ffhs.model.*;
 import com.ffhs.repository.TournamentRepository;
 import com.ffhs.services.TournamentService;
 import org.junit.jupiter.api.Test;
@@ -89,6 +86,13 @@ class TournamentApiTest {
     @Test
     void testRanking(){
         ArrayList<PlayerRanking> pr = tournamentService.getRoundRobinRanking(38);
+    }
+
+    @Test
+    void testSingleElim(){
+        //ArrayList<Game> games = tournamentService.getFirstRoundSingleEliminationGames(279);
+        ArrayList<Game> games = tournamentService.getFirstRoundSingleEliminationGames(280);
+        System.out.println("");
     }
 
 }

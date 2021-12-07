@@ -38,6 +38,16 @@ const TournamentService = {
     async getRoundRobinPlayerRanking(tournamentId:number): Promise<any>{
         const result = await axios.get(Constants.C_API_BASEURL + 'tournament/getRoundRobinPlayerRanking', {params: {tournamentId: tournamentId}});
         return result.data;
+    },
+
+    async getSingleEliminationGames(tournamentId:number): Promise<any>{
+        const result = await axios.get(Constants.C_API_BASEURL + 'tournament/getMatchesSingleElim', {params: {tournamentId: tournamentId}});
+        return result.data;
+    },
+
+    async saveSingleEliminationScore(games:Game[]): Promise<any>{
+        const result = await axios.post(Constants.C_API_BASEURL + 'tournament/updateSingleElim', games);
+        return result.data;
     }
 };
 

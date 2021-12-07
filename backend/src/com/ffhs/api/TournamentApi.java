@@ -83,11 +83,9 @@ public class TournamentApi {
         return tournamentService.getRoundRobinGames(tournamentId);
     }
 
-    @PostMapping(path="updateRoundRobin", consumes = "application/json")
+    @PostMapping(path="/updateRoundRobin", consumes = "application/json")
     public @ResponseBody void saveRoundRobinScore(@RequestBody ArrayList<Game> games){
         for(Game g : games){
-            Game game = new Game();
-            //tournamentService.saveRoundRobinScoreSingleGame(g);
             gameRepository.save(g);
         }
     }
@@ -95,6 +93,23 @@ public class TournamentApi {
     @GetMapping(path="/getRoundRobinPlayerRanking")
     public @ResponseBody ArrayList<PlayerRanking> getRoundRobinPlayerRanking(@RequestParam int tournamentId){
         return tournamentService.getRoundRobinRanking(tournamentId);
+    }
+
+    @GetMapping(path="/getMatchesSingleElim")
+    public @ResponseBody ArrayList<Game> getMatchesForSingleElimination(@RequestParam int tournamentId){
+        return tournamentService.getSingleEliminationGames(tournamentId);
+    }
+
+    @PostMapping(path="/updateSingleElim", consumes = "application/json")
+    public @ResponseBody ArrayList<Game> saveSingleElimScore(@RequestBody ArrayList<Game> games){
+        for(Game g : games){
+            if("TBD".equals(g.getP1Id()) || "TBD".equals(g.getP2Id())){
+                continue;
+            }
+            gameRepository.save(g);
+        }
+
+        return tournamentService.getSingleEliminationGames(games.get(0).getTournamentId());
     }
 
 }

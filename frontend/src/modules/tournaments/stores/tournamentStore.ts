@@ -15,6 +15,8 @@ export default class TournamentStore {
     @observable public currentTournament: Tournament = new Tournament();
     @observable public roundRobinMatches: Game[] = [];
     @observable public roundRobinRanking: IPlayerRankingTournament[] = [];
+    @observable public singleElimMatches: Game[] = [];
+    @observable public singleElimRanking: IPlayerRankingTournament[] = [];
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
@@ -90,6 +92,32 @@ export default class TournamentStore {
 
     @action
     public async getRoundRobinPlayerRanking(tournamentId:number){
+        this.pendingRequestsCount++;
+        await TournamentService.getRoundRobinPlayerRanking(tournamentId).then((result) => {
+            this.roundRobinRanking = result;
+            this.pendingRequestsCount--;
+        });
+        return this.roundRobinRanking;
+    }
+
+    @action
+    public async getSingleEliminationGames(tournamentId:number){
+        this.pendingRequestsCount++;
+        await TournamentService.getSingleEliminationGames(tournamentId).then((result) => {
+            this.singleElimMatches = result;
+            this.pendingRequestsCount--;
+        });
+        return this.singleElimMatches;
+    }
+
+    @action
+    public async saveSingleEliminationScore(games:Game[]){
+        this.pendingRequestsCount++;
+        await TournamentService.saveSingleEliminationScore(games).then(() => {this.pendingRequestsCount--;});
+    }
+
+    @action
+    public async getSingleElimPlayerRanking(tournamentId:number){
         this.pendingRequestsCount++;
         await TournamentService.getRoundRobinPlayerRanking(tournamentId).then((result) => {
             this.roundRobinRanking = result;
