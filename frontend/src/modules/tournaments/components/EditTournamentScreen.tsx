@@ -216,9 +216,12 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                             setLeagueId(parseInt(event.target.value))
                                         }}>
                                 {leagues.map((league, i) => {
-                                    return (
-                                        <FormControlLabel value={league.league_id ?? 0} control={<Radio/>} label={league.name} checked={leagueId === league.league_id} disabled={tournament.finished} key={i}/>
-                                    );
+                                        return (
+                                            <FormControlLabel value={league.league_id ?? 0} control={<Radio/>}
+                                                              label={league.name}
+                                                              checked={leagueId === league.league_id}
+                                                              disabled={league.archived} key={i}/>
+                                        );
                                 })}
                             </RadioGroup>
                             </Paper>
@@ -235,7 +238,7 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                                 { playersWithSelected.map((player, i) => {
                                     return (
                                         <FormControlLabel value={player.player.guid ?? ""} control={<Checkbox checked={player.selected}/>}
-                                                          label={player.player.tag} onChange={handlePlayersChange} disabled={tournament.finished} key={i}/>
+                                                          label={player.player.tag} onChange={handlePlayersChange} disabled={player.player.archived} key={i}/>
                                     )
                                 })}
                             </FormGroup>
