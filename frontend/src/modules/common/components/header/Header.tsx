@@ -14,6 +14,9 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
+/**
+ * Header component with navigation, paths are in the index.tsx file
+ */
 const Header = observer(() => {
     const classes = useStyles();
 

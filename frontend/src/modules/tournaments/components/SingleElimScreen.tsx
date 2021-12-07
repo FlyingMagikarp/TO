@@ -17,17 +17,35 @@ export const useStyles = makeStyles(() => createStyles({
     }
 }));
 
+/**
+ * Single elimination component
+ * Displays a single elimination tournament. All games are displayed and can be tracked/edited here.
+ * The ranking is also displayed here.
+ */
 const SingleElimScreen = observer(() => {
     const {tournamentStore} = useContext(StoreContext);
     const classes = useStyles();
 
+    /**
+     * data states
+     */
     const [tournament, setTournament] = useState(new Tournament());
     const [games, setGames] = useState<Game[]>([]);
     const [playerRanking, setPlayerRanking] = useState<IPlayerRankingTournament[]>([]);
+
+    /**
+     * display states
+     */
     const [openSnack, setOpenSnack] = React.useState(false);
 
+    /**
+     * URL param
+     */
     let {id} = useParams();
 
+    /**
+     * Loads tournament and game data
+     */
     useEffect(() => {
         if (id && id !== "") {
             tournamentStore.getTournamentById(+id).then((data) => {
@@ -44,6 +62,9 @@ const SingleElimScreen = observer(() => {
         }
     }, [tournamentStore, id]);
 
+    /**
+     * Selected data state change handlers
+     */
     const handleScoreChange = (event,i,playerNr) => {
         let values = [...games];
         if(playerNr==='p1'){
@@ -54,6 +75,11 @@ const SingleElimScreen = observer(() => {
         setGames(values);
     };
 
+    /**
+     * Takes a player guid and returns the corresponding player object
+     * 'TBD' players are placeholders
+     * @param guid
+     */
     const getPlayerTagById = (guid:string|undefined) => {
         if (guid==='TBD'){return 'TBD'}
         if(tournament.players){
@@ -64,6 +90,9 @@ const SingleElimScreen = observer(() => {
         }
     };
 
+    /**
+     * Display state change handlers
+     */
     const handleClickSnack = () => {
         setOpenSnack(true);
     };
@@ -72,10 +101,16 @@ const SingleElimScreen = observer(() => {
         setOpenSnack(false);
     };
 
+    /**
+     * Submit handler
+     */
     const handleSubmit = () => {
         tournamentStore.saveSingleEliminationScore(games).then(() => handleClickSnack());
     };
 
+    /**
+     * Calculates after which game the round ends so a separator can be rendered
+     */
     const calcSeparators = () => {
       let gamesTotal = games.length+1;
       let separators = [] as number[];
@@ -91,6 +126,10 @@ const SingleElimScreen = observer(() => {
       return separators;
     };
 
+    /**
+     * Takes a number and checks if it is in the separator array
+     * @param nr
+     */
     const isNumberSeparator = (nr:number) => {
         return calcSeparators().find(n => n===nr);
     };

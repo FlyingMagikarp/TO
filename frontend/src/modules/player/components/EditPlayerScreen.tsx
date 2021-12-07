@@ -12,18 +12,35 @@ type EditPlayerScreenProps = {
     mode: "add" | "edit",
 }
 
+/**
+ * Edit player component
+ * Displays player data and can be used to edit it.
+ *
+ * Can be used to create new players if mode 'add' is set.
+ */
 const EditPlayerScreen = observer(({mode}: EditPlayerScreenProps) => {
     const {playerStore} = useContext(StoreContext);
 
-    //data states
+    /**
+     * data states
+     */
     const [tag, setTag] = useState("");
     const [guid, setGuid] = useState("");
     const [archived, setArchived] = useState(false);
 
+    /**
+     * display states
+     */
     const [openSnack, setOpenSnack] = React.useState(false);
 
+    /**
+     * URL param
+     */
     let {id} = useParams();
 
+    /**
+     * Loads player data
+     */
     useEffect(() => {
         if (mode === "edit"){
             let playerId: string = id ? id : "";
@@ -35,14 +52,9 @@ const EditPlayerScreen = observer(({mode}: EditPlayerScreenProps) => {
         }
     }, [playerStore, mode, id]);
 
-    const handleClickSnack = () => {
-        setOpenSnack(true);
-    };
-
-    const handleCloseSnack = () => {
-        setOpenSnack(false);
-    };
-
+    /**
+     * Submit handler
+     */
     const handleSubmit = () => {
         if (mode === "add"){
             playerStore.saveNewPlayer(tag);
@@ -51,6 +63,17 @@ const EditPlayerScreen = observer(({mode}: EditPlayerScreenProps) => {
             playerStore.updatePlayer(guid, tag, archived);
             handleClickSnack();
         }
+    };
+
+    /**
+     * Display state change handlers
+     */
+    const handleClickSnack = () => {
+        setOpenSnack(true);
+    };
+
+    const handleCloseSnack = () => {
+        setOpenSnack(false);
     };
 
     return (

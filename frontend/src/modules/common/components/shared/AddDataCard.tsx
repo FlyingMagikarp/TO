@@ -23,6 +23,9 @@ type AddDataCardProps = {
     component: string
 }
 
+/**
+ * Component for the 'Add xyz' Cards
+ */
 const AddDataCard = observer(({ component}: AddDataCardProps) => {
     const classes = useStyles();
 

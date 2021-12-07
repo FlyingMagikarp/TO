@@ -22,6 +22,12 @@ type DisplayCardProps = {
     location?: string
 }
 
+/**
+ * Component for the display cards.
+ * @param name:string First line displayed
+ * @param sport:string Second line displayed
+ * @param locaaation:string Third line displayed
+ */
 const DisplayCard = observer(({ name, sport, location}: DisplayCardProps) => {
     const classes = useStyles();
 

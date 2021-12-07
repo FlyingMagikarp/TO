@@ -16,7 +16,10 @@ import EditPlayerScreen from "./modules/player/components/EditPlayerScreen";
 import RoundRobinScreen from "./modules/tournaments/components/RoundRobinScreen";
 import SingleElimScreen from "./modules/tournaments/components/SingleElimScreen";
 
-
+/**
+ * root of the application
+ * contains all path for routing
+ */
 const rootStore = RootStore.getInstance();
 
 export const StoreContext = React.createContext<RootStore>(rootStore);

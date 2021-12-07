@@ -9,17 +9,34 @@ import Button from "@mui/material/Button";
 import Game from "../stores/models/game";
 import {IPlayerRankingTournament, } from "../../common/apiTypings";
 
-
+/**
+ * Round robin component
+ * Displays a round robin tournament. All games are displayed and can be tracked/edited here.
+ * The ranking is also displayed here.
+ */
 const RoundRobinScreen = observer(() => {
     const {tournamentStore} = useContext(StoreContext);
 
+    /**
+     * data states
+     */
     const [tournament, setTournament] = useState(new Tournament());
     const [games, setGames] = useState<Game[]>([]);
     const [playerRanking, setPlayerRanking] = useState<IPlayerRankingTournament[]>([]);
+
+    /**
+     * display states
+     */
     const [openSnack, setOpenSnack] = React.useState(false);
 
+    /**
+     * URL param
+     */
     let {id} = useParams();
 
+    /**
+     * Loads tournament and game data
+     */
     useEffect(() => {
         if (id && id !== "") {
             tournamentStore.getTournamentById(+id).then((data) => {
@@ -36,6 +53,9 @@ const RoundRobinScreen = observer(() => {
         }
     }, [tournamentStore, id]);
 
+    /**
+     * Selected data state change handlers
+     */
     const handleScoreChange = (event,i,playerNr) => {
         let values = [...games];
         if(playerNr==='p1'){
@@ -46,6 +66,10 @@ const RoundRobinScreen = observer(() => {
         setGames(values);
     };
 
+    /**
+     * Takes a player guid and returns the corresponding player object
+     * @param guid
+     */
     const getPlayerTagById = (guid:string|undefined) => {
         if(tournament.players){
             let playerFound =  tournament.players.find(obj => {
@@ -55,6 +79,9 @@ const RoundRobinScreen = observer(() => {
         }
     };
 
+    /**
+     * Display state change handlers
+     */
     const handleClickSnack = () => {
         setOpenSnack(true);
     };
@@ -63,6 +90,9 @@ const RoundRobinScreen = observer(() => {
         setOpenSnack(false);
     };
 
+    /**
+     * Submit handler
+     */
     const handleSubmit = () => {
         tournamentStore.saveRoundRobinScore(games).then(() => handleClickSnack());
     };
@@ -87,6 +117,7 @@ const RoundRobinScreen = observer(() => {
                                     <Grid item key={i}>
                                         <div key={i}>
                                             <Typography>Game: {g.gameIdInTournament}</Typography>
+                                            <p></p>
                                             <TextField  label={getPlayerTagById(g.p1Id)} value={g.p1Score}
                                                         InputLabelProps={{ shrink: true, }} onChange={(event) => handleScoreChange(event, i, 'p1')}/>
                                             <p></p>

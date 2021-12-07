@@ -17,18 +17,28 @@ export const useStyles = makeStyles(() => createStyles({
     }
 }));
 
-
+/**
+ * Player overview component
+ * Displays all player and has an option to create new ones.
+ * Both cards link to the edit screen
+ * Add card with mode 'add'
+ * All other card with mode 'edit'
+ */
 const PlayerOverviewScreen = observer(() => {
     const {playerStore} = useContext(StoreContext);
     const classes = useStyles();
 
     const [players, setPlayers] = useState([] as IPlayerSelected[]);
 
+    /**
+     * Loads all players for display
+     */
     useEffect(() => {
         playerStore.getAllPlayers().then(data => {
             setPlayers(data);
         });
     }, [playerStore]);
+
 
     return (
         <>

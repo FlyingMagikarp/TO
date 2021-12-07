@@ -4,6 +4,9 @@ import LeagueService from "../services/leagueService";
 import League from "./models/league";
 import {IPlayerRankingTournament} from "../../common/apiTypings";
 
+/**
+ * Handles all logic for leagues
+ */
 export default class LeagueStore {
     public static storeName: string = 'leagueStore';
 
@@ -18,6 +21,9 @@ export default class LeagueStore {
         this.rootStore = rootStore;
     }
 
+    /**
+     * Returns all leagues
+     */
     @action
     public async getAllLeagues(){
         this.pendingRequestsCount++;
@@ -28,6 +34,10 @@ export default class LeagueStore {
         return this.leagues;
     }
 
+    /**
+     * Takes a leagueId and returns the league data
+     * @param leagueId
+     */
     @action
     public async getLeagueById(leagueId:number){
         this.pendingRequestsCount++;
@@ -38,6 +48,14 @@ export default class LeagueStore {
         return this.currentLeague;
     }
 
+    /**
+     * Takes league data, creates a league object and calls the service function to update it
+     * @param name
+     * @param sport
+     * @param location
+     * @param archived
+     * @param league_id
+     */
     @action
     public async updateLeague(name:string, sport:string, location:string, archived:boolean, league_id?:number){
         let league = new League();
@@ -51,6 +69,12 @@ export default class LeagueStore {
         await LeagueService.updateLeague(league).then(() => {this.pendingRequestsCount--})
     }
 
+    /**
+     * Takes league data, creates a league object and calls the service function to persist it
+     * @param name
+     * @param sport
+     * @param location
+     */
     @action
     public async saveNewLeague(name:string, sport:string, location:string){
         let league = new League();
@@ -65,6 +89,12 @@ export default class LeagueStore {
 
     }
 
+    /**
+     * Takes a leagueId, fromDate and toDate and calls the service function to get the league ranking
+     * @param leagueId
+     * @param fromDate
+     * @param toDate
+     */
     @action
     public async getLeagueRanking(leagueId:number, fromDate:Date, toDate:Date){
         this.pendingRequestsCount++;

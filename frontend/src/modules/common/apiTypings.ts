@@ -2,6 +2,10 @@ import player from "../player/stores/models/player";
 import tournament from "../tournaments/stores/models/tournament";
 import game from "../tournaments/stores/models/game";
 
+/**
+ * Types used to map API returns
+ */
+
 export interface ILeagueData {
     league_id: number,
     name: string,
@@ -45,11 +49,6 @@ export interface IGame {
     p2Id: string,
     p1Score: number,
     p2Score: number
-}
-
-export interface IRoundRobinRound {
-    roundNr: number,
-    games: game
 }
 
 export interface IPlayerRankingTournament {

@@ -18,12 +18,22 @@ export const useStyles = makeStyles(() => createStyles({
 }));
 
 
+/**
+ * League overview component
+ * Displays all leagues and has an option to create new ones.
+ * Both cards link to the edit screen
+ * Add card with mode 'add'
+ * All other card with mode 'edit'
+ */
 const LeagueOverviewScreen = observer(() => {
     const {leagueStore} = useContext(StoreContext);
     const classes = useStyles();
 
     const [leagues, setLeagues] = useState([] as League[]);
 
+    /**
+     * Loads all leagues for display
+     */
     useEffect(() => {
         leagueStore.getAllLeagues().then(data => {
             setLeagues(data);

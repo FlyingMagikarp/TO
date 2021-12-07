@@ -1,11 +1,13 @@
 import { configure } from 'mobx';
-import uiStore from "./modules/common/stores/uiStore";
 import leagueStore from "./modules/leagues/stores/leagueStore";
 import tournamentStore from "./modules/tournaments/stores/tournamentStore";
 import playerStore from "./modules/player/stores/playerStore";
 
 configure({ enforceActions: 'observed' });
 
+/**
+ * Contains and initializes all stores
+ */
 export default class RootStore {
 
     public static storeName: string = 'rootStore';
@@ -19,14 +21,11 @@ export default class RootStore {
 
     private static instance: RootStore;
 
-    public uiStore: uiStore;
     public leagueStore: leagueStore;
     public tournamentStore: tournamentStore;
     public playerStore: playerStore;
 
-
     private constructor() {
-        this.uiStore = new uiStore(this);
         this.leagueStore = new leagueStore(this);
         this.tournamentStore = new tournamentStore(this);
         this.playerStore = new playerStore(this);

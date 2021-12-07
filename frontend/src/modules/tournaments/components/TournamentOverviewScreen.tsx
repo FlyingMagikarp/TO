@@ -17,13 +17,22 @@ export const useStyles = makeStyles(() => createStyles({
     }
 }));
 
-
+/**
+ * Tournament overview component
+ * Displays all tournaments and has an option to create new ones.
+ * Both cards link to the edit screen
+ * Add card with mode 'add'
+ * All other card with mode 'edit'
+ */
 const TournamentOverviewScreen = observer(() => {
     const {tournamentStore} = useContext(StoreContext);
     const classes = useStyles();
 
     const [tournaments, setTournaments] = useState([] as Tournament[]);
 
+    /**
+     * Loads all tournaments for display
+     */
     useEffect(() => {
         tournamentStore.getAllTournaments().then(data => {
             setTournaments(data);

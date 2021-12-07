@@ -5,6 +5,9 @@ import PlayerService from "../services/playerService";
 import {IPlayerSelected} from "../../common/apiTypings";
 
 
+/**
+ * Handles all logic for players
+ */
 export default class PlayerStore {
     public static storeName: string = 'playerStore';
 
@@ -19,6 +22,9 @@ export default class PlayerStore {
         this.rootStore = rootStore;
     }
 
+    /**
+     * Returns all players
+     */
     @action
     public async getAllPlayers(){
         this.pendingRequestsCount++;
@@ -34,6 +40,10 @@ export default class PlayerStore {
         return this.playersWithSelected;
     }
 
+    /**
+     * Takes a playerId and returns the player data
+     * @param playerId
+     */
     @action
     public async getPlayerById(playerId:string){
         this.pendingRequestsCount++;
@@ -44,6 +54,10 @@ export default class PlayerStore {
         return this.currentPlayer;
     }
 
+    /**
+     * Takes player data, creates an object and calls the service function to persist it
+     * @param tag
+     */
     @action
     public async saveNewPlayer(tag:string){
         let p = new Player();
@@ -53,6 +67,12 @@ export default class PlayerStore {
         await PlayerService.saveNewPlayer(p).then(() => {this.pendingRequestsCount--});
     }
 
+    /**
+     * Takes player data, creates an object and calls the service function to update it
+     * @param guid
+     * @param tag
+     * @param archived
+     */
     @action
     public async updatePlayer(guid: string, tag:string, archived:boolean){
         let p = new Player();

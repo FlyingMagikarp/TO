@@ -15,10 +15,19 @@ type EditLeagueScreenProps = {
 }
 
 
+/**
+ * Edit league component
+ * Displays league data and can be used to edit it.
+ * League ranking is also displayed here.
+ *
+ * Can be used to create new leagues if mode 'add' is set.
+ */
 const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
     const {leagueStore} = useContext(StoreContext);
 
-    // data states
+    /**
+     * data states
+     */
     const [name, setName] = useState("");
     const [sport, setSport] = useState("");
     const [location, setLocation] = useState("");
@@ -26,15 +35,22 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
     const [playerRanking, setPlayerRanking] = useState<IPlayerRankingTournament[]>([]);
     const [rankingFromDate, setRankingFromDate] = useState(new Date());
     const [rankingToDate, setRankingToDate] = useState(new Date());
+    const [league, setLeague] = useState(new League());
 
+    /**
+     * display states
+     */
     const [openSnack, setOpenSnack] = React.useState(false);
     const [rankingLoading, setRankingLoading] = React.useState(false);
 
-    // only used in edit mode
-    const [league, setLeague] = useState(new League());
-
+    /**
+     * URL param
+     */
     let { id } = useParams();
 
+    /**
+     * Loads league data
+     */
     useEffect(() => {
         if (mode === "edit"){
             let league_id :number = id ? +id : 0;
@@ -51,14 +67,9 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
         }
     }, [leagueStore, mode, id]);
 
-    const handleClickSnack = () => {
-        setOpenSnack(true);
-    };
-
-    const handleCloseSnack = () => {
-        setOpenSnack(false);
-    };
-
+    /**
+     * Submit handler
+     */
     const handleSubmit = () => {
         if (mode === "add") {
             leagueStore.saveNewLeague(name, sport, location);
@@ -69,6 +80,31 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
         }
     };
 
+    /**
+     * Loads ranking using the dates specified
+     */
+    const handleLoadRanking = () => {
+        setRankingLoading(true);
+        leagueStore.getLeagueRanking(id?+id:0, rankingFromDate, rankingToDate).then(data => {
+            setPlayerRanking(data);
+            setRankingLoading(false);
+        });
+    };
+
+    /**
+     * Display state change handlers
+     */
+    const handleClickSnack = () => {
+        setOpenSnack(true);
+    };
+
+    const handleCloseSnack = () => {
+        setOpenSnack(false);
+    };
+
+    /**
+     * Selected data state change handlers
+     */
     const handleFromDateChange = (event) => {
         setRankingFromDate(new Date(Date.parse(event.target.value)));
     };
@@ -77,13 +113,7 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
         setRankingToDate(new Date(Date.parse(event.target.value)));
     };
 
-    const handleLoadRanking = () => {
-        setRankingLoading(true);
-        leagueStore.getLeagueRanking(id?+id:0, rankingFromDate, rankingToDate).then(data => {
-            setPlayerRanking(data);
-            setRankingLoading(false);
-        });
-    };
+
 
     return (
         <>

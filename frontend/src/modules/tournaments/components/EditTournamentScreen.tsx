@@ -25,11 +25,18 @@ type EditTournamentScreenProps = {
     mode: "add" | "edit",
 }
 
+/**
+ * Edit tournament component
+ * Displays tournament data and can be used to edit it.
+ * Tournament ranking is also displayed here.
+ */
 const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
     const {tournamentStore, leagueStore, playerStore} = useContext(StoreContext);
     const classes = useStyles();
 
-    //data states
+    /**
+     * data states
+     */
     const [name, setName] = useState("");
     const [location, setLocation] = useState("");
     const [starttime, setStarttime] = useState("");
@@ -40,16 +47,29 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
     const [leagues, setLeagues] = useState([] as league[]);
     const [playersWithSelected, setPlayersWithSelected] = useState<IPlayerSelected[]>([]);
     const [treeLink, setTreeLink] = useState("");
-
-    const [openSnack, setOpenSnack] = React.useState(false);
-
-    // only set in edit mode
     const [tournament, setTournament] = useState(new Tournament());
 
+    /**
+     * display states
+     */
+    const [openSnack, setOpenSnack] = React.useState(false);
+
+    /**
+     * URL param
+     */
     let {id} = useParams();
 
+    /**
+     * Loads tournament data
+     */
     useEffect(() => {
+        /**
+         * get all leagues for the radio list
+         */
         leagueStore.getAllLeagues().then(data => {setLeagues(data)});
+        /**
+         * get all players for the radio list
+         */
         playerStore.getAllPlayers().then(data => {if(mode==="add"){setPlayersWithSelected(data)}});
         if (mode === "edit") {
             let tournamentId: number = id ? +id : 0;
@@ -63,7 +83,9 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                 setArchived(data.archived ? data.archived : false);
                 setSelectedDate(data.date ? new Date(data.date) : new Date());
 
-                // set selected flag on players that are in the tournament
+                /**
+                 * set selected flag on players that are in the tournament
+                 */
                 if(data.players) {
                     for (let p of data.players) {
                         let index = playerStore.playersWithSelected.findIndex(pws => pws.player.guid === p.guid);
@@ -72,23 +94,17 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
                     setPlayersWithSelected(playerStore.playersWithSelected)
                 }
 
+                /**
+                 * set the link to go to the correct view based on tournament format
+                 */
                 setTreeLink(data.format === 'Round Robin' ? "/tournament/roundRobin/"+id : "/tournament/singleElim/"+id);
             });
         }
     }, [tournamentStore, mode, id, leagueStore, playerStore]);
 
-    const handleClickSnack = () => {
-        setOpenSnack(true);
-    };
-
-    const handleCloseSnack = () => {
-        setOpenSnack(false);
-    };
-
-    const handleDateChange = (event) => {
-        setSelectedDate(new Date(Date.parse(event.target.value)));
-    };
-
+    /**
+     * Submit handler
+     */
     const handleSubmit = () => {
         let playerIds = [""];
 
@@ -103,6 +119,24 @@ const EditTournamentScreen = observer(({mode}: EditTournamentScreenProps) => {
             tournamentStore.updateTournament(name, location, starttime, playerIds, leagueId, archived, selectedDate, tournament.tournamentId);
             handleClickSnack();
         }
+    };
+
+    /**
+     * Display state change handlers
+     */
+    const handleClickSnack = () => {
+        setOpenSnack(true);
+    };
+
+    const handleCloseSnack = () => {
+        setOpenSnack(false);
+    };
+
+    /**
+     * Selected data state change handlers
+     */
+    const handleDateChange = (event) => {
+        setSelectedDate(new Date(Date.parse(event.target.value)));
     };
 
     const handlePlayersChange = (event) => {
