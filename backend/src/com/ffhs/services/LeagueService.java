@@ -35,6 +35,7 @@ public class LeagueService {
         ArrayList<ArrayList<PlayerRanking>> listOfAllRankings = new ArrayList<>();
         for(Tournament t : tournaments){
             listOfAllRankings.add(tournamentService.getTournamentRanking(t.getTournamentId()));
+            listOfAllRankings.add(tournamentService.getRoundRobinRanking(t.getTournamentId()));
         }
 
         return calculateLeagueRanking(listOfAllRankings);

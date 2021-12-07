@@ -229,19 +229,6 @@ public class TournamentService {
     }
 
     /**
-     * Takes a tournamentId as parameter and returns the ranking of that tournament
-     * @param tournamentId id of tournament
-     * @return ArrayList<PlayerRanking> player ranking of tournament
-     */
-    public ArrayList<PlayerRanking> getTournamentRanking(int tournamentId){
-        Tournament tournament = tournamentRepository.findById(tournamentId).get();
-        if("Round Robin".equals(tournament.getFormat())){
-            return getRoundRobinRanking(tournamentId);
-        }//TODO check if necessary
-        return null;
-    }
-
-    /**
      * Takes a tournamentId as parameter and returns(creates if necessary)
      * all games for the single elimination format
      *
