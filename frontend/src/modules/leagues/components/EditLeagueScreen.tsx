@@ -173,10 +173,10 @@ const EditLeagueScreen = observer(({mode}:EditLeagueScreenProps) => {
                                         <Card>
                                             <CardContent>
                                                 <Typography variant="h5" color="inherit" component="div">
-                                                    Rank {+i+1}
+                                                    {pr.player.tag}
                                                 </Typography>
                                                 <Typography variant="h6" color="inherit" component="div">
-                                                    {pr.player.tag}
+                                                    Rank {+i+1}
                                                 </Typography>
                                                 <Typography variant="h6" color="inherit" component="div">
                                                     Points: {pr.score}
