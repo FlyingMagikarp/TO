@@ -1,6 +1,7 @@
 package com.ffhs.api;
 
 import com.ffhs.model.Player;
+import com.ffhs.model.PlayerDto;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,10 @@ public class PlayerApiTest {
 
     @Test
     void addNewPlayer() {
-        //String returnVal = playerApi.addNewPlayer("Unit Test");
+        PlayerDto player = new PlayerDto();
+        player.setGuid("dummy");
+        player.setTag("dummy");
+        String returnVal = playerApi.addNewPlayer(player);
         //assertEquals("Player saved", returnVal);
     }
 
@@ -33,7 +37,7 @@ public class PlayerApiTest {
 
     @Test
     void getSinglePlayerById(){
-        String guid = "39f8c82b-79cf-4afb-a435-b9bd79ee5ad7";
+        String guid = "149c902b-7c8d-4ce7-b807-df09c1f94799";
         Optional<Player> player = playerApi.getSinglePlayerById(guid);
         assertThat(player).isNotNull();
     }

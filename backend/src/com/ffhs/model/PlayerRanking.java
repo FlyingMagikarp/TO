@@ -1,6 +1,5 @@
 package com.ffhs.model;
 
-import java.util.Objects;
 
 public class PlayerRanking implements Comparable<PlayerRanking>{
     private int score;

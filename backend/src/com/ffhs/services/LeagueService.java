@@ -5,7 +5,6 @@ import com.ffhs.model.PlayerDto;
 import com.ffhs.model.PlayerRanking;
 import com.ffhs.model.Tournament;
 import com.ffhs.repository.LeagueRepository;
-import com.ffhs.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,8 +67,7 @@ public class LeagueService {
             }
         }
 
-        Set<PlayerDto> s= new HashSet<PlayerDto>();
-        s.addAll(allPlayers);
+        Set<PlayerDto> s = new HashSet<PlayerDto>(allPlayers);
         allPlayers.clear();
         allPlayers.addAll(s);
 

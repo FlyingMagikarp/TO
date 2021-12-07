@@ -1,13 +1,6 @@
 package com.ffhs.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 
 public class PlayerDto {

@@ -53,46 +53,49 @@ class TournamentApiTest {
 
     @Test
     void getSingleTournamentById() {
-        int id = 1;
+        int id = 38;
         Optional<Tournament> tournament = tournamentApi.getSingleTournamentById(id);
         assertThat(tournament).isNotNull();
     }
 
     @Test
-    void testManyToMany(){
-        Player p1 = new Player();
-        p1.setTag("Player 1");
-        p1.setGuid("39f8c82b-79cf-4afb-a435-b9bd79ee5ad1");
-
-        Player p2 = new Player();
-        p2.setTag("Player 2");
-        p2.setGuid("39f8c82b-79cf-4afb-a435-b9bd79ee5ad2");
-
-        Set<Player> players = new HashSet<>();
-        players.add(p1);
-        players.add(p2);
-
-        Tournament t = new Tournament();
-        t.setName("unit tourney");
-        t.setLocation("Bern");
-        t.setDate(new Date());
-        t.setStarttime("12:00");
-        t.setFormat("Round Robin");
-        t.setPlayers(players);
-
-        //tournamentApi.addNewTournament(t);
+    void getMatchesForRoundRobin() {
+        int id = 38;
+        int expectedGameCount = 28;
+        ArrayList<Game> games = tournamentService.getRoundRobinGames(id);
+        assertThat(games).isNotNull();
+        assertEquals(games.size(), expectedGameCount);
     }
 
     @Test
-    void testRanking(){
-        ArrayList<PlayerRanking> pr = tournamentService.getRoundRobinRanking(38);
+    void getRoundRobinPlayerRanking(){
+        int id = 38;
+        int expectedSize = 8;
+        int expectedTopScore = 13;
+        ArrayList<PlayerRanking> pr = tournamentService.getRoundRobinRanking(id);
+        assertThat(pr).isNotNull();
+        assertEquals(pr.size(), expectedSize);
+        assertEquals(pr.get(0).getScore(), expectedTopScore);
     }
 
     @Test
-    void testSingleElim(){
-        //ArrayList<Game> games = tournamentService.getFirstRoundSingleEliminationGames(279);
-        ArrayList<Game> games = tournamentService.getFirstRoundSingleEliminationGames(280);
-        System.out.println("");
+    void getMatchesForSingleElimination() {
+        int id = 280;
+        int expectedGameCount = 7;
+        ArrayList<Game> games = tournamentService.getSingleEliminationGames(id);
+        assertThat(games).isNotNull();
+        assertEquals(games.size(), expectedGameCount);
+    }
+
+    @Test
+    void getRoundRobinPlayerRankingWithSingleElimTournament(){
+        int id = 280;
+        int expectedSize = 8;
+        String expectedTopTag = "player1";
+        ArrayList<PlayerRanking> pr = tournamentService.getRoundRobinRanking(id);
+        assertThat(pr).isNotNull();
+        assertEquals(pr.size(), expectedSize);
+        assertEquals(pr.get(0).getPlayer().getTag(), expectedTopTag);
     }
 
 }
