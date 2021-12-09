@@ -402,7 +402,7 @@ public class TournamentService {
     /**
      * Creates dummy players until the total amount is a power of two
      * @param players list of players
-     * @return ArrayList<Player> list of players with dummies
+     * @return ArrayList&lt;Player&gt; list of players with dummies
      */
     private ArrayList<Player> fillPlayerListUntilPowerOfTwo(ArrayList<Player> players){
         while(!isPowerOfTwo(players.size())){
