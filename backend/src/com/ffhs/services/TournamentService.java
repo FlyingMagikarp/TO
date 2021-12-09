@@ -15,6 +15,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static java.lang.Math.ceil;
+import static java.lang.Math.log;
+
 
 /**
  * Service for Tournament
@@ -37,6 +40,11 @@ public class TournamentService {
      */
     @Autowired
     private GameRepository gameRepository;
+    /**
+     * Service for leagues
+     */
+    @Autowired
+    private LeagueService leagueService;
 
 
     /**
@@ -111,19 +119,26 @@ public class TournamentService {
         int halfSize = players.size() / 2;
 
         List<Player> teams = new ArrayList<>(players);
-        int gameNrCount = 0;
+        int gameNrCount = 1;
         for(int round = 0; round < numberOfRounds; round++){
             for (int i = 0; i < halfSize; i++){
                 int firstTeamIndex = (i);
                 int secondTeamIndex = (i+halfSize);
 
                 games.add(createGame(teams.get(firstTeamIndex).getGuid(), teams.get(secondTeamIndex).getGuid(), tournamentId, gameNrCount));
-                gameNrCount++;
+                if(!teams.get(firstTeamIndex).getGuid().equals("dummy") && !teams.get(secondTeamIndex).getGuid().equals("dummy")) {
+                    gameNrCount++;
+                }
             }
 
             teams.add(1,teams.get(teams.size()-1));
             teams.remove(teams.size()-1);
         }
+
+        teams.removeIf(g -> g.getGuid().equals("dummy"));
+        players.removeIf(g -> g.getGuid().equals("dummy"));
+        games.removeIf(g -> g.getP1Id().equals("dummy"));
+        games.removeIf(g -> g.getP2Id().equals("dummy"));
 
         return games;
     }
@@ -259,7 +274,12 @@ public class TournamentService {
         int roundId = getLowestInternalGameId(gamesFound);
         ArrayList<Game> prevRoundGames = filterGameListByInternalId(roundId, gamesFound);
 
-        if (gamesFound.size() == allPlayer.size()-1){
+        int round = (int) Math.pow(2, ceil(log(allPlayer.size())/log(2)));
+        if(isPowerOfTwo(allPlayer.size())){
+            round = allPlayer.size();
+        }
+
+        if (gamesFound.size() == round-1){
             return gamesFound;
         } else if(gamesFound.size() > 0){
             gamesFound.addAll(getNextSingleEliminationGames(tournamentId, prevRoundGames));
@@ -323,11 +343,13 @@ public class TournamentService {
         ArrayList<Game> games = new ArrayList<>();
 
         Tournament tournament = tournamentRepository.findById(tournamentId).get();
-        if (!isPowerOfTwo(tournament.getPlayers().size())){
-            tournament.setPlayers(fillPlayerListUntilPowerOfTwo(tournament.getPlayers()));
+        ArrayList<Player> players = new ArrayList<>(tournament.getPlayers());
+
+        if (!isPowerOfTwo(players.size())){
+            players = fillPlayerListUntilPowerOfTwo(players);
         }
 
-        ArrayList<Player> players = new ArrayList<>(tournament.getPlayers());
+        //ArrayList<Player> players = new ArrayList<>(tournament.getPlayers());
 
         for (int i = 0, j = players.size()/2;i<players.size()/2;i++,j++){
             Game g = new Game();
@@ -344,12 +366,16 @@ public class TournamentService {
             tmp = tmp/2;
         }
 
+        Set<Player> tmpPlayers = tournament.getPlayers();
+        tmpPlayers.removeIf(p -> p.getGuid().equals("Bye"));
+        tournament.setPlayers(tmpPlayers);
+        //players.removeIf(p -> p.getGuid().equals("Bye"));
         return games;
     }
 
     /**
      * Takes an integer as parameter and generates that many placeholder games
-     * @param amount int number of game sto generate
+     * @param amount int number of games to generate
      * @return ArrayList&lt;Game&gt; list of generated palceholder games
      */
     private ArrayList<Game> getPlaceholderGamesForSingleElim(int amount){
@@ -376,9 +402,9 @@ public class TournamentService {
     /**
      * Creates dummy players until the total amount is a power of two
      * @param players list of players
-     * @return Set<Player> list of players with dummies
+     * @return ArrayList<Player> list of players with dummies
      */
-    private Set<Player> fillPlayerListUntilPowerOfTwo(Set<Player> players){
+    private ArrayList<Player> fillPlayerListUntilPowerOfTwo(ArrayList<Player> players){
         while(!isPowerOfTwo(players.size())){
             Player tmp = new Player();
             tmp.setTag("Bye");

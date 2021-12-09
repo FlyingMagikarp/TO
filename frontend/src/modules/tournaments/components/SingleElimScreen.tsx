@@ -82,6 +82,7 @@ const SingleElimScreen = observer(() => {
      */
     const getPlayerTagById = (guid:string|undefined) => {
         if (guid==='TBD'){return 'TBD'}
+        if(guid==='Bye'){return 'Bye'}
         if(tournament.players){
             let playerFound =  tournament.players.find(obj => {
                 return obj.guid === guid;
@@ -153,6 +154,7 @@ const SingleElimScreen = observer(() => {
                                     <Typography>Top {games.length+1 }</Typography>
                                 </Grid>
                                 {games.map((g,i) => {
+                                    {console.log(g)}
                                     return (
                                         <Grid item key={i}>
                                             <div key={i}>

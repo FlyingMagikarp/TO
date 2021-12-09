@@ -124,7 +124,7 @@ public class LeagueService {
      * @param N int argument for the logarithm
      * @return int result
      */
-    private int log2(int N) {
+    public int log2(int N) {
         return (int)(Math.log(N) / Math.log(2));
     }
 

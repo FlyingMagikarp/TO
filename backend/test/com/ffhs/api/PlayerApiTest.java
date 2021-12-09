@@ -2,8 +2,11 @@ package com.ffhs.api;
 
 import com.ffhs.model.Player;
 import com.ffhs.model.PlayerDto;
+import com.ffhs.repository.PlayerRepository;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -14,10 +17,25 @@ import java.util.Optional;
 public class PlayerApiTest {
     @Autowired
     private PlayerApi playerApi;
+    @Autowired
+    private PlayerRepository playerRepository;
 
     @Test
     void contextLoads() {
         assertThat(playerApi).isNotNull();
+    }
+
+    @Test
+    void addDummyPlayers(){
+        Player player = new Player();
+        player.setGuid("dummy");
+        player.setTag("dummy");
+        playerRepository.save(player);
+
+        Player player2 = new Player();
+        player2.setGuid("Bye");
+        player2.setTag("Bye");
+        playerRepository.save(player2);
     }
 
     @Test
@@ -26,7 +44,7 @@ public class PlayerApiTest {
         player.setGuid("dummy");
         player.setTag("dummy");
         String returnVal = playerApi.addNewPlayer(player);
-        //assertEquals("Player saved", returnVal);
+        assertEquals("Player saved", returnVal);
     }
 
     @Test
